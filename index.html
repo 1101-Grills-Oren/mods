@@ -56,9 +56,9 @@
       reset(modholder)
       for(k=0;k<mods.length;k++){
         console.log('tryadd'+k)
-        if((versions==[])||(doesOverlap(versions,mods[k]['versions']))){
-          if((platforms==[])||(doesOverlap(platforms,mods[k]['platforms']))){
-            if((types==[])||(doesOverlap(types,mods[k]['types']))){
+        if((versions.length==0)||(doesOverlap(versions,mods[k]['versions']))){
+          if((platforms.length==0)||(doesOverlap(platforms,mods[k]['platforms']))){
+            if((types.length==0)||(doesOverlap(types,mods[k]['types']))){
               console.log('add'+k)
               addtolist(modholder,mods[k]['name'],mods[k]['link'],mods[k]['platforms'],mods[k]['versions'])
             }
