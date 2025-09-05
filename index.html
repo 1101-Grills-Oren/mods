@@ -46,7 +46,8 @@
         parent.append(n)
       }
       function reset(parent){
-        for(i=0;i<parent.children.length;i++){
+        for(i=0;parent.children.length!=0;i++){
+          console.log('removing')
           parent.removeChild(parent.children[0])
         }
       }
@@ -54,9 +55,11 @@
       modholder=document.querySelector("#modholder");
       reset(modholder)
       for(k=0;k<mods.length;k++){
+        console.log('tryadd'+k)
         if((versions==[])||(doesOverlap(versions,mods[k]['versions']))){
           if((platforms==[])||(doesOverlap(platforms,mods[k]['platforms']))){
             if((types==[])||(doesOverlap(types,mods[k]['types']))){
+              console.log('add'+k)
               addtolist(modholder,mods[k]['name'],mods[k]['link'])
             }
           }
