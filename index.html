@@ -30,21 +30,48 @@
     <p>To learn more HTML/CSS, check out these <a href="https://neocities.org/tutorials">tutorials</a>!</p>
     <script>
       console.log(fetch("https://raw.githubusercontent.com/1101-Grills-Oren/mods/refs/heads/main/README.md"))
-      mods=[{name:'Improved Physics',type:'mod',versions:['1.20.1'],platforms:['fabric'],link:'https://modrinth.com/mod/improved-physics'}]
-      function addtolist(parent,content,link){
+      mods=[{name:'Improved Physics',types:['mod'],versions:['1.20.1'],platforms:['fabric'],link:'https://modrinth.com/mod/improved-physics'},
+           {name:'Barrel Shops',types:['datapack'],versions:['1.21'],platforms:['datapack'],link:'https://modrinth.com/datapack/barrel-shops'},
+           {name:'Trim Effects Mewo',types:['datapack'],versions:['1.20.1'],platforms:['datapack'],link:'https://modrinth.com/datapack/trim-effects-mewo'},
+           {name:'Quality Commands',types:['mod'],versions:['1.20.1'],platforms:['fabric'],link:'https://modrinth.com/mod/quality-commands'}]
+      function doesOverlap(lista,listb){
+        for(i=0;i<lista.length;i++){
+          for(j=0;j<listb.length;j++){
+            if(lista[i]==listb[j]){
+              return true;
+            }
+          }
+        }
+        return false;
+      }
+      function addtolist(parent,content,link,platforms,versions){
+        n=document.createElement('span')
         x=document.createElement('a')
-        x.textContent='content'
+        x.textContent=content
         x.href=link
-        parent.append(x)
+        n.append(x)
+        x=document.createElement('span')
+        x.textContent='Platforms:'+platforms.join(',')+"    Versions: "+versions.join(',')
+        n.append(x)
+        parent.append(n)
       }
       function reset(parent){
         for(i=0;i<parent.children.length;i++){
           parent.removeChild(parent.children[0])
         }
       }
+      function loadonly(platforms,versions,types){
       modholder=document.querySelector("#modholder");
+      reset(modholder)
       for(i=0;i<mods.length;i++){
-        addtolist(modholder,mods[i]['name'],mods[i]['link'])
+        if((versions==[])||(doesOverlap(versions,mods[i]['versions']))){
+          if((platforms==[])||(doesOverlap(platforms,mods[i]['platforms']))){
+            if((types==[])||(doesOverlap(types,mods[i]['types']))){
+              addtolist(modholder,mods[i]['name'],mods[i]['link'])
+            }
+          }
+        }
+      }
       }
     </script>
   </body>
