@@ -60,7 +60,7 @@
           if((platforms==[])||(doesOverlap(platforms,mods[k]['platforms']))){
             if((types==[])||(doesOverlap(types,mods[k]['types']))){
               console.log('add'+k)
-              addtolist(modholder,mods[k]['name'],mods[k]['link'])
+              addtolist(modholder,mods[k]['name'],mods[k]['link'],mods[k]['platforms'],mods[k]['versions'])
             }
           }
         }
