@@ -57,11 +57,11 @@
       function loadonly(platforms,versions,types){
       modholder=document.querySelector("#modholder");
       reset(modholder)
-      for(i=0;i<mods.length;i++){
-        if((versions==[])||(doesOverlap(versions,mods[i]['versions']))){
-          if((platforms==[])||(doesOverlap(platforms,mods[i]['platforms']))){
-            if((types==[])||(doesOverlap(types,mods[i]['types']))){
-              addtolist(modholder,mods[i]['name'],mods[i]['link'])
+      for(k=0;k<mods.length;k++){
+        if((versions==[])||(doesOverlap(versions,mods[k]['versions']))){
+          if((platforms==[])||(doesOverlap(platforms,mods[k]['platforms']))){
+            if((types==[])||(doesOverlap(types,mods[k]['types']))){
+              addtolist(modholder,mods[k]['name'],mods[k]['link'])
             }
           }
         }
