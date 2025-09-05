@@ -3,31 +3,26 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The web site of darkember</title>
+    <title>Mod List</title>
     <!-- The style.css file allows you to change the look of your web pages.
          If you include the next line in all your web pages, they will all share the same look.
          This makes it easier to make new pages for your site. -->
     <link href="style.css" rel="stylesheet" type="text/css" media="all">
+    <style>
+      .title{
+        color:"#00FF00"
+      }
+      body{
+        background-color:"#000000"
+      }
+    </style>
   </head>
   <body>
-    
-    <h1>Welcome to my Website!</h1>
 
-    <p>This is a paragraph! Here's how you make a link: <a href="https://neocities.org">Neocities</a>.</p>
-
-    <p>Here's how you can make <strong>bold</strong> and <em>italic</em> text.</p>
-
-    <p>Here's how to make a list:</p>
+    <p class='title'>All Projects:</p>
     <span id="modholder">
       
     </span>
-    <ul>
-      <li>https://modrinth.com/mod/improved-physics</li>
-      <li>Second thing</li>
-      <li>Third thing</li>
-    </ul>
-    <iframe src="https://modrinth.com/mod/quality-commands"></iframe>
-    <p>To learn more HTML/CSS, check out these <a href="https://neocities.org/tutorials">tutorials</a>!</p>
     <script>
       console.log(fetch("https://raw.githubusercontent.com/1101-Grills-Oren/mods/refs/heads/main/README.md"))
       mods=[{name:'Improved Physics',types:['mod'],versions:['1.20.1'],platforms:['fabric'],link:'https://modrinth.com/mod/improved-physics'},
@@ -45,14 +40,16 @@
         return false;
       }
       function addtolist(parent,content,link,platforms,versions){
-        n=document.createElement('span')
+        n=document.createElement('p')
         x=document.createElement('a')
         x.textContent=content
         x.href=link
+        x.style.color="#00FF00"
         n.append(x)
         x=document.createElement('span')
-        x.textContent='Platforms:'+platforms.join(',')+"    Versions: "+versions.join(',')
+        x.textContent='          Platforms:'+platforms.join(',')+"    Versions: "+versions.join(',')
         n.append(x)
+        n.style.color='#0000FF'
         parent.append(n)
       }
       function reset(parent){
@@ -73,6 +70,7 @@
         }
       }
       }
+      loadonly([],[],[])
     </script>
   </body>
 </html>
