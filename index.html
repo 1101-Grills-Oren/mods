@@ -19,12 +19,13 @@
     <script>
       loadedModData={}
       loadedVersionData={}
-      
-      async function getApiJsonGeneral(link,datastuff={}){
+      function getApiJsonGeneral(link,datastuff={}){
         return fetch(link,datastuff).then(response =>{
           return response.blob()}).then(respb=>{
             return respb.text()}).then(respc=>{
-              return JSON.parse(respc);})
+              rvel=JSON.parse(respc);
+              console.log(link,rvel)
+              return rvel;})
       }
       function getModData(modid){
         return getApiJsonGeneral("https://api.modrinth.com/v2/project/"+modid)
