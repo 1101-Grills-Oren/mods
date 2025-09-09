@@ -34,11 +34,11 @@
         if(seconds<0){
         if(seconds>-60){
           return ""+(-seconds)%1+" seconds ago"
-        }elif(seconds>-3600){
+        }else if(seconds>-3600){
           return ""+(-seconds/60)%1+" minutes ago"
-        }elif(seconds>-86400){
+        }else if(seconds>-86400){
           return ""+(-seconds/60/60)%1+" hours ago"
-        }elif(seconds>-864000){
+        }else if(seconds>-864000){
           return ""+(-seconds/86400)%1+" days ago"
         }else{
           return ["January","February","March","April","May","June","July","August","September","October","November","December"][dateb.getMonth()]+" "+dateb.getDate()+", "+dateb.getFullYear()
@@ -46,11 +46,11 @@
         }else{
         if(seconds<60){
           return "in "+(seconds)%1+" seconds"
-        }elif(seconds<3600){
+        }else if(seconds<3600){
           return "in "+(seconds/60)%1+" minutes"
-        }elif(seconds<86400){
+        }else if(seconds<86400){
           return "in "+(seconds/60/60)%1+" hours"
-        }elif(seconds<864000){
+        }else if(seconds<864000){
           return "in "+(seconds/86400)%1+" days"
         }else{
           return ["January","February","March","April","May","June","July","August","September","October","November","December"][dateb.getMonth()]+" "+dateb.getDate()+", "+dateb.getFullYear()
