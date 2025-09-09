@@ -99,6 +99,7 @@
       modsandids.then(
        (modsData,ids)=>{
          getViews(ids).then((views)=>{
+            console.log(views)
             reset(modholder)
             for(k=0;k<modsData.length;k++){
               console.log('tryadd'+k)
