@@ -26,7 +26,7 @@
       loadedVersionData={}
       function convertToDate(timestr){
         t=new Date()
-        t.setFullYear(1*timestr.slice(0,4),1*timestr.slice(5,7),1*timestr.slice(8,10))
+        t.setFullYear(1*timestr.slice(0,4),1*timestr.slice(5,7)-1,1*timestr.slice(8,10))
         t.setHours(1*timestr.slice(11,13),1*timestr.slice(14,16),1*timestr.slice(17,19),1000*timestr.slice(19,23))
         return t
       }
@@ -42,7 +42,7 @@
         }else if(seconds>-864000){
           return ""+(-seconds/86400)%1+" days ago"
         }else{
-          return ["January","February","March","April","May","June","July","August","September","October","November","December"][dateb.getMonth()]+" "+dateb.getDate()+", "+dateb.getFullYear()
+          return ["January","February","March","April","May","June","July","August","September","October","November","December"][dateb.getMonth()-1]+" "+dateb.getDate()+", "+dateb.getFullYear()
         }
         }else{
         if(seconds<60){
@@ -54,7 +54,7 @@
         }else if(seconds<864000){
           return "in "+(seconds/86400)%1+" days"
         }else{
-          return ["January","February","March","April","May","June","July","August","September","October","November","December"][dateb.getMonth()]+" "+dateb.getDate()+", "+dateb.getFullYear()
+          return ["January","February","March","April","May","June","July","August","September","October","November","December"][dateb.getMonth()-1]+" "+dateb.getDate()+", "+dateb.getFullYear()
         }
         }
       }
