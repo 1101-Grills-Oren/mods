@@ -42,7 +42,7 @@
         }else if(seconds>-864000){
           return ""+(-seconds/86400)%1+" days ago"
         }else{
-          return ["January","February","March","April","May","June","July","August","September","October","November","December"][dateb.getMonth()-1]+" "+dateb.getDate()+", "+dateb.getFullYear()
+          return ["January","February","March","April","May","June","July","August","September","October","November","December"][dateb.getMonth()]+" "+dateb.getDate()+", "+dateb.getFullYear()
         }
         }else{
         if(seconds<60){
@@ -54,7 +54,7 @@
         }else if(seconds<864000){
           return "in "+(seconds/86400)%1+" days"
         }else{
-          return ["January","February","March","April","May","June","July","August","September","October","November","December"][dateb.getMonth()-1]+" "+dateb.getDate()+", "+dateb.getFullYear()
+          return ["January","February","March","April","May","June","July","August","September","October","November","December"][dateb.getMonth()]+" "+dateb.getDate()+", "+dateb.getFullYear()
         }
         }
       }
