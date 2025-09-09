@@ -19,32 +19,35 @@
     <script>
       loadedModData={}
       loadedVersionData={}
-      function getApiJsonGeneral(link){
+      
+      async function getApiJsonGeneral(link,datastuff={}){
         x=0;
-        fetch(link).then(response =>{
+        fetch(link,datastuff).then(response =>{
           response.blob().then(respb=>{
             respb.text().then(respc=>{
               x=JSON.parse(respc);
+              return x;
             })
           }
                               )}
                                                                   )
-        return x;
+        
       }
-      function getModData(modid){
-        return getApiJsonGeneral("https://api.modrinth.com/v2/project/"+modid)
+      async function getModData(modid){
+        getApiJsonGeneral("https://api.modrinth.com/v2/project/"+modid).then(rsp=>{return rsp})
       }
       
-      function getUserProjects(userid){
-        return getApiJsonGeneral("https://api.modrinth.com/v2/user/"+userid+"/projects")
+      async function getUserProjects(userid){
+        getApiJsonGeneral("https://api.modrinth.com/v2/user/"+userid+"/projects").then(rsp=>{return rsp})
       }
 
-      function getVersionData(projectVersion){
-        return getApiJsonGeneral("https://api.modrinth.com/v2/version/"+projectVersion)
+      async function getVersionData(projectVersion){
+        getApiJsonGeneral("https://api.modrinth.com/v2/version/"+projectVersion).then(rsp=>{return rsp})
       }
 
-      function getAnalytics(){
-        return getApiJsonGeneral("https://api.modrinth.com/v3/analytics/downloads?start_date=1970-01-01T00:00:00.000Z&end_date=2025-09-08T23:44:24.678Z&resolution_minutes=40320&project_ids=[\"CJpJjU7m\",\"6H8ynuG6\",\"3SikDTGm\",\"DNmbfVe1\"]")
+      async function getViews(projids){
+        //return getApiJsonGeneral("https://api.modrinth.com/v3/analytics/downloads?start_date=1970-01-01T00:00:00.000Z&resolution_minutes=40320000&project_ids=[\"CJpJjU7m\",\"6H8ynuG6\",\"3SikDTGm\",\"DNmbfVe1\"]")
+        getApiJsonGeneral("https://api.modrinth.com/v3/analytics/views?start_date=1970-01-01T00:00:00.000Z&resolution_minutes=40320000&project_ids="+JSON.stringify(projids),{headers:{"Authorization":"mra_rzYuSLyqYbIlG3dVHbFCfrvWGJj1BBWB3xyUdZ7S0nLBV3IocsTaFSuixvan"}}).then(rsp=>{return rsp})
       }
       
       /*function getUserProjectsInDepth(userid){
