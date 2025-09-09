@@ -99,6 +99,7 @@
       modsandids=getUserProjectsInDepth("Gx7gGzJc")
       modsandids.then(
        (modsData,ids)=>{
+         console.log(ids)
          getViews(ids).then((views)=>{
             console.log(views)
             reset(modholder)
