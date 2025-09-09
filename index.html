@@ -34,25 +34,25 @@
         seconds=(dateb.getTime()-datea.getTime())/1000
         if(seconds<0){
         if(seconds>-60){
-          return ""+(-seconds)%1+" seconds ago"
+          return ""+(-seconds)-(-seconds)%1+" seconds ago"
         }else if(seconds>-3600){
-          return ""+(-seconds/60)%1+" minutes ago"
+          return ""+(-seconds/60)-(-seconds/60)%1+" minutes ago"
         }else if(seconds>-86400){
-          return ""+(-seconds/60/60)%1+" hours ago"
+          return ""+(-seconds/60/60)-(-seconds/60/60)%1+" hours ago"
         }else if(seconds>-864000){
-          return ""+(-seconds/86400)%1+" days ago"
+          return ""+(-seconds/86400)-(-seconds/86400)%1+" days ago"
         }else{
           return ["January","February","March","April","May","June","July","August","September","October","November","December"][dateb.getMonth()]+" "+dateb.getDate()+", "+dateb.getFullYear()
         }
         }else{
         if(seconds<60){
-          return "in "+(seconds)%1+" seconds"
+          return "in "+(seconds)-(seconds)%1+" seconds"
         }else if(seconds<3600){
-          return "in "+(seconds/60)%1+" minutes"
+          return "in "+(seconds/60)-(seconds/60)%1+" minutes"
         }else if(seconds<86400){
-          return "in "+(seconds/60/60)%1+" hours"
+          return "in "+(seconds/60/60)-(seconds/60/60)%1+" hours"
         }else if(seconds<864000){
-          return "in "+(seconds/86400)%1+" days"
+          return "in "+(seconds/86400)-(seconds/86400)%1+" days"
         }else{
           return ["January","February","March","April","May","June","July","August","September","October","November","December"][dateb.getMonth()]+" "+dateb.getDate()+", "+dateb.getFullYear()
         }
