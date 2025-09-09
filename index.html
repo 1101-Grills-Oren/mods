@@ -34,28 +34,25 @@
         
       }
       async function getModData(modid){
-        x=0;
-        await getApiJsonGeneral("https://api.modrinth.com/v2/project/"+modid).then(rsp=>{x=rsp})
-        return x;
+        return getApiJsonGeneral("https://api.modrinth.com/v2/project/"+modid)
+        
       }
       
       async function getUserProjects(userid){
-        x=0;
-        await getApiJsonGeneral("https://api.modrinth.com/v2/user/"+userid+"/projects").then(rsp=>{x=rsp})
-        return x;
+        
+        return getApiJsonGeneral("https://api.modrinth.com/v2/user/"+userid+"/projects")
+        
       }
 
       async function getVersionData(projectVersion){
-        x=0;
-        await getApiJsonGeneral("https://api.modrinth.com/v2/version/"+projectVersion).then(rsp=>{x=rsp})
-        return x;
+        
+        return getApiJsonGeneral("https://api.modrinth.com/v2/version/"+projectVersion)
+        
       }
 
       async function getViews(projids){
-        x=0;
         //return getApiJsonGeneral("https://api.modrinth.com/v3/analytics/downloads?start_date=1970-01-01T00:00:00.000Z&resolution_minutes=40320000&project_ids=[\"CJpJjU7m\",\"6H8ynuG6\",\"3SikDTGm\",\"DNmbfVe1\"]")
-        await getApiJsonGeneral("https://api.modrinth.com/v3/analytics/views?start_date=1970-01-01T00:00:00.000Z&resolution_minutes=40320000&project_ids="+JSON.stringify(projids),{headers:{"Authorization":"mra_rzYuSLyqYbIlG3dVHbFCfrvWGJj1BBWB3xyUdZ7S0nLBV3IocsTaFSuixvan"}}).then(rsp=>{x=rsp})
-        return x;
+        return getApiJsonGeneral("https://api.modrinth.com/v3/analytics/views?start_date=1970-01-01T00:00:00.000Z&resolution_minutes=40320000&project_ids="+JSON.stringify(projids),{headers:{"Authorization":"mra_rzYuSLyqYbIlG3dVHbFCfrvWGJj1BBWB3xyUdZ7S0nLBV3IocsTaFSuixvan"}})
       }
       
       /*function getUserProjectsInDepth(userid){
