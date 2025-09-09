@@ -47,18 +47,16 @@
         return getApiJsonGeneral("https://api.modrinth.com/v3/analytics/downloads?start_date=1970-01-01T00:00:00.000Z&end_date=2025-09-08T23:44:24.678Z&resolution_minutes=40320&project_ids=[\"CJpJjU7m\",\"6H8ynuG6\",\"3SikDTGm\",\"DNmbfVe1\"]")
       }
       
-      function getUserProjectsInDepth(userid){
+      /*function getUserProjectsInDepth(userid){
         a=getUserProjects(userid);
         for(i=0; i<a.length;i++){
           b=a[i].versions;
-          tviews=0;
           for(j=0; j<b.length;j++){
-            b[j]=getVersionData(b[j]);
-            tviews+=b[j].
+            b[j]=getVersionData(b[j]);  
           }
           a[i].versions=b;
         }
-      }
+      }*/
       console.log(fetch("https://raw.githubusercontent.com/1101-Grills-Oren/mods/refs/heads/main/README.md"))
       mods=[{name:'Improved Physics',types:['mod'],versions:['1.20.1'],platforms:['fabric'],link:'https://modrinth.com/mod/improved-physics'},
            {name:'Barrel Shops',types:['datapack'],versions:['1.21'],platforms:['datapack'],link:'https://modrinth.com/datapack/barrel-shops'},
