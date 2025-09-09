@@ -29,15 +29,33 @@
         t.setFullYear(1*timestr.slice(0,4),1*timestr.slice(5,7),1*timestr.slice(8,10))
         t.setHours(1*timestr.slice(11,13),1*timestr.slice(14,16),1*timestr.slice(17,19),1000*n.slice(19,23))
       }
-      function convertToDate(datea,dateb){
+      function relativeDate(datea,dateb){
         seconds=(dateb.getTime()-datea.getTime())/1000
-        minutes=seconds/60
-        hours=minutes/60
-        days=hours/24
-        days=days-days%1
-        hours=(hours-hours%1)-days*24
-        minutes=(minutes-minutes%1)-hours*60
-        seconds=(seconds-seconds%1)-minutes*60
+        if(seconds<0){
+        if(seconds>-60){
+          return ""+(-seconds)%1+" seconds ago"
+        }elif(seconds>-3600){
+          return ""+(-seconds/60)%1+" minutes ago"
+        }elif(seconds>-86400){
+          return ""+(-seconds/60/60)%1+" hours ago"
+        }elif(seconds>-864000){
+          return ""+(-seconds/86400)%1+" days ago"
+        }else{
+          return ["January","February","March","April","May","June","July","August","September","October","November","December"][dateb.getMonth()]+" "+dateb.getDate()+", "+dateb.getFullYear()
+        }
+        }else{
+        if(seconds<60){
+          return "in "+(seconds)%1+" seconds"
+        }elif(seconds<3600){
+          return "in "+(seconds/60)%1+" minutes"
+        }elif(seconds<86400){
+          return "in "+(seconds/60/60)%1+" hours"
+        }elif(seconds<864000){
+          return "in "+(seconds/86400)%1+" days"
+        }else{
+          return ["January","February","March","April","May","June","July","August","September","October","November","December"][dateb.getMonth()]+" "+dateb.getDate()+", "+dateb.getFullYear()
+        }
+        }
       }
       function getApiJsonGeneral(link,datastuff={}){
         return fetch(link,datastuff).then(response =>{
@@ -95,7 +113,7 @@
         }
         return false;
       }
-      function addtolist(parent,content,link,platforms,versions,views){
+      function addtolist(parent,content,link,platforms,versions,views,updated){
         n=document.createElement('tr')
         dataelement=document.createElement('td')
         x=document.createElement('a')
@@ -115,6 +133,10 @@
 
         dataelement=document.createElement('td')
         dataelement.textContent=views
+        n.append(dataelement)
+
+        dataelement=document.createElement('td')
+        dataelement.textContent="Last updated "+relativeDate(new Date(),convertToDate(updated))
         n.append(dataelement)
         
         /*x=document.createElement('span')
@@ -148,7 +170,7 @@
                 if((platforms.length==0)||(doesOverlap(platforms,modsData[k]['']))){
                   if((types.length==0)||(doesOverlap(types,modsData[k]['']))){
                     console.log('add'+k)
-                    addtolist(modholder,modsData[k].title,"https://modrinth.com/mod/"+modsData[k].slug,modsData[k].loaders,modsData[k].game_versions,views[modsData[k].id][0])
+                    addtolist(modholder,modsData[k].title,"https://modrinth.com/mod/"+modsData[k].slug,modsData[k].loaders,modsData[k].game_versions,views[modsData[k].id][0],modsData[k].updated)
                   }
                 }
               }
