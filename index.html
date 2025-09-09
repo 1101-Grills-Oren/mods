@@ -48,16 +48,17 @@
         return getApiJsonGeneral("https://api.modrinth.com/v3/analytics/views?start_date=1970-01-01T00:00:00.000Z&resolution_minutes=40320000&project_ids="+JSON.stringify(projids),{headers:{"Authorization":"mra_rzYuSLyqYbIlG3dVHbFCfrvWGJj1BBWB3xyUdZ7S0nLBV3IocsTaFSuixvan"}})
       }
       
-      /*function getUserProjectsInDepth(userid){
+      function getUserProjectsInDepth(userid){
         a=getUserProjects(userid);
-        for(i=0; i<a.length;i++){
-          b=a[i].versions;
-          for(j=0; j<b.length;j++){
-            b[j]=getVersionData(b[j]);  
-          }
-          a[i].versions=b;
+        a.then(projects=>{
+        b=[]
+        for(i=0;i<a.length;i++){
+          b.push(a[i].id)
         }
-      }*/
+        return projects,b
+        })
+        return a
+      }
       console.log(fetch("https://raw.githubusercontent.com/1101-Grills-Oren/mods/refs/heads/main/README.md"))
       mods=[{name:'Improved Physics',types:['mod'],versions:['1.20.1'],platforms:['fabric'],link:'https://modrinth.com/mod/improved-physics'},
            {name:'Barrel Shops',types:['datapack'],versions:['1.21'],platforms:['datapack'],link:'https://modrinth.com/datapack/barrel-shops'},
@@ -73,7 +74,7 @@
         }
         return false;
       }
-      function addtolist(parent,content,link,platforms,versions){
+      function addtolist(parent,content,link,platforms,versions,views){
         n=document.createElement('p')
         x=document.createElement('a')
         x.textContent=content
@@ -81,7 +82,7 @@
         x.style.color="#00FF00"
         n.append(x)
         x=document.createElement('span')
-        x.textContent='          Platforms:'+platforms.join(',')+"    Versions: "+versions.join(',')
+        x.textContent='          Platforms:'+platforms.join(',')+"    Versions: "+versions.join(',')+"       "+views+" Views"
         n.append(x)
         n.style.color='#0000FF'
         parent.append(n)
@@ -94,18 +95,25 @@
       }
       function loadonly(platforms,versions,types){
       modholder=document.querySelector("#modholder");
-      reset(modholder)
-      for(k=0;k<mods.length;k++){
-        console.log('tryadd'+k)
-        if((versions.length==0)||(doesOverlap(versions,mods[k]['versions']))){
-          if((platforms.length==0)||(doesOverlap(platforms,mods[k]['platforms']))){
-            if((types.length==0)||(doesOverlap(types,mods[k]['types']))){
-              console.log('add'+k)
-              addtolist(modholder,mods[k]['name'],mods[k]['link'],mods[k]['platforms'],mods[k]['versions'])
+      modsandids=getUserProjectsInDepth("Gx7gGzJc")
+      modsandids.then(
+       (modsData,ids)=>{
+         getViews(ids).then((views)=>{
+            reset(modholder)
+            for(k=0;k<modsData.length;k++){
+              console.log('tryadd'+k)
+              if((versions.length==0)||(doesOverlap(versions,modsData[k].versions))){
+                if((platforms.length==0)||(doesOverlap(platforms,modsData[k]['']))){
+                  if((types.length==0)||(doesOverlap(types,modsData[k]['']))){
+                    console.log('add'+k)
+                    addtolist(modholder,modsData[k].title,"https://modrinth.com/mod/"+modsData[k].slug,modsData[k].loaders,modsData[k].game_versions,views[modsData[k].id])
+                  }
+                }
+              }
             }
-          }
-        }
-      }
+         })
+       } 
+      )
       }
       loadonly([],[],[])
     </script>
