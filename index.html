@@ -96,9 +96,13 @@
       }
       function loadonly(platforms,versions,types){
       modholder=document.querySelector("#modholder");
-      modsandids=getUserProjectsInDepth("Gx7gGzJc")
+      modsandids=getUserProjects("Gx7gGzJc")
       modsandids.then(
-       (modsData,ids)=>{
+       modsData=>{
+         ids=[]
+         for(i=0;i<modsData.length;i++){
+           ids.push(modsData[i].id)
+         }
          console.log(ids)
          getViews(ids).then((views)=>{
             console.log(views)
