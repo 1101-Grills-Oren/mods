@@ -13,12 +13,27 @@
   <body>
 
     <p id='title'>All Projects:</p>
-    <span id="modholder">
+    <table id="modholder">
       
-    </span>
+    </table>
     <script>
       loadedModData={}
       loadedVersionData={}
+      function convertToDate(timestr){
+        t=new Date()
+        t.setFullYear(1*timestr.slice(0,4),1*timestr.slice(5,7),1*timestr.slice(8,10))
+        t.setHours(1*timestr.slice(11,13),1*timestr.slice(14,16),1*timestr.slice(17,19),1000*n.slice(19,23))
+      }
+      function convertToDate(datea,dateb){
+        seconds=(dateb.getTime()-datea.getTime())/1000
+        minutes=seconds/60
+        hours=minutes/60
+        days=hours/24
+        days=days-days%1
+        hours=(hours-hours%1)-days*24
+        minutes=(minutes-minutes%1)-hours*60
+        seconds=(seconds-seconds%1)-minutes*60
+      }
       function getApiJsonGeneral(link,datastuff={}){
         return fetch(link,datastuff).then(response =>{
           return response.blob()}).then(respb=>{
@@ -76,15 +91,30 @@
         return false;
       }
       function addtolist(parent,content,link,platforms,versions,views){
-        n=document.createElement('p')
+        n=document.createElement('tr')
+        dataelement=document.createElement('td')
         x=document.createElement('a')
         x.textContent=content
         x.href=link
         x.style.color="#00FF00"
-        n.append(x)
-        x=document.createElement('span')
+        dataelement.append(x)
+        n.append(dataelement)
+
+        dataelement=document.createElement('td')
+        dataelement.textContent=platforms.join(',')
+        n.append(dataelement)
+
+        dataelement=document.createElement('td')
+        dataelement.textContent=versions.join(',')
+        n.append(dataelement)
+
+        dataelement=document.createElement('td')
+        dataelement.textContent=views
+        n.append(dataelement)
+        
+        /*x=document.createElement('span')
         x.textContent='          Platforms:'+platforms.join(',')+"    Versions: "+versions.join(',')+"       "+views+" Views"
-        n.append(x)
+        n.append(x)*/
         n.style.color='#0000FF'
         parent.append(n)
       }
