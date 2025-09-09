@@ -28,6 +28,7 @@
         t=new Date()
         t.setFullYear(1*timestr.slice(0,4),1*timestr.slice(5,7),1*timestr.slice(8,10))
         t.setHours(1*timestr.slice(11,13),1*timestr.slice(14,16),1*timestr.slice(17,19),1000*timestr.slice(19,23))
+        return t
       }
       function relativeDate(datea,dateb){
         seconds=(dateb.getTime()-datea.getTime())/1000
