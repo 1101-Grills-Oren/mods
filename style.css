@@ -3,3 +3,18 @@ body {
   color: white;
   font-family: Verdana;
 }
+.flex {
+display: flex;
+}
+.flex-row {
+flex-direction: row; /* default: row | row-reverse | column | column-reverse */
+}
+.flex-col {
+flex-direction: column; /* default: row | row-reverse | column | column-reverse */
+}
+.items_center {
+align-content: center; /* flex-start | flex-end | center | space-between | space-around | stretch */
+}
+.flex-wrap {
+flex-wrap: wrap; /* default: nowrap | wrap | wrap-reverse */
+}
