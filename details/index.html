@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mod Details</title>
+    <!-- The style.css file allows you to change the look of your web pages.
+         If you include the next line in all your web pages, they will all share the same look.
+         This makes it easier to make new pages for your site. -->
+    <link href="style.css" rel="stylesheet" type="text/css" media="all">
+    <style>
+      th, td {
+        width: 200px;
+        align:center;
+      }
+    </style>
+  </head>
+  <body>
+
+    <p id='title'>All Projects:</p>
+    <table id="modholder">
+      
+    </table>
+    <script>
+      
+      function convertToDate(timestr){
+        t=new Date()
+        t.setFullYear(1*timestr.slice(0,4),1*timestr.slice(5,7)-1,1*timestr.slice(8,10))
+        t.setHours(1*timestr.slice(11,13),1*timestr.slice(14,16),1*timestr.slice(17,19),1000*timestr.slice(19,23))
+        return t
+      }
+      function relativeDate(datea,dateb){
+        seconds=(dateb.getTime()-datea.getTime())/1000
+        if(seconds<0){
+        if(seconds>-60){
+          return ""+(-seconds)-(-seconds)%1+" seconds ago"
+        }else if(seconds>-3600){
+          return ""+(-seconds/60)-(-seconds/60)%1+" minutes ago"
+        }else if(seconds>-86400){
+          return ""+(-seconds/60/60)-(-seconds/60/60)%1+" hours ago"
+        }else if(seconds>-864000){
+          return ""+(-seconds/86400)-(-seconds/86400)%1+" days ago"
+        }else{
+          return ["January","February","March","April","May","June","July","August","September","October","November","December"][dateb.getMonth()]+" "+dateb.getDate()+", "+dateb.getFullYear()
+        }
+        }else{
+        if(seconds<60){
+          return "in "+(seconds)-(seconds)%1+" seconds"
+        }else if(seconds<3600){
+          return "in "+(seconds/60)-(seconds/60)%1+" minutes"
+        }else if(seconds<86400){
+          return "in "+(seconds/60/60)-(seconds/60/60)%1+" hours"
+        }else if(seconds<864000){
+          return "in "+(seconds/86400)-(seconds/86400)%1+" days"
+        }else{
+          return ["January","February","March","April","May","June","July","August","September","October","November","December"][dateb.getMonth()]+" "+dateb.getDate()+", "+dateb.getFullYear()
+        }
+        }
+      }
+      function getApiJsonGeneral(link,datastuff={},invalidfunc=null){
+        return fetch(link,datastuff).then(response =>{
+          return response.blob()}).then(respb=>{
+            return respb.text()}).then(respc=>{
+              rvel=JSON.parse(respc);
+              console.log(link,rvel)
+              return rvel;})
+      }
+      function getModData(modid){
+        return getApiJsonGeneral("https://api.modrinth.com/v2/project/"+modid)
+        
+      }
+      
+      function getUserProjects(userid){
+        
+        return getApiJsonGeneral("https://api.modrinth.com/v2/user/"+userid+"/projects")
+        
+      }
+
+      function getVersionData(projectVersion){
+        
+        return getApiJsonGeneral("https://api.modrinth.com/v2/version/"+projectVersion)
+        
+      }
+
+      function getViews(projids){
+        //return getApiJsonGeneral("https://api.modrinth.com/v3/analytics/downloads?start_date=1970-01-01T00:00:00.000Z&resolution_minutes=40320000&project_ids=[\"CJpJjU7m\",\"6H8ynuG6\",\"3SikDTGm\",\"DNmbfVe1\"]")
+        return getApiJsonGeneral("https://api.modrinth.com/v3/analytics/views?start_date=1970-01-01T00:00:00.000Z&resolution_minutes=40320000&project_ids="+JSON.stringify(projids),{headers:{"Authorization":"mra_rzYuSLyqYbIlG3dVHbFCfrvWGJj1BBWB3xyUdZ7S0nLBV3IocsTaFSuixvan"}})
+      }
+      
+      function getUserProjectsInDepth(userid){
+        a=getUserProjects(userid);
+        a.then(projects=>{
+        b=[]
+        for(i=0;i<a.length;i++){
+          b.push(a[i].id)
+        }
+        return (projects,b)
+        })
+        return a
+      }
+      console.log(fetch("https://raw.githubusercontent.com/1101-Grills-Oren/mods/refs/heads/main/README.md"))
+      function doesOverlap(lista,listb){
+        for(i=0;i<lista.length;i++){
+          for(j=0;j<listb.length;j++){
+            if(lista[i]==listb[j]){
+              return true;
+            }
+          }
+        }
+        return false;
+      }
+      function addtolist(parent,content,link,platforms,versions,views,updated){
+        n=document.createElement('tr')
+        dataelement=document.createElement('td')
+        x=document.createElement('a')
+        x.textContent=content
+        x.href=link
+        x.style.color="#00FF00"
+        dataelement.append(x)
+        n.append(dataelement)
+
+        dataelement=document.createElement('td')
+        dataelement.textContent=platforms.join(',')
+        n.append(dataelement)
+
+        dataelement=document.createElement('td')
+        dataelement.textContent=versions.join(',')
+        n.append(dataelement)
+
+        dataelement=document.createElement('td')
+        dataelement.textContent=views
+        n.append(dataelement)
+
+        dataelement=document.createElement('td')
+        dataelement.textContent="Last updated "+relativeDate(new Date(),convertToDate(updated))
+        n.append(dataelement)
+        
+        /*x=document.createElement('span')
+        x.textContent='          Platforms:'+platforms.join(',')+"    Versions: "+versions.join(',')+"       "+views+" Views"
+        n.append(x)*/
+        n.style.color='#0000FF'
+        parent.append(n)
+      }
+      function reset(parent){
+        for(i=0;parent.children.length!=0;i++){
+          console.log('removing')
+          parent.removeChild(parent.children[0])
+        }
+      }
+      function loadonly(platforms,versions,types){
+      modholder=document.querySelector("#modholder");
+      modsandids=getUserProjects("Gx7gGzJc")
+      modsandids.then(
+       modsData=>{
+         ids=[]
+         for(i=0;i<modsData.length;i++){
+           ids.push(modsData[i].id)
+         }
+         console.log(ids)
+         getViews(ids).then((views)=>{
+            console.log(views)
+            reset(modholder)
+            for(k=0;k<modsData.length;k++){
+              console.log('tryadd'+k)
+              if((versions.length==0)||(doesOverlap(versions,modsData[k].versions))){
+                if((platforms.length==0)||(doesOverlap(platforms,modsData[k]['']))){
+                  if((types.length==0)||(doesOverlap(types,modsData[k]['']))){
+                    console.log('add'+k)
+                    addtolist(modholder,modsData[k].title,"https://modrinth.com/mod/"+modsData[k].slug,modsData[k].loaders,modsData[k].game_versions,views[modsData[k].id][0],modsData[k].updated)
+                  }
+                }
+              }
+            }
+         })
+       } 
+      )
+      }
+      //loadonly([],[],[])
+    </script>
+    <span id="content">
+      Loading, please wait...
+    </span>
+    <script>
+      data=document.location.search.slice(1).split(',')
+      data2={}
+      for(i=0;i<data.length;i++){
+        data2[data[i].split('=')[0]]=data[i].split('=')[1]
+      }
+      if(data2['mod']==null){
+        document.location.href='https://1101-grills-oren.github.io/mods'
+      }else{
+        getModData(data2['mod']).then(modData=>{
+          switch(modData.status){
+            case 'draft':
+              document.location.href='https://modrinth.com/project/'+data2['mod'];
+              break;
+            case 'rejected':
+              document.querySelector("#content").innerHTML='Sorry, this project was rejected by the Modrinth administration. <a href=https://1101-grills-oren.github.io/mods/>Click here to go back.</a>';
+              break;
+            case 'approved':
+              document.querySelector("#content")
+              nInnerHtml=""
+              modiconhtml='<svg class="`experimental-styles-within avatar shrink-0" style="--_size:96px;" xml:space="preserve" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="1.5" clip-rule="evenodd" viewBox="0 0 104 104" aria-hidden="true" data-v-8b74ca16=""><path fill="none" d="M0 0h103.4v103.4H0z" data-v-8b74ca16=""></path><path fill="none" stroke="#9a9a9a" stroke-width="5" d="M51.7 92.5V51.7L16.4 31.3l35.3 20.4L87 31.3 51.7 11 16.4 31.3v40.8l35.3 20.4L87 72V31.3L51.7 11" data-v-8b74ca16=""></path></svg>'
+              if(modData.icon_url!=null){
+                modiconhtml='<img class="`experimental-styles-within avatar shrink-0" style="--_size:96px;" src="'+modData.icon_url+'" alt="'+modData.title+'" loading="eager" data-v-8b74ca16="">'
+              }
+              headerhtml='<div class="flex flex-col gap-1"><div class="flex flex-wrap items-center gap-2"><h1 class="m-0 text-2xl font-extrabold leading-none text-contrast"><!--[-->'+modData.title+'<!--]--></h1><!--[--><span class="inline-flex items-center gap-1 font-semibold text-secondary">'
+                +modiconhtml
+                +modData.status+'</span><!--]--></div><p class="m-0 line-clamp-2 max-w-[40rem] empty:hidden"><!--[-->'+modData.description+'<!--]--></p></div>'
+              bodyhtml='<div>'+modData.body+'</div>'
+              nInnerHtml=modiconhtml+bodyhtml
+              break;
+            case 'unlisted':
+              document.location.href='https://modrinth.com/project/'+data2['mod'];
+              break;
+            case 'processing':
+              break;
+            case 'withheld':
+              break;
+            case 'scheduled':
+              break;
+            case 'private':
+              break;
+            case 'unknown':
+              break;
+          }
+          if(modData.status=='approved'){}
+          switch(status)
+            
+archived
+rejected
+draft
+unlisted
+processing
+withheld
+scheduled
+private
+unknown
+        }).catch(err=>{document.location.href='https://1101-grills-oren.github.io/mods'})
+      }
+    </script>
+      </body>
+</html>
