@@ -304,7 +304,7 @@
   </head>
   <body>
 
-    <p id='title'>This mod is not yet accessible yet, so here's a preview:</p>
+    <p id='title'></p>
     <table id="modholder">
       
     </table>
@@ -498,7 +498,8 @@
               bodyhtml='<div><p>'+modData.body.split('\n\n').join('<\p><p>').split('\n').join('<\p><p>')+'<\p></div>'
               nInnerHtml=headerhtml+bodyhtml
               document.querySelector("#content").innerHTML=nInnerHtml
-              document.querySelector("#title").innerHTML+='<a href=https://1101-grills-oren.github.io/mods/>Click here to go back.</a>'
+              document.querySelector("#title").innerHTML='This mod is not yet accessible yet, so here\'s a preview:<a href=https://1101-grills-oren.github.io/mods/>Click here to go back.</a>'
+              
               break;
             case 'unlisted':
               document.location.href='https://modrinth.com/project/'+data2['mod'];
