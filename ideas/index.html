@@ -111,12 +111,12 @@
         for(i=0;i<clicktoggle.length;i++){
           
           clicktoggle[i].onclick=function(x){
-              if(x.srcElement.dataset['mode']==1){
-                  x.srcElement.dataset['mode']=0
-                  x.srcElement.children[0+x.srcElement.dataset['child']].style.display='none'
+              if(x.srcElement.parentElement.dataset['mode']==1){
+                  x.srcElement.parentElement.dataset['mode']=0
+                  x.srcElement.parentElement.children[0+x.srcElement.dataset['child']].style.display='none'
               }else{
-                  x.srcElement.dataset['mode']=1
-                  x.srcElement.children[0+x.srcElement.dataset['child']].style.display='block'
+                  x.srcElement.parentElement.dataset['mode']=1
+                  x.srcElement.parentElement.children[0+x.srcElement.dataset['child']].style.display='block'
               }
           }
         }
