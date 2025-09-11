@@ -15,8 +15,10 @@
     </title>
   </head>
   <body>
+    <div id="ideaslist" style="display:flex;flex-direction: column;flex-grow: 1;"></div>
     <script>
-      function getContents(path){
+      document.onload=()=>{
+        function getContents(path){
         return octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
           owner: '1101-grills-oren',
           repo: 'mods',
@@ -75,9 +77,6 @@
         }
         c.join('; ')
       }
-    </script>
-    <div id="ideaslist" style="display:flex;flex-direction: column;flex-grow: 1;"></div>
-    <script>
       ideaslist=document.querySelector("#ideaslist");
       getContents("data/newIdeas.json").then((contents)=>{
         newhtml=""
@@ -90,6 +89,7 @@
         }
         ideaslist.innerHTML=newhtml;
       })
+      }
     </script>
   </body>
 </html>
