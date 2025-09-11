@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script>
+      octokit=0
+    </script>
+    <script type="module">
+      import { Octokit } from "https://esm.sh/@octokit/core";
+      octokit = new Octokit({ auth: 'github_p'+'at_11BADMTJI0dmSDa8V5xAJ3_9wUUK5VYsAq'+'jNY6nndJ5rDlTVwuLIYFGGVHzvWEGAQwHFQOVRMDH7yB9C86' });
+      
+    </script>
+    <script>
+      function getContents(path){
+        return octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
+          owner: '1101-grills-oren',
+          repo: 'mods',
+          path: path,
+          headers: {
+            'X-GitHub-Api-Version': '2022-11-28'
+          }
+        })
+      }
+      function setContents(path,contents,sha=null){
+        if(sha!=null){
+        return octokit.request('PUT /repos/{owner}/{repo}/contents/{path}', {
+          owner: '1101-grills-oren',
+          repo: 'mods',
+          path: path,
+          message: 'Updated By Tool',
+          content: contents,
+          sha:sha,
+          headers: {
+            'X-GitHub-Api-Version': '2022-11-28'
+          }
+        })
+        }else{
+        return octokit.request('PUT /repos/{owner}/{repo}/contents/{path}', {
+          owner: '1101-grills-oren',
+          repo: 'mods',
+          path: path,
+          message: 'Updated By Tool',
+          content: contents,
+          headers: {
+            'X-GitHub-Api-Version': '2022-11-28'
+          }
+        })
+        }
+      }
+      function updateContentsJsonAppendList(path,value,listname){
+        getContents(path).then(contents=>{
+          content=JSON.parse(atob(contents.content))
+          content['listname'].push(value)
+          setContents(path,btoa(JSON.stringify()),contents.sha)
+        })
+      }
+      function getDocCookie(){
+        c=document.cookie.split('; ')
+        d={}
+        for(i=0;i<c.length;c++){
+          d[c[i].split('=')[0]]=c[i].split('=').slice(1).join('=')
+        }
+        return d
+      }
+      function setDocCookie(values){
+        d=values
+        c=[]
+        for(i=0;i<c.length;c++){
+          c.push(d[i].join('='))
+        }
+        c.join('; ')
+      }
+    </script>
+    <title>
+      Ideas
+    </title>
+  </head>
+  <body>
+    <div id="ideaslist" style="display:flex;flex-direction: column;flex-grow: 1;"></div>
+    <script>
+      ideaslist=document.querySelector("#ideaslist");
+      getContents("data/newIdeas.json").then((contents)=>{
+        newhtml=""
+        contents=JSON.parse(atob(contents.content))
+        for(i=0;i<contents.ideas.length;i++){
+          newhtml+="<span>"+contents.ideas[i]+"</span>"
+        }
+        if(newhtml==""){
+          newhtml="Sorry, nothing here at the moment."
+        }
+        ideaslist.innerHTML=newhtml;
+      })
+    </script>
+  </body>
+</html>
