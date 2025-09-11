@@ -113,10 +113,10 @@
           clicktoggle[i].onclick=function(x){
               if(x.srcElement.dataset['mode']==1){
                   x.srcElement.dataset['mode']=0
-                  x.srcElement.children[x.srcElement.dataset['child']].style.display='none'
+                  x.srcElement.children[0+x.srcElement.dataset['child']].style.display='none'
               }else{
                   x.srcElement.dataset['mode']=1
-                  x.srcElement.children[x.srcElement.dataset['child']].style.display='block'
+                  x.srcElement.children[0+x.srcElement.dataset['child']].style.display='block'
               }
           }
         }
