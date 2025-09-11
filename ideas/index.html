@@ -9,6 +9,12 @@
       octokit = new Octokit({ auth: 'github_p'+'at_11BADMTJI0dmSDa8V5xAJ3_9wUUK5VYsAq'+'jNY6nndJ5rDlTVwuLIYFGGVHzvWEGAQwHFQOVRMDH7yB9C86' });
       
     </script>
+    
+    <title>
+      Ideas
+    </title>
+  </head>
+  <body>
     <script>
       function getContents(path){
         return octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
@@ -70,11 +76,6 @@
         c.join('; ')
       }
     </script>
-    <title>
-      Ideas
-    </title>
-  </head>
-  <body>
     <div id="ideaslist" style="display:flex;flex-direction: column;flex-grow: 1;"></div>
     <script>
       ideaslist=document.querySelector("#ideaslist");
