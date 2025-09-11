@@ -62,9 +62,9 @@
       }
       updateContentsJsonAppendList=function(path,value,listname){
         getContents(path).then(contents=>{
-          content=JSON.parse(btoa(contents.data.content))
+          content=JSON.parse(atob(contents.data.content))
           content[listname].push(value)
-          setContents(path,atob(JSON.stringify(content)),contents.sha)
+          setContents(path,btoa(JSON.stringify(content)),contents.sha)
         })
       }
       
