@@ -132,9 +132,8 @@
       </div>
       <span>Description</span>
       <div style="display:flex;flex-direction:row">
-        <div contenteditable="true" id="description" style="border-style: solid; border-color: rgb(153, 153, 153);">
+        <div contenteditable="true" id="description" style="border-style: solid; border-color: rgb(153, 153, 153);"></div>
         <div id='description-preview'></div>
-      </div>
       </div>
     <script>
       document.querySelector("#description").oninput=function(x){x.srcElement.parentElement.children[1].innerHTML=x.srcElement.textContent}
