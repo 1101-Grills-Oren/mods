@@ -54,7 +54,7 @@
       }
       function updateContentsJsonAppendList(path,value,listname){
         getContents(path).then(contents=>{
-          content=JSON.parse(atob(contents.content))
+          content=JSON.parse(atob(contents.data.content))
           content['listname'].push(value)
           setContents(path,btoa(JSON.stringify()),contents.sha)
         })
@@ -81,7 +81,7 @@
       ideaslist=document.querySelector("#ideaslist");
       getContents("data/newIdeas.json").then((contents)=>{
         newhtml=""
-        contents=JSON.parse(atob(contents.content))
+        contents=JSON.parse(atob(contents.data.content))
         for(i=0;i<contents.ideas.length;i++){
           newhtml+="<span>"+contents.ideas[i]+"</span>"
         }
