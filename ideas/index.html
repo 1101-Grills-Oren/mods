@@ -62,22 +62,7 @@
           setContents(path,atob(JSON.stringify(content)),contents.sha)
         })
       }
-      function getDocCookie(){
-        c=document.cookie.split('; ')
-        d={}
-        for(i=0;i<c.length;c++){
-          d[c[i].split('=')[0]]=c[i].split('=').slice(1).join('=')
-        }
-        return d
-      }
-      function setDocCookie(values){
-        d=values
-        c=[]
-        for(i=0;i<c.length;c++){
-          c.push(d[i].join('='))
-        }
-        c.join('; ')
-      }
+      
       votes={}
       /*x=getDocCookie()
       if(x['votes']==''){
@@ -131,6 +116,24 @@
       })})
       }
        //each entry is of the form [votes,id,title,description]
+    </script>
+    <script>
+      function getDocCookie(){
+        c=document.cookie.split('; ')
+        d={}
+        for(i=0;i<c.length;i++){
+          d[c[i].split('=')[0]]=c[i].split('=').slice(1).join('=')
+        }
+        return d
+      }
+      function setDocCookie(values){
+        d=values
+        c=[]
+        for(i=0;i<c.length;i++){
+          c.push(d[i].join('='))
+        }
+        c.join('; ')
+      }
     </script>
       <span>Title</span>
       <div contenteditable="true" id="title" style="border-style: solid; border-color: rgb(153, 153, 153);">
