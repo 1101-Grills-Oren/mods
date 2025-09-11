@@ -34,7 +34,7 @@
           }
         })
       }
-      setContents=function(path,contents,sha=null){
+      setContents=function(path,contents,sha){
         if(sha!=null){
         return octokit.request('PUT /repos/{owner}/{repo}/contents/{path}', {
           owner: '1101-grills-oren',
@@ -64,7 +64,7 @@
         getContents(path).then(contents=>{
           content=JSON.parse(atob(contents.data.content))
           content[listname].push(value)
-          setContents(path,btoa(JSON.stringify(content)),contents.sha)
+          setContents(path,btoa(JSON.stringify(content)),contents.data.sha)
         })
       }
       
