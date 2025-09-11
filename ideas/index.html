@@ -159,7 +159,7 @@
           newPost=[0,randomInt,title.innerHTML,descr.innerHTML]
           x=getDocCookie()
           if(x.posts==null){x.posts=[]}else{
-            x.posts=btoa(x.posts).split(',')
+            x.posts=atob(x.posts).split(',')
           }
           bannedCount=0
           for(i=0;i<x.posts.length;i++){
@@ -171,7 +171,7 @@
             alert("Sorry, but your ability to post ideas has been revoked due to at least three offenses.")
           }else{
             x.posts.push(randomInt)
-            x.posts=atob(x.posts.join(','))
+            x.posts=btoa(x.posts.join(','))
             setDocCookie(x)
             console.log("created post with id"+randomInt)
             updateContentsJsonAppendList("data/newIdeas.json",newPost,'ideas')
