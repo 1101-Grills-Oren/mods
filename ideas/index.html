@@ -7,7 +7,7 @@
     <script type="module">
       import { Octokit } from "https://esm.sh/@octokit/core";
       octokit = new Octokit({ auth: 'github_p'+'at_11BADMTJI0dmSDa8V5xAJ3_9wUUK5VYsAq'+'jNY6nndJ5rDlTVwuLIYFGGVHzvWEGAQwHFQOVRMDH7yB9C86' });
-      
+      document.onOctokitInitialized()
     </script>
     
     <title>
@@ -17,7 +17,7 @@
   <body>
     <div id="ideaslist" style="display:flex;flex-direction: column;flex-grow: 1;"></div>
     <script>
-      document.onload=()=>{
+      document.onOctokitInitialized=()=>{
         function getContents(path){
         return octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
           owner: '1101-grills-oren',
@@ -90,7 +90,6 @@
         ideaslist.innerHTML=newhtml;
       })
       }
-      document.onload()
     </script>
   </body>
 </html>
