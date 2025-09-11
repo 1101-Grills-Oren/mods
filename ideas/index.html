@@ -17,9 +17,14 @@
   <body>
     <div id="ideaslist" style="display:flex;flex-direction: column;flex-grow: 1;"></div>
     <script>
+      updateContentsJsonAppendList=function(){}
+      getContents=function(){}
+      setContents=function(){}
+    </script>
+    <script>
       document.onOctokitInitialized=()=>{
         
-        function getContents(path){
+        getContents=function(path){
         return octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
           owner: '1101-grills-oren',
           repo: 'mods',
@@ -29,7 +34,7 @@
           }
         })
       }
-      function setContents(path,contents,sha=null){
+      setContents=function(path,contents,sha=null){
         if(sha!=null){
         return octokit.request('PUT /repos/{owner}/{repo}/contents/{path}', {
           owner: '1101-grills-oren',
@@ -55,7 +60,7 @@
         })
         }
       }
-      function updateContentsJsonAppendList(path,value,listname){
+      updateContentsJsonAppendList=function(path,value,listname){
         getContents(path).then(contents=>{
           content=JSON.parse(btoa(contents.data.content))
           content[listname].push(value)
@@ -127,7 +132,7 @@
         return d
       }
       function setDocCookie(values){
-        d=values
+        d=Object.entries(values)
         c=[]
         for(i=0;i<c.length;i++){
           c.push(d[i].join('='))
