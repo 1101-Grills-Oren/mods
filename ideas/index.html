@@ -111,6 +111,7 @@
         for(i=0;i<clicktoggle.length;i++){
           
           clicktoggle[i].onclick=function(x){
+              console.log(x.srcElement.parentElement)
               if(x.srcElement.parentElement.dataset['mode']==1){
                   x.srcElement.parentElement.dataset['mode']=0
                   x.srcElement.parentElement.children[0+x.srcElement.dataset['child']].style.display='none'
