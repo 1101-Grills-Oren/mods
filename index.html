@@ -9,23 +9,19 @@
          This makes it easier to make new pages for your site. -->
     <link href="style.css" rel="stylesheet" type="text/css" media="all">
     <style>
+      
       th, td {
         align:center;
-        display:flex;
-        flex-direction: row;
-        flex-grow: 1;
-        flex-basis: 50px;
+        display:table-cell;
         padding:10px;
-        flex-wrap: nowrap;
+        
       }
       tr{
-        display:flex;
-        flex-direction: row;
-        flex-grow: 1;
-        flex-basis: 5px;
+        display:table-row;
         padding:5px;
         flex-wrap: nowrap;
       }
+    
     </style>
   </head>
   <body>
@@ -71,34 +67,39 @@
         }
         }
       }
-      function getApiJsonGeneral(link,datastuff={}){
+      function getApiJsonGeneral(link,passedinfo,datastuff={}){
         return fetch(link,datastuff).then(response =>{
           return response.blob()}).then(respb=>{
             return respb.text()}).then(respc=>{
               rvel=JSON.parse(respc);
-              console.log(link,rvel)
-              return rvel;})
+              console.log(link,rvel,passedinfo)
+              return [rvel,passedinfo];})
       }
       function getModData(modid){
-        return getApiJsonGeneral("https://api.modrinth.com/v2/project/"+modid)
+        return getApiJsonGeneral("https://api.modrinth.com/v2/project/"+modid,modid)
         
       }
       
       function getUserProjects(userid){
         
-        return getApiJsonGeneral("https://api.modrinth.com/v2/user/"+userid+"/projects")
+        return getApiJsonGeneral("https://api.modrinth.com/v2/user/"+userid+"/projects",userid)
+        
+      }
+      function getUser(userid){
+        
+        return getApiJsonGeneral("https://api.modrinth.com/v2/user/"+userid,userid)
         
       }
 
       function getVersionData(projectVersion){
         
-        return getApiJsonGeneral("https://api.modrinth.com/v2/version/"+projectVersion)
+        return getApiJsonGeneral("https://api.modrinth.com/v2/version/"+projectVersion,projectVersion)
         
       }
 
-      function getViews(projids){
+      function getViews(projids,auth){
         //return getApiJsonGeneral("https://api.modrinth.com/v3/analytics/downloads?start_date=1970-01-01T00:00:00.000Z&resolution_minutes=40320000&project_ids=[\"CJpJjU7m\",\"6H8ynuG6\",\"3SikDTGm\",\"DNmbfVe1\"]")
-        return getApiJsonGeneral("https://api.modrinth.com/v3/analytics/views?start_date=1970-01-01T00:00:00.000Z&resolution_minutes=40320000&project_ids="+JSON.stringify(projids),{headers:{"Authorization":"mra_rzYuSLyqYbIlG3dVHbFCfrvWGJj1BBWB3xyUdZ7S0nLBV3IocsTaFSuixvan"}})
+        return getApiJsonGeneral("https://api.modrinth.com/v3/analytics/views?start_date=1970-01-01T00:00:00.000Z&resolution_minutes=40320000&project_ids="+JSON.stringify(projids),auth,{headers:{"Authorization":keys[auth]}})
       }
       
       function getUserProjectsInDepth(userid){
@@ -127,14 +128,27 @@
         }
         return false;
       }
-      function addtolist(parent,content,link,platforms,versions,views,updated){
+      versionDetails={19:4,20:6}
+      function addtolist(parent,content,link,platforms,versions,views,updated,userid,downloads){
+        versions=[versions[versions.length-1]]
         n=document.createElement('tr')
         dataelement=document.createElement('td')
+        modnameandowner=document.createElement('div')
+        modnameandowner.style.display='flex'
+        modnameandowner.style.flexDirection='column'
         x=document.createElement('a')
         x.textContent=content
         x.href=link
         x.style.color="#00FF00"
-        dataelement.append(x)
+        modnameandowner.append(x)
+        x=document.createElement('a')
+        x.className='loadUser_'+userid
+        x.textContent=""
+        x.href="https://modrinth.com/user/"+userid
+        x.style.color="#00FF00"
+        x.style.paddingLeft="10px"
+        modnameandowner.append(x)
+        dataelement.append(modnameandowner)
         n.append(dataelement)
 
         dataelement=document.createElement('td')
@@ -145,10 +159,19 @@
         dataelement.textContent=versions.join(',')
         n.append(dataelement)
 
+        if(views!=null){
         dataelement=document.createElement('td')
         dataelement.textContent=views
         n.append(dataelement)
-
+        
+        }else{
+        dataelement=document.createElement('td')
+        n.append(dataelement)
+        }
+        dataelement=document.createElement('td')
+        dataelement.textContent=downloads
+        n.append(dataelement)
+        
         dataelement=document.createElement('td')
         dataelement.textContent="Last updated "+relativeDate(new Date(),convertToDate(updated))
         n.append(dataelement)
@@ -165,33 +188,93 @@
           parent.removeChild(parent.children[0])
         }
       }
+      keys={"Gx7gGzJc":"mra_rzYuSLyqYbIlG3dVHbFCfrvWGJj1BBWB3xyUdZ7S0nLBV3IocsTaFSuixvan"}
+      listOfKeys=(keyList=>{
+        retval=[]
+        keyList=Object.entries(keyList)
+        for(i=0;i<keyList.length;i++){
+          retval.push(keyList[i][0])
+        }
+        return retval
+      })(keys)
+      users=["Gx7gGzJc","7xEgkjp0"]
       function loadonly(platforms,versions,types){
       modholder=document.querySelector("#modholder");
-      modsandids=getUserProjects("Gx7gGzJc")
+      reset(modholder)
+      modholder.innerHTML='<thead><tr style="color: rgb(0, 0, 255);text-align:left;bold:false;"><th><div style="display: flex; flex-direction: column;"><span style="color: rgb(0, 255, 0);">Title</span><span style="color: rgb(0, 255, 0); padding-left: 10px;">Owner</span></div></th><th>Loaders</th><th>Latest Version</th><th>Views</th><th>Downloads</th><th>Last Updated</th></tr></thead>'
+      for(u=0;u<users.length;u++){
+      modsandids=getUserProjects(users[u])
       modsandids.then(
        modsData=>{
+         userid=modsData[1]
+         modsData=modsData[0]
+         console.log('modsandids',userid,listOfKeys)
          ids=[]
          for(i=0;i<modsData.length;i++){
            ids.push(modsData[i].id)
          }
          console.log(ids)
-         getViews(ids).then((views)=>{
+         if(userid in keys){
+         getViews(ids,userid).then(vauid=>{
+             console.log('keyed user')
+             views=vauid[0]
+             tuserid=vauid[1]
+             console.log('getviews',userid)
             console.log(views)
-            reset(modholder)
+            
             for(k=0;k<modsData.length;k++){
               console.log('tryadd'+k)
               if((versions.length==0)||(doesOverlap(versions,modsData[k].versions))){
                 if((platforms.length==0)||(doesOverlap(platforms,modsData[k]['']))){
                   if((types.length==0)||(doesOverlap(types,modsData[k]['']))){
                     console.log('add'+k)
-                    addtolist(modholder,modsData[k].title,"https://1101-grills-oren.github.io/mods/details/?mod="+modsData[k].id,modsData[k].loaders,modsData[k].game_versions,views[modsData[k].id][0],modsData[k].updated)
+                    addtolist(modholder,modsData[k].title,"https://1101-grills-oren.github.io/mods/details/?mod="+modsData[k].id,modsData[k].loaders,modsData[k].game_versions,views[modsData[k].id][0],modsData[k].updated,tuserid,modsData[k].downloads)
                   }
                 }
               }
             }
+           getUser(tuserid).then((user)=>{
+             user=user[0];
+             tofill=document.getElementsByClassName('loadUser_'+user.id);
+             if(user.name==null){
+               user.name=user.username
+             }
+             for(i=0;i<tofill.length;i++){
+               tofill[i].textContent="By "+user.name;
+             }
+           
          })
+         })
+
+         }else{
+           for(k=0;k<modsData.length;k++){
+              console.log('tryadd'+k)
+              if((versions.length==0)||(doesOverlap(versions,modsData[k].versions))){
+                if((platforms.length==0)||(doesOverlap(platforms,modsData[k]['']))){
+                  if((types.length==0)||(doesOverlap(types,modsData[k]['']))){
+                    console.log('add'+k)
+                    addtolist(modholder,modsData[k].title,"https://1101-grills-oren.github.io/mods/details/?mod="+modsData[k].id,modsData[k].loaders,modsData[k].game_versions,null,modsData[k].updated,userid,modsData[k].downloads)
+                  }
+                }
+              }
+            }
+           
+         }
+         getUser(userid).then(user=>{
+           user=user[0]
+          tofill=document.getElementsByClassName('loadUser_'+user.id)
+             if(user.name==null){
+               user.name=user.username
+             }
+             for(i=0;i<tofill.length;i++){
+               tofill[i].textContent="By "+user.name;
+             }
+           
+         })
+         
        } 
       )
+      }
       }
       loadonly([],[],[])
     </script>
