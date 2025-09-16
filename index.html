@@ -83,7 +83,7 @@
       
       function getUserProjects(userid){
         
-        return getApiJsonGeneral("https://api.modrinth.com/v2/user/"+userid+"/projects",userid,{headers:{"Authorization":keys[auth]}})
+        return getApiJsonGeneral("https://api.modrinth.com/v2/user/"+userid+"/projects",userid,{headers:{"Authorization":keys[userid]}})
         
       }
       function getUser(userid){
