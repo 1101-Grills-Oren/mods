@@ -21,6 +21,13 @@
         background-attachment:fixed;
         color:white;
         text-shadow: #00FFFF 0px 0px 2px;
+        border-style: solid;
+        border-color: rgb(153, 153, 153);
+        border-radius:4px;
+      }
+      #createpost{
+        background:linear-gradient(90deg, #003F00, #003F30);
+        color:#C0F0F0;
       }
     </style>
   </head>
@@ -150,12 +157,12 @@
       }
     </script>
       <span>Title</span>
-      <div contenteditable="true" id="title" style="border-style: solid; border-color: rgb(153, 153, 153);border-radius:4px;">
+      <div contenteditable="true" id="title" style="">
         
       </div>
       <span>Description</span>
       <!--div style="display:flex;flex-direction:row"-->
-        <div contenteditable="true" id="description" style="border-style: solid; border-color: rgb(153, 153, 153);border-radius:4px;"></div>
+        <div contenteditable="true" id="description" style=""></div>
         <!--div id='description-preview' style="border-style: double; border-color: rgb(153, 153, 153);align-self:flex-end;"></div-->
   <!--/div-->
     <button id="createpost" onclick="createPostAndClear()">Create Post</button>
