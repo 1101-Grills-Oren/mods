@@ -13,6 +13,15 @@
     <title>
       Ideas
     </title>
+    <style>
+      #title,#description{
+        background-color:red;
+        background-image:url(https://1101-grills-oren.github.io/mods/assets/foruminputbackground-scaled.png);
+        background-size:100px;
+        background-attachment:fixed;
+        color:white;
+      }
+    </style>
   </head>
   <body>
     <div id="ideaslist" style="display:flex;flex-direction: column;flex-grow: 1;"></div>
@@ -140,12 +149,12 @@
       }
     </script>
       <span>Title</span>
-      <div contenteditable="true" id="title" style="border-style: solid; border-color: rgb(153, 153, 153);">
+      <div contenteditable="true" id="title" style="border-style: solid; border-color: rgb(153, 153, 153);border-radius:4px;">
         
       </div>
       <span>Description</span>
       <!--div style="display:flex;flex-direction:row"-->
-        <div contenteditable="true" id="description" style="border-style: solid; border-color: rgb(153, 153, 153);"></div>
+        <div contenteditable="true" id="description" style="border-style: solid; border-color: rgb(153, 153, 153);border-radius:4px;"></div>
         <!--div id='description-preview' style="border-style: double; border-color: rgb(153, 153, 153);align-self:flex-end;"></div-->
   <!--/div-->
     <button id="createpost" onclick="createPostAndClear()">Create Post</button>
