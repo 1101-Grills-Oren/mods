@@ -13,6 +13,7 @@
                 align: center;
                 display: table-cell;
                 padding: 10px;
+                position:relative;
             }
 
             tr {
@@ -42,18 +43,19 @@
             }
 
             .popuphead:hover + .popupbody {
-                display: block;
+                display: absolute;
                 opacity: 1;
             }
 
             .popupbody {
                 display: block;
-                position: fixed;
+                position: absolute;
                 align: center;
                 left: calc(calc(calc(super.getBoundingBox()).x));
                 top: calc(calc(super.getBoundingBox()).y);
                 opacity: 0;
                 transition: all 0.3s ease-in-out;
+                
             }
 
             @keyframes spinningx {
@@ -462,6 +464,22 @@
                     <li>
                         Pick Color Tool
                     </li>
+                </ol>
+                Right clicking will cycle through the following draw modes:
+                <ol>
+                    <li>
+                        <span class="popuphead">Set Pixel</span><div class="popupbody" style="color:#00FF00">The default drawing mode we all know.</div><br><span style="color:black;opacity:0;">x</span>
+                    </li>
+                    <li>
+                        <span class="popuphead">Add Color</span><div class="popupbody" style="color:#00FF00">Adds color instead of setting it.</div><br><span style="color:black;opacity:0;">x</span>
+                    </li>
+                    <li>
+                        <span class="popuphead">Subtract Color</span><div class="popupbody" style="color:#00FF00">Removes color instead of setting it.(Reccomended to have alpha set to zero)</div><br><span style="color:black;opacity:0;">x</span>
+                    </li>
+                    <li>
+                        <span class="popuphead">Multiply Color</span><div class="popupbody" style="color:#00FF00">Multiplies color instead of setting it.</div><br><span style="color:black;opacity:0;">x</span>
+                    </li>
+                    
                 </ol>
                 </td>
                 <td style="text-emphasis:none;color:inherit;">
