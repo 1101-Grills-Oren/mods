@@ -13,7 +13,7 @@
                 align: center;
                 display: table-cell;
                 padding: 10px;
-                position:relative;
+                position: relative;
             }
 
             tr {
@@ -55,7 +55,6 @@
                 top: calc(calc(super.getBoundingBox()).y);
                 opacity: 0;
                 transition: all 0.3s ease-in-out;
-                
             }
 
             @keyframes spinningx {
@@ -439,48 +438,55 @@
             <tr style="color: rgb(255, 0, 0);text-align:left;bold:false; box-shadow: #0000 0px 0px 0px;">
                 <td>Image Drawer
                 </td>
-                <td>Custom Image Editor. Indev. Ideas for more drawing tools will be accepted.
+                <td>
+                    Custom Image Editor. Indev. Ideas for more drawing tools will be accepted.
                 <br>
-                Tools:
-                <ol>
-                    <li>
-                        Pixel Pen
+                    Tools:
+                
+                    <ol>
+                        <li>Pixel Pen
                     </li>
-                    <li>
-                        Rectangle
+                        <li>Rectangle
                     </li>
-                    <li>
-                        Line tool
+                        <li>Line tool
                     </li>
-                    <li>
-                        Select Tool - Changes a rectangle into a selection. When creating a selection, changes to tool 5
+                        <li>Select Tool - Changes a rectangle into a selection. When creating a selection, changes to tool 5
                     </li>
-                    <li>
-                        Move Selection Tool
+                        <li>Move Selection Tool
                     </li>
-                    <li>
-                        Spray Tool
+                        <li>Spray Tool
                     </li>
-                    <li>
-                        Pick Color Tool
+                        <li>Pick Color Tool
                     </li>
-                </ol>
-                Right clicking will cycle through the following draw modes:
-                <ol>
-                    <li>
-                        <span class="popuphead">Set Pixel</span><div class="popupbody" style="color:#00FF00">The default drawing mode we all know.</div><br><span style="color:black;opacity:0;">x</span>
-                    </li>
-                    <li>
-                        <span class="popuphead">Add Color</span><div class="popupbody" style="color:#00FF00">Adds color instead of setting it.</div><br><span style="color:black;opacity:0;">x</span>
-                    </li>
-                    <li>
-                        <span class="popuphead">Subtract Color</span><div class="popupbody" style="color:#00FF00">Removes color instead of setting it.(Reccomended to have alpha set to zero)</div><br><span style="color:black;opacity:0;">x</span>
-                    </li>
-                    <li>
-                        <span class="popuphead">Multiply Color</span><div class="popupbody" style="color:#00FF00">Multiplies color instead of setting it.</div><br><span style="color:black;opacity:0;">x</span>
-                    </li>
-                    
-                </ol>
+                    </ol>
+                    Right clicking will cycle through the following draw modes:
+                
+                    <ol>
+                        <li>
+                            <span class="popuphead">Set Pixel</span>
+                            <div class="popupbody" style="color:#00FF00">The default drawing mode we all know.</div>
+                            <br>
+                            <span style="color:black;opacity:0;">x</span>
+                        </li>
+                        <li>
+                            <span class="popuphead">Add Color</span>
+                            <div class="popupbody" style="color:#00FF00">Adds color instead of setting it.</div>
+                            <br>
+                            <span style="color:black;opacity:0;">x</span>
+                        </li>
+                        <li>
+                            <span class="popuphead">Subtract Color</span>
+                            <div class="popupbody" style="color:#00FF00">Removes color instead of setting it.(Reccomended to have alpha set to zero)</div>
+                            <br>
+                            <span style="color:black;opacity:0;">x</span>
+                        </li>
+                        <li>
+                            <span class="popuphead">Multiply Color</span>
+                            <div class="popupbody" style="color:#00FF00">Multiplies color instead of setting it.</div>
+                            <br>
+                            <span style="color:black;opacity:0;">x</span>
+                        </li>
+                    </ol>
                 </td>
                 <td style="text-emphasis:none;color:inherit;">
                     <a style="text-emphasis:none;color:'#00FFFF';" href="https://1101-grills-oren.github.io/mods/assets/downloads/imgeditbeta_latest.exe" download>Download
@@ -553,9 +559,23 @@
                 })
 
             }
+            function getOrganizationProjects(orgid) {
+
+                return getApiJsonGeneral("https://api.modrinth.com/v3/organization/" + orgid + "/projects", orgid, {
+                    headers: {
+                        "Authorization": keys[orgid]
+                    }
+                })
+
+            }
             function getUser(userid) {
 
                 return getApiJsonGeneral("https://api.modrinth.com/v2/user/" + userid, userid)
+
+            }
+            function getOrganization(orgid) {
+
+                return getApiJsonGeneral("https://api.modrinth.com/v3/organization/" + orgid, orgid)
 
             }
 
@@ -712,7 +732,8 @@
                 }
             }
             keys = {
-                "Gx7gGzJc": "mra_QUmBOE5w1EX0svlSGQ4bvy3koHopIpd6K8EtCX0b7kNZq64Lp2bkv8MdHYPg"
+                "Gx7gGzJc": "mra_QUmBOE5w1EX0svlSGQ4bvy3koHopIpd6K8EtCX0b7kNZq64Lp2bkv8MdHYPg",
+                "RLz2asTB": "mra_QUmBOE5w1EX0svlSGQ4bvy3koHopIpd6K8EtCX0b7kNZq64Lp2bkv8MdHYPg"
             }
             listOfKeys = (keyList => {
                 retval = []
@@ -724,6 +745,7 @@
             }
             )(keys)
             users = ["Gx7gGzJc", "7xEgkjp0", "eWAPOyOl"]
+            organizations=['RLz2asTB']
             function loadonly(platforms, versions, types) {
                 modholder = document.querySelector("#modholder");
                 reset(modholder)
@@ -807,6 +829,126 @@
                     }
                     )
                 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                for (u = 0; u < organizations.length; u++) {
+                    modsandids = getOrganizationProjects(organizations[u])
+                    modsandids.then(modsData => {
+                        userid = modsData[1]
+                        modsData = modsData[0]
+                        console.log('modsandids', userid, listOfKeys)
+                        ids = []
+                        for (i = 0; i < modsData.length; i++) {
+                            ids.push(modsData[i].id)
+                        }
+                        console.log(ids)
+                        if (userid in keys) {
+                            getViews(ids, userid).then(vauid => {
+                                console.log('keyed user')
+                                views = vauid[0]
+                                tuserid = vauid[1]
+                                console.log('getviews', userid)
+                                console.log(views)
+
+                                for (k = 0; k < modsData.length; k++) {
+                                    console.log('tryadd' + k)
+                                    if ((versions.length == 0) || (doesOverlap(versions, modsData[k].versions))) {
+                                        if ((platforms.length == 0) || (doesOverlap(platforms, modsData[k]['']))) {
+                                            if ((types.length == 0) || (doesOverlap(types, modsData[k]['']))) {
+                                                console.log('add' + k)
+                                                if (views[modsData[k].id] != undefined) {
+                                                    addtolist(modholder, modsData[k].name, "https://1101-grills-oren.github.io/mods/details/?mod=" + modsData[k].id, modsData[k].loaders, modsData[k].game_versions, views[modsData[k].id][0], modsData[k].updated, tuserid, modsData[k].downloads)
+                                                } else {
+                                                    addtolist(modholder, modsData[k].name, "https://1101-grills-oren.github.io/mods/details/?mod=" + modsData[k].id, modsData[k].loaders, modsData[k].game_versions, "N/A", modsData[k].updated, tuserid, modsData[k].downloads)
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                getOrganization(tuserid).then( (user) => {
+                                    user = user[0];
+                                    tofill = document.getElementsByClassName('loadUser_' + user.id);
+                                    if (user.name == null) {
+                                        user.name = user.username
+                                    }
+                                    for (i = 0; i < tofill.length; i++) {
+                                        tofill[i].textContent = "By " + user.name;
+                                    }
+
+                                }
+                                )
+                            }
+                            )
+
+                        } else {
+                            for (k = 0; k < modsData.length; k++) {
+                                console.log('tryadd' + k)
+                                if ((versions.length == 0) || (doesOverlap(versions, modsData[k].versions))) {
+                                    if ((platforms.length == 0) || (doesOverlap(platforms, modsData[k]['']))) {
+                                        if ((types.length == 0) || (doesOverlap(types, modsData[k]['']))) {
+                                            console.log('add' + k)
+                                            addtolist(modholder, modsData[k].name, "https://1101-grills-oren.github.io/mods/details/?mod=" + modsData[k].id, modsData[k].loaders, modsData[k].game_versions, null, modsData[k].updated, userid, modsData[k].downloads)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        getOrganization(userid).then(user => {
+                            user = user[0]
+                            tofill = document.getElementsByClassName('loadUser_' + user.id)
+                            if (user.name == null) {
+                                user.name = user.username
+                            }
+                            for (i = 0; i < tofill.length; i++) {
+                                tofill[i].textContent = "By " + user.name;
+                            }
+
+                        }
+                        )
+
+                    }
+                    )
+                }
+
+
+
+
+
+
+
+
+                
             }
             loadonly([], [], [])
         </script>
