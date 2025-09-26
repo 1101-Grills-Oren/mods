@@ -209,7 +209,17 @@
                 animation: spinningz 0.1s infinite;
                 animation-timing-function: linear;
             }
-
+            .user_name{
+                color:#0F0;
+            }
+            .project_name{
+                color:#0F0;
+            }
+            .loadUser_Gx7gGzJc {
+                text-decoration:none;
+                color:black;
+                filter: drop-shadow(0 0 0.1rem rgb(0,10000,0));
+            }
             /*.popuphead:hover + .popupbody {
         display:block;
         transform:scale(1,1);
@@ -676,12 +686,13 @@
                 x.textContent = content
                 x.href = link
                 x.style.color = "#00FF00"
+                x.classname="project_name"
                 modnameandowner.append(x)
                 x = document.createElement('a')
-                x.className = 'loadUser_' + userid
+                x.className = 'user_name loadUser_' + userid
                 x.textContent = ""
                 x.href = "https://modrinth.com/user/" + userid
-                x.style.color = "#00FF00"
+                modnameandowner.style.color = "#00FF00"
                 x.style.paddingLeft = "10px"
                 modnameandowner.append(x)
                 dataelement.append(modnameandowner)
