@@ -579,7 +579,7 @@
 
             function getUserProjects(userid) {
 
-                return getApiJsonGeneral("https://api.modrinth.com/v2/user/" + userid + "/projects", userid, {
+                return getApiJsonGeneral("https://api.modrinth.com/v2/" + userid + "/projects", userid, {
                     headers: {
                         "Authorization": keys[userid]
                     }
@@ -597,7 +597,7 @@
             }
             function getUser(userid) {
 
-                return getApiJsonGeneral("https://api.modrinth.com/v2/user/" + userid, userid)
+                return getApiJsonGeneral("https://api.modrinth.com/v2/" + userid, userid)
 
             }
             function getOrganization(orgid) {
@@ -690,7 +690,7 @@
 
                 return input
             }
-            function addtolist(parent, content, link, platforms, versions, views, updated, userid, downloads) {
+            function addtolist(parent, content, link, platforms, versions, views, updated, userid, downloads,userlinkoverride='user') {
                 allversions = [versions]
                 versions = [versions[versions.length - 1]]
 
@@ -708,7 +708,7 @@
                 x = document.createElement('a')
                 x.className = 'user_name loadUser_' + userid
                 x.textContent = ""
-                x.href = "https://modrinth.com/user/" + userid
+                x.href = "https://modrinth.com/"+userlinkoverride+"/" + userid
                 modnameandowner.style.color = "#00FF00"
                 x.style.paddingLeft = "10px"
                 modnameandowner.append(x)
@@ -916,9 +916,9 @@
                                             if ((types.length == 0) || (doesOverlap(types, modsData[k]['']))) {
                                                 console.log('add' + k)
                                                 if (views[modsData[k].id] != undefined) {
-                                                    addtolist(modholder, modsData[k].name, "https://1101-grills-oren.github.io/mods/details/?mod=" + modsData[k].id, modsData[k].loaders, modsData[k].game_versions, views[modsData[k].id][0], modsData[k].updated, tuserid, modsData[k].downloads)
+                                                    addtolist(modholder, modsData[k].name, "https://1101-grills-oren.github.io/mods/details/?mod=" + modsData[k].id, modsData[k].loaders, modsData[k].game_versions, views[modsData[k].id][0], modsData[k].updated, tuserid, modsData[k].downloads,'organization')
                                                 } else {
-                                                    addtolist(modholder, modsData[k].name, "https://1101-grills-oren.github.io/mods/details/?mod=" + modsData[k].id, modsData[k].loaders, modsData[k].game_versions, "N/A", modsData[k].updated, tuserid, modsData[k].downloads)
+                                                    addtolist(modholder, modsData[k].name, "https://1101-grills-oren.github.io/mods/details/?mod=" + modsData[k].id, modsData[k].loaders, modsData[k].game_versions, "N/A", modsData[k].updated, tuserid, modsData[k].downloads,'organization')
                                                 }
                                             }
                                         }
