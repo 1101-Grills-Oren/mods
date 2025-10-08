@@ -45,6 +45,15 @@ a{
     border-style:solid;
     border-top-width:1px;
 }
+.packageHolder{
+    border-color:#8800FF;
+    border-left-color:#7700FF;
+    border-left-width:3px;
+    border-right-width:0px;
+    border-bottom-width:0px;
+    border-style:solid;
+    border-top-width:1px;
+}
 .classVariable .classFunction{
     border-top-width:10px;
     border-top-color:transparent;
