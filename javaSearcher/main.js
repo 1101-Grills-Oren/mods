@@ -2,6 +2,14 @@ allClasses={}
 allFunctions=[]
 onFinishedGetClasses=async function(){
     allClassesList=Object.entries(allClasses)
+    let allClassesB={}
+    for(let i=0;i<allClassesList.length;i++){
+        if(allClassesList[i][0].slice(allClassesList[i][0].length-5,allClassesList[i][0].length)=='.java'){
+            allClassesB[allClassesList[i][0]]=allClassesList[i][1]
+        }
+    }
+    allClasses=allClassesB
+    allClassesList=Object.entries(allClasses)
     for(let i=0;i<allClassesList.length;i++){
         currentFile=allClassesList[i][0]
         console.log("Loading "+currentFile)
@@ -13,23 +21,61 @@ onFinishedGetClasses=async function(){
             allFunctions.push(m)
         }
     }
-    if(window.location.hash=="")
-        document.body.innerHTML=nextRun(values=>{return values[7].includes('RecipeBookResults')})
+    if((window.location.hash=="")||(window.location.hash=="#"))
+        loadListOfAllClasses()
     else
         if(window.location.hash.includes('class_'))
             loadClassHtml(window.location.hash.slice(7))
 
 }
 window.onhashchange=function(hash){
-    if(window.location.hash=="")
-        document.body.innerHTML=nextRun(values=>{return values[7].includes('RecipeBookResults')})
+    if((window.location.hash=="")||(window.location.hash=="#"))
+        loadListOfAllClasses()
     else
         if(window.location.hash.includes('class_'))
             loadClassHtml(window.location.hash.slice(7))
 }
 function loadAllFunctionsOfClass(classname){
     window.location.hash=classname
-    document.body.innerHTML=nextRun(values=>{return values[7].split('::')[0]==classname})
+    document.body.innerHTML="<div class=title>Java Searcher V0.5.3 - Currently viewing 1.20.1 Fabric Class List</div>"+nextRun(values=>{return values[7].split('::')[0]==classname})
+}
+function loadListOfAllClasses(){
+    listClassesHTML=""
+    for(let i=0;i<allClassesList.length;i++){
+        listClassesHTML+=getClassHtml(allClassesList[i][0].slice(0,allClassesList[i][0].length-5))
+    }
+    document.body.innerHTML="<div class=title>Java Searcher V0.5.3 - Currently viewing 1.20.1 Fabric Class List</div>"+listClassesHTML
+}
+function getClassHtml(classname){
+    console.log(classname)
+    newHTML="<div class=\"classInfo\">"+
+        allClasses[classname+".java"][1][0][0]+" "
+    if(allClasses[classname+".java"][1][0][1])
+        newHTML+="static "
+    if(allClasses[classname+".java"][1][0][2])
+        newHTML+="abstract "
+    newHTML+=allClasses[classname+".java"][1][0][3]+" "
+        +splitVariableTextIntoHtml(allClasses[classname+".java"][1][0][4])
+    if(allClasses[classname+".java"][1][1][0]!=''){
+        newHTML+=" extends "
+        {let list=[]
+        for(let i=0;i<allClasses[classname+".java"][1][1].length;i++){
+            list.push(splitVariableTextIntoHtml(allClasses[classname+".java"][1][1][i]))
+        }
+        newHTML+=list.join(', ')}
+    }
+    if(allClasses[classname+".java"][1][2][0]!=''){
+        newHTML+=" implements "
+        {let list=[]
+        for(let i=0;i<allClasses[classname+".java"][1][2].length;i++){
+            list.push(splitVariableTextIntoHtml(allClasses[classname+".java"][1][2][i]))
+        }
+        newHTML+=list.join(', ')}
+    }
+    
+    
+        newHTML+="</div><div class=\"classPackage\">package "+allClasses[classname+".java"][0]+"</div>"
+    return newHTML
 }
 function loadClassHtml(classname){
     if(window.location.hash!="#class_"+classname)
@@ -62,7 +108,7 @@ function loadClassHtml(classname){
     
         newHTML+="</div><div class=\"classPackage\">package "+allClasses[classname+".java"][0]+"</div>"+loadVariables(allClasses[classname+'.java'][2])+nextRun(values=>{return values[7].split('::')[0]==classname})
     
-    document.body.innerHTML=newHTML
+    document.body.innerHTML="<div class=title>Java Searcher V0.5.3 - Currently viewing 1.20.1 Fabric Class List</div>"+newHTML
 }
 fetching=fetch("1_20_1_fabric_classes.json").then(response=>{response.json().then(responseb=>{allClasses=responseb;onFinishedGetClasses()});})
 function splitWhileRespectingBracketsAndQuotes(inputValue,splitChar=' ',brackets=['[<({',']>)}']){
