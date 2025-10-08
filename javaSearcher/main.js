@@ -26,7 +26,8 @@ onFinishedGetClasses=async function(){
     else
         if(window.location.hash.includes('class_'))
             loadClassHtml(window.location.hash.slice(7))
-
+        if(window.location.hash.includes('package_'))
+            loadPackage(window.location.hash.slice(9))
 }
 window.onhashchange=function(hash){
     if((window.location.hash=="")||(window.location.hash=="#"))
@@ -34,17 +35,71 @@ window.onhashchange=function(hash){
     else
         if(window.location.hash.includes('class_'))
             loadClassHtml(window.location.hash.slice(7))
+        if(window.location.hash.includes('package_'))
+            loadPackage(window.location.hash.slice(9))
 }
 function loadAllFunctionsOfClass(classname){
     window.location.hash=classname
     document.body.innerHTML="<div class=title>Java Searcher V0.5.3 - Currently viewing 1.20.1 Fabric Class List</div>"+nextRun(values=>{return values[7].split('::')[0]==classname})
 }
-function loadListOfAllClasses(){
+function loadListOfAllClasses(searchName){
+    if(searchName==undefined){
+        searchName="Render"
+    }
     listClassesHTML=""
     for(let i=0;i<allClassesList.length;i++){
-        listClassesHTML+=getClassHtml(allClassesList[i][0].slice(0,allClassesList[i][0].length-5))
+        if(allClassesList[i][1][1][0][4].toLowerCase().includes(searchName.toLowerCase())){
+            listClassesHTML+=getClassHtml(allClassesList[i][0].slice(0,allClassesList[i][0].length-5))
+        }
     }
-    document.body.innerHTML="<div class=title>Java Searcher V0.5.3 - Currently viewing 1.20.1 Fabric Class List</div>"+listClassesHTML
+    
+    document.body.innerHTML="<div class=title>Java Searcher V0.5.3 - Currently viewing 1.20.1 Fabric Class List</div>"+"<div id=\"searchholder\"><input type=\"text\" id=\"searchClasses\" name=\"Search\" placeholder=\"Search...\"></div>"+"<div id=\"classList\">"+listClassesHTML+"</div>"
+    document.getElementById('searchClasses').oninput=function(value){updateListOfAllClasses(value.target.value)}
+}
+function loadPackage(packageName){
+    if(packageName==undefined){
+        packageName="net.minecraft"
+    }
+    listClassesHTML=""
+    listPackagesHTML=""
+    subpackages=[]
+    for(let i=0;i<allClassesList.length;i++){
+        if(allClassesList[i][1][0]==(packageName)){
+            listClassesHTML+=getClassHtml(allClassesList[i][0].slice(0,allClassesList[i][0].length-5))
+        }else if(allClassesList[i][1][0].includes(packageName)){
+            if(allClassesList[i][1][0].replaceAll(packageName,"").split(".").length==2){
+                if(subpackages.includes(allClassesList[i][1][0])==false){
+                    subpackages.push(allClassesList[i][1][0])
+                    listPackagesHTML+="<div class=\"packageHolder\"><a href='#package_"+allClassesList[i][1][0]+"'>"+allClassesList[i][1][0]+"</a></div>"
+                }
+            }
+        }
+    }
+    
+    document.body.innerHTML="<div class=title>Java Searcher V0.5.3 - Currently viewing 1.20.1 Fabric Class List</div>"+"<div id=\"classList\">"+listClassesHTML+"</div>"+"<div id=\"packageList\">"+listPackagesHTML+"</div>"
+    
+}
+function updateListOfAllClasses(searchName,max){
+    if(searchName==undefined){
+        searchName="Render"
+    }
+    if(max==undefined){
+        max=20
+    }
+    listClassesHTML=""
+    numLoaded=0
+    for(let i=0;i<allClassesList.length;i++){
+        if(numLoaded<max){
+        if(allClassesList[i][1][1][0][4].toLowerCase().includes(searchName.toLowerCase())){
+            listClassesHTML+=getClassHtml(allClassesList[i][0].slice(0,allClassesList[i][0].length-5))
+            numLoaded+=1
+        }
+        }else{
+            i=allClassesList.length
+        }
+    }
+    
+    document.getElementById("classList").innerHTML=listClassesHTML
 }
 function getClassHtml(classname){
     console.log(classname)
@@ -74,7 +129,7 @@ function getClassHtml(classname){
     }
     
     
-        newHTML+="</div><div class=\"classPackage\">package "+allClasses[classname+".java"][0]+"</div>"
+        newHTML+="</div><div class=\"classPackage\">package <a href='#package_"+allClasses[classname+".java"][0]+"'>"+allClasses[classname+".java"][0]+"</a></div>"
     return newHTML
 }
 function loadClassHtml(classname){
@@ -106,7 +161,7 @@ function loadClassHtml(classname){
     }
     
     
-        newHTML+="</div><div class=\"classPackage\">package "+allClasses[classname+".java"][0]+"</div>"+loadVariables(allClasses[classname+'.java'][2])+nextRun(values=>{return values[7].split('::')[0]==classname})
+        newHTML+="</div><div class=\"classPackage\">package <a href='#package_"+allClasses[classname+".java"][0]+"'>"+allClasses[classname+".java"][0]+"</a></div>"+loadVariables(allClasses[classname+'.java'][2])+nextRun(values=>{return values[7].split('::')[0]==classname})
     
     document.body.innerHTML="<div class=title>Java Searcher V0.5.3 - Currently viewing 1.20.1 Fabric Class List</div>"+newHTML
 }
@@ -158,10 +213,20 @@ function splitWhileRespectingBracketsAndQuotes(inputValue,splitChar=' ',brackets
 
 
 
+
+
 function splitVariableTextIntoHtml(variableName){
-    if(variableName.includes('<')){
+    while(variableName[0]==' '){
+        variableName=variableName.slice(1)
+    }
+    console.log(variableName)
+    if(splitWhileRespectingBracketsAndQuotes(variableName," ",["<",">"]).length!=1){
+        let v=splitWhileRespectingBracketsAndQuotes(variableName," ",["<",">"])
+        return v[0]+" "+v[1]+" "+splitVariableTextIntoHtml(v[2])
+    }
+    else if(variableName.includes('<')){
         variableName=splitWhileRespectingBracketsAndQuotes(variableName.replaceAll("<"," <")," ",["<",">"])
-        variableArgs=variableName[1].replaceAll(' <',"<")
+        variableArgs=variableName[1].replaceAll(' <',"<").replaceAll(", ",",")
         variableArgs=variableArgs.slice(1,variableArgs.length-1)
         variableName=variableName[0]
         variableArgs=splitWhileRespectingBracketsAndQuotes(variableArgs,',',"")
@@ -181,8 +246,6 @@ function splitVariableTextIntoHtml(variableName){
         return variableName
     }
 }
-
-
 
 
 
