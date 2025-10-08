@@ -224,6 +224,9 @@ function splitVariableTextIntoHtml(variableName){
     if(variableName[0]=='@'){
         return variableName.split(' ')[0]+" "+splitVariableTextIntoHtml(variableName.split(' ').slice(1).join(' '))
     }
+    else if(variableName.slice(0,8)=='volatile'){
+        return variableName.split(' ')[0]+" "+splitVariableTextIntoHtml(variableName.split(' ').slice(1).join(' '))
+    }
     else if(splitWhileRespectingBracketsAndQuotes(variableName," ",["<",">"]).length!=1){
         let v=splitWhileRespectingBracketsAndQuotes(variableName," ",["<",">"])
         return v[0]+" "+v[1]+" "+splitVariableTextIntoHtml(v[2])
