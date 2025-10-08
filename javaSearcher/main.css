@@ -1,0 +1,51 @@
+*{
+    padding:0;
+    margin:0;
+    box-sizing: border-box;
+}
+html,body{
+    margin:5px;
+}
+main{
+}
+a{
+    color: blue;
+}
+.classInfo{
+    border-color:#f00;
+    border-left-width:2px;
+    border-right-width:2px;
+    border-top-width:2px;
+    border-style:solid;
+    border-bottom-width:0px;
+}
+.classPackage{
+    border-color:#f00;
+    border-left-width:2px;
+    border-right-width:2px;
+    border-bottom-width:2px;
+    border-style:solid;
+    border-top-width:0px;
+}
+.classVariable{
+    border-color:#8800FF;
+    border-left-color:#00f;
+    border-left-width:3px;
+    border-right-width:0px;
+    border-bottom-width:0px;
+    border-style:solid;
+    border-top-width:1px;
+}
+.classFunction{
+    border-color:#8800FF;
+    border-left-color:#0F0;
+    border-left-width:3px;
+    border-right-width:0px;
+    border-bottom-width:0px;
+    border-style:solid;
+    border-top-width:1px;
+}
+.classVariable .classFunction{
+    border-top-width:10px;
+    border-top-color:transparent;
+}
