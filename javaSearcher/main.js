@@ -165,7 +165,10 @@ function loadClassHtml(classname){
     
     document.body.innerHTML="<div class=title>Java Searcher V0.5.3 - Currently viewing 1.20.1 Fabric Class List</div>"+newHTML
 }
+if(window.location.search.length<2){
 fetching=fetch("1_20_1_fabric_classes.json").then(response=>{response.json().then(responseb=>{allClasses=responseb;onFinishedGetClasses()});})
+}else{fetching=fetch(window.location.search.slice(1)).then(response=>{response.json().then(responseb=>{allClasses=responseb;onFinishedGetClasses()});})
+}
 function splitWhileRespectingBracketsAndQuotes(inputValue,splitChar=' ',brackets=['[<({',']>)}']){
     if(brackets){
         
