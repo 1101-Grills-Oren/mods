@@ -110,7 +110,20 @@ function getClassHtml(classname){
     if(allClasses[classname+".java"][1][0][2])
         newHTML+="abstract "
     newHTML+=allClasses[classname+".java"][1][0][3]+" "
-        +splitVariableTextIntoHtml(allClasses[classname+".java"][1][0][4])
+    if(allClasses[classname+".java"][1][0][3]!='record')
+        newHTML+=splitVariableTextIntoHtml(allClasses[classname+".java"][1][0][4])
+    else{
+        let n=splitWhileRespectingBracketsAndQuotes(allClasses[classname+".java"][1][0][4].replaceAll('(',' ('),' ')
+        let m=splitWhileRespectingBracketsAndQuotes(n[1].slice(1,n[1].length-1),',')
+        newHTML+=splitVariableTextIntoHtml(n[0])+"("
+        let o=[]
+        for(let index=0;index<m.length;index++){
+            if(m[index][0]==' ')
+                m[index]=m[index].slice(1)
+            o.push(splitVariableTextIntoHtml(splitWhileRespectingBracketsAndQuotes(m[index],' ')[0])+" "+splitWhileRespectingBracketsAndQuotes(m[index],' ').slice(1).join(' '))
+        }
+        newHTML+=o.join(', ')+")"
+    }
     if(allClasses[classname+".java"][1][1][0]!=''){
         newHTML+=" extends "
         {let list=[]
@@ -142,7 +155,20 @@ function loadClassHtml(classname){
     if(allClasses[classname+".java"][1][0][2])
         newHTML+="abstract "
     newHTML+=allClasses[classname+".java"][1][0][3]+" "
-        +splitVariableTextIntoHtml(allClasses[classname+".java"][1][0][4])
+    if(allClasses[classname+".java"][1][0][3]!='record')
+        newHTML+=splitVariableTextIntoHtml(allClasses[classname+".java"][1][0][4])
+    else{
+        let n=splitWhileRespectingBracketsAndQuotes(allClasses[classname+".java"][1][0][4].replaceAll('(',' ('),' ')
+        let m=splitWhileRespectingBracketsAndQuotes(n[1].slice(1,n[1].length-1),',')
+        newHTML+=splitVariableTextIntoHtml(n[0])+"("
+        let o=[]
+        for(let index=0;index<m.length;index++){
+            if(m[index][0]==' ')
+                m[index]=m[index].slice(1)
+            o.push(splitVariableTextIntoHtml(splitWhileRespectingBracketsAndQuotes(m[index],' ')[0])+" "+splitWhileRespectingBracketsAndQuotes(m[index],' ').slice(1).join(' '))
+        }
+        newHTML+=o.join(', ')+")"
+    }
     if(allClasses[classname+".java"][1][1][0]!=''){
         newHTML+=" extends "
         {let list=[]
