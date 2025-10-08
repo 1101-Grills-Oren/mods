@@ -216,11 +216,15 @@ function splitWhileRespectingBracketsAndQuotes(inputValue,splitChar=' ',brackets
 
 
 function splitVariableTextIntoHtml(variableName){
+
     while(variableName[0]==' '){
         variableName=variableName.slice(1)
     }
     console.log(variableName)
-    if(splitWhileRespectingBracketsAndQuotes(variableName," ",["<",">"]).length!=1){
+    if(variableName[0]=='@'){
+        return variableName.split(' ')[0]+" "+splitVariableTextIntoHtml(variableName.split(' ').slice(1).join(' '))
+    }
+    else if(splitWhileRespectingBracketsAndQuotes(variableName," ",["<",">"]).length!=1){
         let v=splitWhileRespectingBracketsAndQuotes(variableName," ",["<",">"])
         return v[0]+" "+v[1]+" "+splitVariableTextIntoHtml(v[2])
     }
