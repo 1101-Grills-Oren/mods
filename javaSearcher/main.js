@@ -1,5 +1,8 @@
 allClasses={}
 allFunctions=[]
+jsearcherversion="0.5.4"
+viewing=""
+
 onFinishedGetClasses=async function(){
     allClassesList=Object.entries(allClasses)
     let allClassesB={}
@@ -21,26 +24,60 @@ onFinishedGetClasses=async function(){
             allFunctions.push(m)
         }
     }
+    try {
     if((window.location.hash=="")||(window.location.hash=="#"))
         loadListOfAllClasses()
     else
-        if(window.location.hash.includes('class_'))
+        if(window.location.hash.includes('class_')){
+            try{
             loadClassHtml(window.location.hash.slice(7))
-        if(window.location.hash.includes('package_'))
+            } catch (error) {
+              setTo404Page("Class \""+window.location.hash.slice(7)+"\" does not exist!");
+              
+            }
+        }
+        if(window.location.hash.includes('package_')){
+            try{
             loadPackage(window.location.hash.slice(9))
+            } catch (error) {
+              setTo404Page("Package \""+window.location.hash.slice(9)+"\" does not exist!");
+              
+            }
+        }
+    } catch (error) {
+      setTo404Page(error);
+      
+    }
 }
 window.onhashchange=function(hash){
+    try {
     if((window.location.hash=="")||(window.location.hash=="#"))
         loadListOfAllClasses()
     else
-        if(window.location.hash.includes('class_'))
+        if(window.location.hash.includes('class_')){
+            try{
             loadClassHtml(window.location.hash.slice(7))
-        if(window.location.hash.includes('package_'))
+            } catch (error) {
+              setTo404Page("Class \""+window.location.hash.slice(7)+"\" does not exist!");
+              
+            }
+        }
+        if(window.location.hash.includes('package_')){
+            try{
             loadPackage(window.location.hash.slice(9))
+            } catch (error) {
+              setTo404Page("Package \""+window.location.hash.slice(9)+"\" does not exist!");
+              
+            }
+        }
+    } catch (error) {
+      setTo404Page(error);
+      
+    }
 }
 function loadAllFunctionsOfClass(classname){
     window.location.hash=classname
-    document.body.innerHTML="<div class=title>Java Searcher V0.5.3 - Currently viewing 1.20.1 Fabric Class List</div>"+nextRun(values=>{return values[7].split('::')[0]==classname})
+    document.body.innerHTML="<div class=title>"+"Java Searcher V"+jsearcherversion+" - Currently viewing "+viewing+"</div>"+nextRun(values=>{return values[7].split('::')[0]==classname})
 }
 function loadListOfAllClasses(searchName){
     if(searchName==undefined){
@@ -53,7 +90,7 @@ function loadListOfAllClasses(searchName){
         }
     }
     
-    document.body.innerHTML="<div class=title>Java Searcher V0.5.3 - Currently viewing 1.20.1 Fabric Class List</div>"+"<div id=\"searchholder\"><input type=\"text\" id=\"searchClasses\" name=\"Search\" placeholder=\"Search...\"></div>"+"<div id=\"classList\">"+listClassesHTML+"</div>"
+    document.body.innerHTML="<div class=title>"+"Java Searcher V"+jsearcherversion+" - Currently viewing "+viewing+"</div>"+"<div id=\"searchholder\"><input type=\"text\" id=\"searchClasses\" name=\"Search\" placeholder=\"Search...\"></div>"+"<div id=\"classList\">"+listClassesHTML+"</div>"
     document.getElementById('searchClasses').oninput=function(value){updateListOfAllClasses(value.target.value)}
 }
 function loadPackage(packageName){
@@ -76,7 +113,7 @@ function loadPackage(packageName){
         }
     }
     
-    document.body.innerHTML="<div class=title>Java Searcher V0.5.3 - Currently viewing 1.20.1 Fabric Class List</div>"+"<div id=\"classList\">"+listClassesHTML+"</div>"+"<div id=\"packageList\">"+listPackagesHTML+"</div>"
+    document.body.innerHTML="<div class=title>"+"Java Searcher V"+jsearcherversion+" - Currently viewing "+viewing+"</div>"+"<div id=\"classList\">"+listClassesHTML+"</div>"+"<div id=\"packageList\">"+listPackagesHTML+"</div>"
     
 }
 function updateListOfAllClasses(searchName,max){
@@ -103,7 +140,7 @@ function updateListOfAllClasses(searchName,max){
 }
 function getClassHtml(classname){
     console.log(classname)
-    newHTML="<div class=\"classInfo\">"+
+    newHTML="<div class=\"classInfo\"><code>"+
         allClasses[classname+".java"][1][0][0]+" "
     if(allClasses[classname+".java"][1][0][1])
         newHTML+="static "
@@ -142,13 +179,13 @@ function getClassHtml(classname){
     }
     
     
-        newHTML+="</div><div class=\"classPackage\">package <a href='#package_"+allClasses[classname+".java"][0]+"'>"+allClasses[classname+".java"][0]+"</a></div>"
+        newHTML+="</code></div><div class=\"classPackage\">package <a href='#package_"+allClasses[classname+".java"][0]+"'>"+allClasses[classname+".java"][0]+"</a></div>"
     return newHTML
 }
 function loadClassHtml(classname){
     if(window.location.hash!="#class_"+classname)
         window.location.hash="class_"+classname
-    newHTML="<div class=\"classInfo\">"+
+    newHTML="<div class=\"classInfo\"><code>"+
         allClasses[classname+".java"][1][0][0]+" "
     if(allClasses[classname+".java"][1][0][1])
         newHTML+="static "
@@ -187,13 +224,38 @@ function loadClassHtml(classname){
     }
     
     
-        newHTML+="</div><div class=\"classPackage\">package <a href='#package_"+allClasses[classname+".java"][0]+"'>"+allClasses[classname+".java"][0]+"</a></div>"+loadVariables(allClasses[classname+'.java'][2])+nextRun(values=>{return values[7].split('::')[0]==classname})
+        newHTML+="</code></div><div class=\"classPackage\">package <a href='#package_"+allClasses[classname+".java"][0]+"'>"+allClasses[classname+".java"][0]+"</a></div>"+loadVariables(allClasses[classname+'.java'][2])+nextRun(values=>{return values[7].split('::')[0]==classname})
     
-    document.body.innerHTML="<div class=title>Java Searcher V0.5.3 - Currently viewing 1.20.1 Fabric Class List</div>"+newHTML
+    document.body.innerHTML="<div class=title>"+"Java Searcher V"+jsearcherversion+" - Currently viewing "+viewing+"</div>"+newHTML
 }
+function getLoadedName(filename){
+    //"1_20_1_fabric_classes.json"
+    let x=filename.split('/')
+    x=x[x.length-1]
+    x=x.split('.')
+    x=x.slice(0,x.length-1).join('.')
+    return x
+}
+function setTo404Page(error){
+    document.body.innerHTML="Error! "+error
+}
+
+
+
 if(window.location.search.length<2){
-fetching=fetch("1_20_1_fabric_classes.json").then(response=>{response.json().then(responseb=>{allClasses=responseb;onFinishedGetClasses()});})
-}else{fetching=fetch(window.location.search.slice(1)).then(response=>{response.json().then(responseb=>{allClasses=responseb;onFinishedGetClasses()});})
+fetching=fetch("1_20_1_fabric_classes.json").then(response=>{response.json().then(responseb=>{allClasses=responseb;onFinishedGetClasses()}).catch((err) => {
+    setTo404Page("Loading File \""+"1_20_1_fabric_classes.json"+"\" does not exist!");
+  });
+}).catch((err) => {
+    setTo404Page("Loading File \""+"1_20_1_fabric_classes.json"+"\" does not exist!");
+  });
+    viewing=getLoadedName("1_20_1_fabric_classes.json")
+}else{fetching=fetch(window.location.search.slice(1)).then(response=>{response.json().then(responseb=>{allClasses=responseb;onFinishedGetClasses()}).catch((err) => {
+    setTo404Page("Loading File \""+window.location.search.slice(1)+"\" does not exist!");
+  });}).catch((err) => {
+    setTo404Page("Loading File \""+window.location.search.slice(1)+"\" does not exist!");
+  });
+      viewing=getLoadedName(window.location.search.slice(1))
 }
 function splitWhileRespectingBracketsAndQuotes(inputValue,splitChar=' ',brackets=['[<({',']>)}']){
     if(brackets){
@@ -245,7 +307,7 @@ function splitWhileRespectingBracketsAndQuotes(inputValue,splitChar=' ',brackets
 
 
 function splitVariableTextIntoHtml(variableName){
-
+    try{
     while(variableName[0]==' '){
         variableName=variableName.slice(1)
     }
@@ -283,6 +345,9 @@ function splitVariableTextIntoHtml(variableName){
             return "<a href=\"#class_"+variableName+"\">"+variableName+"</a>"
         }
         return variableName
+    }
+    } catch (error) {
+      setTo404Page("Error splitting variable text into html!"+error);
     }
 }
 
