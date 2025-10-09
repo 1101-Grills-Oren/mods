@@ -25,8 +25,14 @@ onFinishedGetClasses=async function(){
         }
     }
     try {
-    if((window.location.hash=="")||(window.location.hash=="#"))
+    if((window.location.hash=="")||(window.location.hash=="#")){
         loadListOfAllClasses()
+        document.body.innerHTML+="<div>HTML elements at https://developer.mozilla.org/en-US/docs/Web/HTML/Reference</div>"
+        document.body.innerHTML+="<div>JS code at https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference</div>"
+        document.body.innerHTML+="<div>CSS code at https://developer.mozilla.org/en-US/docs/Web/CSS/Reference</div>"
+        document.getElementById('searchClasses').oninput=function(value){updateListOfAllClasses(value.target.value)}
+        
+    }
     else
         if(window.location.hash.includes('class_')){
             try{
@@ -51,8 +57,13 @@ onFinishedGetClasses=async function(){
 }
 window.onhashchange=function(hash){
     try {
-    if((window.location.hash=="")||(window.location.hash=="#"))
+    if((window.location.hash=="")||(window.location.hash=="#")){
         loadListOfAllClasses()
+        document.body.innerHTML+="<div>HTML elements at https://developer.mozilla.org/en-US/docs/Web/HTML/Reference</div>"
+        document.body.innerHTML+="<div>JS code at https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference</div>"
+        document.body.innerHTML+="<div>CSS code at https://developer.mozilla.org/en-US/docs/Web/CSS/Reference</div>"
+        document.getElementById('searchClasses').oninput=function(value){updateListOfAllClasses(value.target.value)}
+    }
     else
         if(window.location.hash.includes('class_')){
             try{
