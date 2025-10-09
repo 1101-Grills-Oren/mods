@@ -81,7 +81,7 @@ function loadAllFunctionsOfClass(classname){
 }
 function loadListOfAllClasses(searchName){
     if(searchName==undefined){
-        searchName="Render"
+        searchName=""
     }
     listClassesHTML=""
     for(let i=0;i<allClassesList.length;i++){
