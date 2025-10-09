@@ -250,7 +250,10 @@ function splitVariableTextIntoHtml(variableName){
         variableName=variableName.slice(1)
     }
     console.log(variableName)
-    if(variableName[0]=='@'){
+    if(variableName.split(' ')[0]=='final'){
+        return "final"+" "+splitVariableTextIntoHtml(variableName.split(' ').slice(1).join(' '))
+    }
+    else if(variableName[0]=='@'){
         return variableName.split(' ')[0]+" "+splitVariableTextIntoHtml(variableName.split(' ').slice(1).join(' '))
     }
     else if(variableName.slice(0,8)=='volatile'){
