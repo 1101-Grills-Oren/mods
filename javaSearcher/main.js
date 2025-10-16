@@ -280,7 +280,7 @@ function splitWhileRespectingBracketsAndQuotes(inputValue,splitChar=' ',brackets
     for(let index=0;index<inputValue.length;index++){
         i=inputValue[index]
         if('\'"'.includes(i)){
-            if(isInString==None){
+            if(isInString==0){
                 isInString=i
                 depth+=1
             }
