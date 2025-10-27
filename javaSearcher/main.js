@@ -127,6 +127,209 @@ function loadPackage(packageName){
     document.body.innerHTML="<div class=title>"+"Java Searcher V"+jsearcherversion+" - Currently viewing "+viewing+"</div>"+"<div id=\"classList\">"+listClassesHTML+"</div>"+"<div id=\"packageList\">"+listPackagesHTML+"</div>"
     
 }
+standardClasses={
+    "lang":{
+        "AbstractMethodError":0,
+        "Appendable":0,
+        "ArithmeticException":0,
+        "ArrayIndexOutOfBoundsException":0,
+        "ArrayStoreException":0,
+        "AssertionError":0,
+        "AutoCloseable":0,
+        "Boolean":0,
+        "BootstrapMethodError":0,
+        "Byte":0,
+        "Character":0,
+        "Character.Subset":0,
+        "Character.UnicodeBlock":0,
+        "Character.UnicodeScript":0,
+        "CharSequence":0,
+        "Class":0,
+        "ClassCastException":0,
+        "ClassCircularityError":0,
+        "ClassFormatError":0,
+        "ClassLoader":0,
+        "ClassNotFoundException":0,
+        "ClassValue":0,
+        "Cloneable":0,
+        "CloneNotSupportedException":0,
+        "Comparable":0,
+        "Deprecated":0,
+        "Double":0,
+        "Enum":0,
+        "Enum.EnumDesc":0,
+        "EnumConstantNotPresentException":0,
+        "Error":0,
+        "Exception":0,
+        "ExceptionInInitializerError":0,
+        "Float":0,
+        "FunctionalInterface":0,
+        "IllegalAccessError":0,
+        "IllegalAccessException":0,
+        "IllegalArgumentException":0,
+        "IllegalCallerException":0,
+        "IllegalMonitorStateException":0,
+        "IllegalStateException":0,
+        "IllegalThreadStateException":0,
+        "IncompatibleClassChangeError":0,
+        "IndexOutOfBoundsException":0,
+        "InheritableThreadLocal":0,
+        "InstantiationError":0,
+        "InstantiationException":0,
+        "Integer":0,
+        "InternalError":0,
+        "InterruptedException":0,
+        "Iterable":0,
+        "LayerInstantiationException":0,
+        "LinkageError":0,
+        "Long":0,
+        "MatchException":0,
+        "Math":0,
+        "Module":0,
+        "ModuleLayer":0,
+        "ModuleLayer.Controller":0,
+        "NegativeArraySizeException":0,
+        "NoClassDefFoundError":0,
+        "NoSuchFieldError":0,
+        "NoSuchFieldException":0,
+        "NoSuchMethodError":0,
+        "NoSuchMethodException":0,
+        "NullPointerException":0,
+        "Number":0,
+        "NumberFormatException":0,
+        "Object":0,
+        "OutOfMemoryError":0,
+        "Override":0,
+        "Package":0,
+        "Process":0,
+        "ProcessBuilder":0,
+        "ProcessBuilder.Redirect":0,
+        "ProcessBuilder.Redirect.Type":0,
+        "ProcessHandle":0,
+        "ProcessHandle.Info":0,
+        "Readable":0,
+        "Record":0,
+        "ReflectiveOperationException":0,
+        "Runnable":0,
+        "Runtime":0,
+        "Runtime.Version":0,
+        "RuntimeException":0,
+        "RuntimePermission":0,
+        "SafeVarargs":0,
+        "ScopedValue":0,
+        "ScopedValue.Carrier":0,
+        "SecurityException":0,
+        "SecurityManager":0,
+        "Short":0,
+        "StackOverflowError":0,
+        "StackTraceElement":0,
+        "StackWalker":0,
+        "StackWalker.Option":0,
+        "StakWalker.StackFrame":0,
+        "StrictMath":0,
+        "String":0,
+        "StringBuffer":0,
+        "StringBuilder":0,
+        "StringIndexOutOfBoundsException":0,
+        "StringTemplate":0,
+        "StringTemplate.Processor":0,
+        "StringTemplate.Processor.Linkage":0,
+        "SuppressWarnings":0,
+        "System":0,
+        "System.Logger":0,
+        "System.Logger.Level":0,
+        "System.LoggerFinder":0,
+        "Thread":0,
+        "Thread.Builder":0,
+        "Thread.Builder.OfPlatform":0,
+        "Thread.Builder.OfVirtual":0,
+        "Thread.State":0,
+        "Thread.UncaughtExceptionHandler":0,
+        "ThreadDeath":0,
+        "ThreadGroup":0,
+        "ThreadLocal":0,
+        "Throwable":0,
+        "TypeNotPresentException":0,
+        "UnknownError":0,
+        "UnsatisfiedLinkError":0,
+        "UnsupportedClassVersionError":0,
+        "UsupportedOperationException":0,
+        "VerifyError":0,
+        "VirtualMachineError":0,
+        "Void":0,
+        "WrongThreadException":0
+    }
+}
+standardClassesList={}
+function toList(value,previous){
+    let returnList={}
+    let entries=Object.entries(value)
+    for(let i=0;i<entries.length;i++){
+        if(entries[i][1]==0){
+            returnList[entries[i][0]]=previous+"/"+entries[i][0]
+        }else{
+            let otherEntries=Object.entries(toList(entries[i][1],previous+"/"+entries[i][0]))
+            console.log(otherEntries)
+            for(let j=0;j<otherEntries.length;j++){
+                returnList[otherEntries[j][0]]=otherEntries[j][1]
+            }
+        }
+    }
+    return returnList
+}
+standardClassesList=toList(standardClasses,"java")
+function getFieldDescriptor(typename){
+    if(typename=='byte'){
+        return "B"
+    }else if(typename=='char'){
+        return "C"
+    }else if(typename=='double'){
+        return "D"
+    }else if(typename=='float'){
+        return "F"
+    }else if(typename=='int'){
+        return "I"
+    }else if(typename=='long'){
+        return "J"
+    }else if(typename=='short'){
+        return "S"
+    }else if(typename=='boolean'){
+        return "Z"
+    }else if(typename=='void'){
+        return "V"
+    }else if(typename.slice(-3)=='...'){
+        return "["+getFieldDescriptor(typename.slice(0,-3))
+    }else if(typename.slice(-1)==']'){
+        return "["+getFieldDescriptor(typename.slice(0,typename.lastIndexOf("[")))
+    }else{
+        if(standardClassesList[typename]!=undefined){
+            return "L"+standardClassesList[typename].replaceAll(".","$")+";"
+        }else if(allClasses[typename+".java"]!=undefined){
+            return "L"+allClasses[typename+".java"][0].replaceAll(".","/")+"/"+allClasses[typename+".java"][1][0][4].replaceAll(".","$")+";"
+        }else{
+            return ""
+        }
+    }
+}
+
+function getFunctionDescriptor(funct){
+    rettype=funct[6]
+    args=funct[8]
+    retval=""
+    retval+=getFieldDescriptor(funct[7].split("::")[0])+" "+funct[7].split("::")[1]
+    retval+='('
+    for(let i=0;i<args.length;i++){
+        if(args[i][1]!=""){
+            if(args[i][0]!=""){
+                retval+=getFieldDescriptor(args[i][0])
+            }
+        }
+    }
+    retval+=')'
+    retval+=getFieldDescriptor(funct[6])
+    return retval
+}
+
 function updateListOfAllClasses(searchName,max){
     if(searchName==undefined){
         searchName="Render"
@@ -354,6 +557,14 @@ function splitVariableTextIntoHtml(variableName){
         if(allClasses[variableName+".java"]!=undefined){
             //return "<a onclick=\"loadClassHtml('"+variableName+"')\">"+variableName+"</a>"
             return "<a href=\"#class_"+variableName+"\">"+variableName+"</a>"
+        }else if(standardClassesList[variableName]!=undefined){
+            //"https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/AssertionError.html"
+            //return "<a onclick=\"loadClassHtml('"+variableName+"')\">"+variableName+"</a>"
+            return "<a href=\"https://docs.oracle.com/en/java/javase/21/docs/api/java.base/"+standardClassesList[variableName].replaceAll("$",".")+".html\">"+variableName+"</a>"
+        }else if(variableName.slice(-3)=='...'){
+            return splitVariableTextIntoHtml(variableName.slice(0,-3))+"..."
+        }else if(variableName.slice(-2)=='[]'){
+            return splitVariableTextIntoHtml(variableName.slice(0,-2))+"[]"
         }
         return variableName
     }
