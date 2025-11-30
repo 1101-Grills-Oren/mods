@@ -27,9 +27,9 @@ onFinishedGetClasses=async function(){
     try {
     if((window.location.hash=="")||(window.location.hash=="#")){
         loadListOfAllClasses()
-        document.body.innerHTML+="<div>HTML elements at https://developer.mozilla.org/en-US/docs/Web/HTML/Reference</div>"
-        document.body.innerHTML+="<div>JS code at https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference</div>"
-        document.body.innerHTML+="<div>CSS code at https://developer.mozilla.org/en-US/docs/Web/CSS/Reference</div>"
+        document.body.children[3].innerHTML+="<div>HTML elements at https://developer.mozilla.org/en-US/docs/Web/HTML/Reference</div>"
+        document.body.children[3].innerHTML+="<div>JS code at https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference</div>"
+        document.body.children[3].innerHTML+="<div>CSS code at https://developer.mozilla.org/en-US/docs/Web/CSS/Reference</div>"
         document.getElementById('searchClasses').oninput=function(value){updateListOfAllClasses(value.target.value)}
         
     }
@@ -59,9 +59,9 @@ window.onhashchange=function(hash){
     try {
     if((window.location.hash=="")||(window.location.hash=="#")){
         loadListOfAllClasses()
-        document.body.innerHTML+="<div>HTML elements at https://developer.mozilla.org/en-US/docs/Web/HTML/Reference</div>"
-        document.body.innerHTML+="<div>JS code at https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference</div>"
-        document.body.innerHTML+="<div>CSS code at https://developer.mozilla.org/en-US/docs/Web/CSS/Reference</div>"
+        document.body.children[3].innerHTML+="<div>HTML elements at https://developer.mozilla.org/en-US/docs/Web/HTML/Reference</div>"
+        document.body.children[3].innerHTML+="<div>JS code at https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference</div>"
+        document.body.children[3].innerHTML+="<div>CSS code at https://developer.mozilla.org/en-US/docs/Web/CSS/Reference</div>"
         document.getElementById('searchClasses').oninput=function(value){updateListOfAllClasses(value.target.value)}
     }
     else
@@ -88,7 +88,7 @@ window.onhashchange=function(hash){
 }
 function loadAllFunctionsOfClass(classname){
     window.location.hash=classname
-    document.body.innerHTML="<div class=title>"+"Java Searcher V"+jsearcherversion+" - Currently viewing "+viewing+"</div>"+nextRun(values=>{return values[7].split('::')[0]==classname})
+    document.body.children[3].innerHTML="<div class=title>"+"Java Searcher V"+jsearcherversion+" - Currently viewing "+viewing+"</div>"+nextRun(values=>{return values[7].split('::')[0]==classname})
 }
 function loadListOfAllClasses(searchName){
     if(searchName==undefined){
@@ -101,7 +101,7 @@ function loadListOfAllClasses(searchName){
         }
     }
     
-    document.body.innerHTML="<div class=title>"+"Java Searcher V"+jsearcherversion+" - Currently viewing "+viewing+"</div>"+"<div id=\"searchholder\"><input type=\"text\" id=\"searchClasses\" name=\"Search\" placeholder=\"Search...\"></div>"+"<div id=\"classList\">"+listClassesHTML+"</div>"
+    document.body.children[3].innerHTML="<div class=title>"+"Java Searcher V"+jsearcherversion+" - Currently viewing "+viewing+"</div>"+"<div id=\"searchholder\"><input type=\"text\" id=\"searchClasses\" name=\"Search\" placeholder=\"Search...\"></div>"+"<div id=\"classList\">"+listClassesHTML+"</div>"
     document.getElementById('searchClasses').oninput=function(value){updateListOfAllClasses(value.target.value)}
 }
 function loadPackage(packageName){
@@ -124,7 +124,7 @@ function loadPackage(packageName){
         }
     }
     
-    document.body.innerHTML="<div class=title>"+"Java Searcher V"+jsearcherversion+" - Currently viewing "+viewing+"</div>"+"<div id=\"classList\">"+listClassesHTML+"</div>"+"<div id=\"packageList\">"+listPackagesHTML+"</div>"
+    document.body.children[3].innerHTML="<div class=title>"+"Java Searcher V"+jsearcherversion+" - Currently viewing "+viewing+"</div>"+"<div id=\"classList\">"+listClassesHTML+"</div>"+"<div id=\"packageList\">"+listPackagesHTML+"</div>"
     
 }
 standardClasses={
@@ -905,7 +905,7 @@ function loadClassHtml(classname){
     
         newHTML+="</code></div><div class=\"classPackage\">package <a href='#package_"+allClasses[classname+".java"][0]+"'>"+allClasses[classname+".java"][0]+"</a></div>"+loadVariables(allClasses[classname+'.java'][2])+nextRun(values=>{return values[7].split('::')[0]==classname})
     
-    document.body.innerHTML="<div class=title>"+"Java Searcher V"+jsearcherversion+" - Currently viewing "+viewing+"</div>"+newHTML
+    document.body.children[3].innerHTML="<div class=title>"+"Java Searcher V"+jsearcherversion+" - Currently viewing "+viewing+"</div>"+newHTML
 }
 function getLoadedName(filename){
     //"1_20_1_fabric_classes.json"
@@ -916,7 +916,7 @@ function getLoadedName(filename){
     return x
 }
 function setTo404Page(error){
-    document.body.innerHTML="Error! "+error
+    document.body.children[3].innerHTML="Error! "+error
 }
 
 
