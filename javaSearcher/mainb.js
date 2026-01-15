@@ -741,6 +741,19 @@ function toList(value,previous){
     }
     return returnList
 }
+getAllVarsOfType=function(stype){
+let varsOfType=[];
+for(let i=0; i<allClassesList.length;i++){
+for(let j=0;j<allClassesList[i][1][2].length;j++){
+let type=allClassesList[i][1][2][j][5];
+let name=allClassesList[i][1][2][j];
+if(type.split("<")[0]==stype){
+varsOfType.push([allClassesList[i][0].replace(".java",""),name])
+}
+}
+}
+return varsOfType;
+}
 standardClassesList=toList(standardClasses,"java")
 function getFieldDescriptor(typename){
     typename=typename.split("<")[0]
@@ -903,7 +916,7 @@ function loadClassHtml(classname){
     }
     
     
-        newHTML+="</code></div><div class=\"classPackage\">package <a href='#package_"+allClasses[classname+".java"][0]+"'>"+allClasses[classname+".java"][0]+"</a></div>"+loadVariables(allClasses[classname+'.java'][2])+nextRun(values=>{return values[7].split('::')[0]==classname})
+        newHTML+="</code></div><div class=\"classPackage\">package <a href='#package_"+allClasses[classname+".java"][0]+"'>"+allClasses[classname+".java"][0]+"</a></div>"+loadVariables(allClasses[classname+'.java'][2])+nextRun(values=>{return values[7].split('::')[0]==classname})+loadVariableRefs(classname)
     
     document.body.children[3].innerHTML="<div class=title>"+"Java Searcher V"+jsearcherversion+" - Currently viewing "+viewing+"</div>"+newHTML
 }
@@ -1134,6 +1147,40 @@ loadVariables=((variableList)=>
         n+=splitVariableTextIntoHtml(i[6].split('::')[0])+""
         
         HTMLbaked+="<div class=\"classVariable\">"+n+"</div>"
+        }
+        
+    }
+    
+}
+HTMLbaked+='</div>'
+    return HTMLbaked}
+)
+loadVariableRefs=((ctype)=>
+{
+    let HTMLbaked="<div>"
+    let variablelist=getAllVarsOfType(ctype)
+    for(let index=0;index<variableList.length;index++){
+    let i= variableList[index]
+    {
+        {
+        //[access,isOverride,isNullable,isStatic,isFinal,variableType,name]
+        n=""
+        if(i[1][0]!=null)
+            n=i[0]+" "
+        else
+            n=''
+        if(i[1][1])
+            n="@Override "+n
+        if(i[1][2])
+            n="@Nullable "+n
+        if(i[1][3])
+            n+="static "
+        if(i[1][4])
+            n+="final "
+        n+=splitVariableTextIntoHtml(i[1][5])+" "
+        n+=splitVariableTextIntoHtml(i[0]+"::"+i[1][6].split('::')[0])+""
+        
+        HTMLbaked+="<div class=\"oclassVariable\">"+n+"</div>"
         }
         
     }
