@@ -1158,7 +1158,7 @@ HTMLbaked+='</div>'
 loadVariableRefs=((ctype)=>
 {
     let HTMLbaked="<div>"
-    let variablelist=getAllVarsOfType(ctype)
+    let variableList=getAllVarsOfType(ctype)
     for(let index=0;index<variableList.length;index++){
     let i= variableList[index]
     {
