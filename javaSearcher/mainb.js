@@ -741,7 +741,7 @@ function toList(value,previous){
     }
     return returnList
 }
-getAllVarsOfType=function(stype){
+function getAllVarsOfType(stype){
 let varsOfType=[];
 for(let i=0; i<allClassesList.length;i++){
 for(let j=0;j<allClassesList[i][1][2].length;j++){
@@ -1166,7 +1166,7 @@ loadVariableRefs=((ctype)=>
         //[access,isOverride,isNullable,isStatic,isFinal,variableType,name]
         n=""
         if(i[1][0]!=null)
-            n=i[0]+" "
+            n=i[1][0]+" "
         else
             n=''
         if(i[1][1])
