@@ -45,6 +45,9 @@ a{
     border-style:solid;
     border-top-width:1px;
 }
+.classFunction:hover{
+    background-color:#DFD;
+}
 .packageHolder{
     border-color:#8800FF;
     border-left-color:#7700FF;
@@ -54,9 +57,16 @@ a{
     border-style:solid;
     border-top-width:1px;
 }
-.classVariable .classFunction{
-    border-top-width:10px;
+.classFunction:nth-child(1) {
+    border-top-width:3px;
     border-top-color:transparent;
+}
+.classVariable:nth-last-child(1) {
+    border-bottom-width:3px;
+    border-bottom-color:transparent;
+}
+.classVariable:hover{
+    background-color:#DEF;
 }
 
 .0classVariable{
