@@ -59,11 +59,11 @@ a{
 }
 .classFunction:nth-child(1) {
     border-top-width:3px;
-    border-top-color:transparent;
+    border-top-color:white;
 }
 .classVariable:nth-last-child(1) {
     border-bottom-width:3px;
-    border-bottom-color:transparent;
+    border-bottom-color:white;
 }
 .classVariable:hover{
     background-color:#DEF;
