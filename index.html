@@ -538,9 +538,9 @@
             loadedModData = {}
             loadedVersionData = {}
             function convertToDate(timestr) {
-                t = new Date()
-                t.setFullYear(1 * timestr.slice(0, 4), 1 * timestr.slice(5, 7) - 1, 1 * timestr.slice(8, 10))
-                t.setHours(1 * timestr.slice(11, 13), 1 * timestr.slice(14, 16), 1 * timestr.slice(17, 19), 1000 * timestr.slice(19, 23))
+                t = new Date(timestr)
+                //t.setFullYear(1 * timestr.slice(0, 4), 1 * timestr.slice(5, 7) - 1, 1 * timestr.slice(8, 10))
+                //t.setHours(1 * timestr.slice(11, 13), 1 * timestr.slice(14, 16), 1 * timestr.slice(17, 19), 1000 * timestr.slice(19, 23))
                 return t
             }
             function relativeDate(datea, dateb) {
@@ -559,13 +559,13 @@
                     }
                 } else {
                     if (seconds < 60) {
-                        return "in " + (seconds) - (seconds) % 1 + " seconds"
+                        return "in " + ( (seconds) - (seconds) % 1 + " seconds")
                     } else if (seconds < 3600) {
-                        return "in " + (seconds / 60) - (seconds / 60) % 1 + " minutes"
+                        return "in " + ( (seconds / 60) - (seconds / 60) % 1 + " minutes")
                     } else if (seconds < 86400) {
-                        return "in " + (seconds / 60 / 60) - (seconds / 60 / 60) % 1 + " hours"
+                        return "in " + ( (seconds / 60 / 60) - (seconds / 60 / 60) % 1 + " hours")
                     } else if (seconds < 864000) {
-                        return "in " + (seconds / 86400) - (seconds / 86400) % 1 + " days"
+                        return "in " + ( (seconds / 86400) - (seconds / 86400) % 1 + " days")
                     } else {
                         return ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"][dateb.getMonth()] + " " + dateb.getDate() + ", " + dateb.getFullYear()
                     }
@@ -758,6 +758,7 @@
 
                 dataelement = document.createElement('td')
                 dataelement.textContent = "Last updated " + relativeDate(new Date(), convertToDate(updated))
+                console.log(new Date(), convertToDate(updated),relativeDate(new Date(), convertToDate(updated)))
                 n.append(dataelement)
 
                 /*x=document.createElement('span')
