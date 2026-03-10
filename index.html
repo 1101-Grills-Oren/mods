@@ -527,10 +527,18 @@
                 <td>
                     View Java code and actually find what you are looking for! (indev, online)
                 <br>
-                    Currently will only show java for 1.20.1 fabric.
+                    What will be searched is now controllable!
                 </td>
                 <td style="text-emphasis:none;color:inherit;">
-                    <a style="text-emphasis:none;color:#00FFFF;" href="https://1101-grills-oren.github.io/mods/javaSearcher/">Open</a>
+                    
+                    <a id="openjavasearcher" style="text-emphasis:none;color:#00FFFF;" href="https://1101-grills-oren.github.io/mods/javaSearcher/">Open</a>
+                    <select class="emberdropdown" name="searchin" id="searchin" onchange='document.getElementById("openjavasearcher").href="https://1101-grills-oren.github.io/mods/javaSearcher/?"+document.getElementById("searchin").value'>
+                        <option value="1_20_1_fabric_classes+bridgadier.json">MC Fabric 1.20.1</option>
+                        <option value="1_21_1_neoforge_classes">MC Neoforge 1.21.1</option>
+                        <option value="1_21_2_fabric_classes+bridgadier.json">MC Fabric 1.21.2</option>
+                        <option value="1_21_8_fabric_classes+bridgadier.json">MC Fabric 1.21.8</option>
+                        <option value="hytale_classes.json">Hytale</option>
+                    </select>
                 </td>
             </tr>
         </table>
@@ -758,6 +766,7 @@
 
                 dataelement = document.createElement('td')
                 dataelement.textContent = "Last updated " + relativeDate(new Date(), convertToDate(updated))
+                console.log(new Date(), convertToDate(updated),relativeDate(new Date(), convertToDate(updated)))
                 n.append(dataelement)
 
                 /*x=document.createElement('span')
