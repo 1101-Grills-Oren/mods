@@ -18,3 +18,17 @@ align-content: center; /* flex-start | flex-end | center | space-between | space
 .flex-wrap {
 flex-wrap: wrap; /* default: nowrap | wrap | wrap-reverse */
 }
+
+.emberdropdown{
+  background:#0005;
+  border-color:#000;
+  border-radius:5px;
+  color:#0F0;
+  filter:drop-shadow(0 0 0.15rem rgb(0,255,0));
+}
+.emberdropdownoption{
+  background-color:#000;
+  color:#0F0;
+  border-radius:20px;
+}
+
