@@ -1,6 +1,6 @@
 allClasses={}
 allFunctions=[]
-jsearcherversion="0.5.4"
+jsearcherversion="0.5.5"
 viewing=""
 
 onFinishedGetClasses=async function(){
@@ -796,8 +796,14 @@ function getFunctionDescriptor(funct){
 }
 
 function updateListOfAllClasses(searchName,max){
-    if(searchName==undefined){
-        searchName="Render"
+    
+    if(searchName==""){
+        document.styleSheets[0].cssRules[6].selectorText='.classInfo, .classPackage'
+    }else{
+        document.styleSheets[0].cssRules[6].selectorText='.classInfo[data-classname*="'+searchName+'" i], .classPackage[data-classname*="'+searchName+'" i]'
+    }
+    /*if(searchName==undefined){
+        searchName=""
     }
     if(max==undefined){
         max=20
@@ -815,11 +821,11 @@ function updateListOfAllClasses(searchName,max){
         }
     }
     
-    document.getElementById("classList").innerHTML=listClassesHTML
+    document.getElementById("classList").innerHTML=listClassesHTML*/
 }
 function getClassHtml(classname){
     console.log(classname)
-    newHTML="<div class=\"classInfo\"><code>"+
+    newHTML="<div class=\"classInfo\" data-classname=\""+classname+"\"><code>"+
         allClasses[classname+".java"][1][0][0]+" "
     if(allClasses[classname+".java"][1][0][1])
         newHTML+="static "
@@ -858,7 +864,7 @@ function getClassHtml(classname){
     }
     
     
-        newHTML+="</code></div><div class=\"classPackage\">package <a href='#package_"+allClasses[classname+".java"][0]+"'>"+allClasses[classname+".java"][0]+"</a></div>"
+        newHTML+="</code></div><div class=\"classPackage\" data-classname=\""+classname+"\">package <a href='#package_"+allClasses[classname+".java"][0]+"'>"+allClasses[classname+".java"][0]+"</a></div>"
     return newHTML
 }
 function loadClassHtml(classname){
@@ -903,7 +909,7 @@ function loadClassHtml(classname){
     }
     
     
-        newHTML+="</code></div><div class=\"classPackage\">package <a href='#package_"+allClasses[classname+".java"][0]+"'>"+allClasses[classname+".java"][0]+"</a></div>"+loadVariables(allClasses[classname+'.java'][2])+nextRun(values=>{return values[7].split('::')[0]==classname})
+        newHTML+="</code></div><div class=\"classPackage\" data-classname=\""+classname+"\">package <a href='#package_"+allClasses[classname+".java"][0]+"'>"+allClasses[classname+".java"][0]+"</a></div>"+loadVariables(allClasses[classname+'.java'][2])+nextRun(values=>{return values[7].split('::')[0]==classname})
     
     document.body.innerHTML="<div class=title>"+"Java Searcher V"+jsearcherversion+" - Currently viewing "+viewing+"</div>"+newHTML
 }
@@ -1044,7 +1050,7 @@ function splitVariableTextIntoHtml(variableName){
 
 nextRun=((searchFunction)=>
 {
-    HTMLbaked="<div>"
+    HTMLbaked="<div class='functionHolder'>"
     for(let index=0;index<allFunctions.length;index++){
     let i= allFunctions[index]
     if(searchFunction(i)){
@@ -1111,7 +1117,7 @@ HTMLbaked+='</div>'
 )
 loadVariables=((variableList)=>
 {
-    let HTMLbaked="<div>"
+    let HTMLbaked="<div class=\"variableHolder\">"
     for(let index=0;index<variableList.length;index++){
     let i= variableList[index]
     {
