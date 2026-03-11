@@ -870,7 +870,7 @@ function getClassHtml(classname){
 function loadClassHtml(classname){
     if(window.location.hash!="#class_"+classname)
         window.location.hash="class_"+classname
-    newHTML="<div class=\"classInfo\"><code>"+
+    newHTML="<div class=\"classInfo\" data-classname=\""+classname+"\"><code>"+
         allClasses[classname+".java"][1][0][0]+" "
     if(allClasses[classname+".java"][1][0][1])
         newHTML+="static "
