@@ -520,6 +520,7 @@
                     
                 </td>
             </tr>
+        </table>
         <table class="devtoolprojects">
             <tr style="color: rgb(255, 0, 0);text-align:left;bold:false; box-shadow: #0000 0px 0px 0px;">
                 <td>Java Searcher
@@ -539,6 +540,54 @@
                         <option class="emberdropdownoption" value="1_21_8_fabric_classes+bridgadier.json">MC Fabric 1.21.8</option>
                         <option class="emberdropdownoption" value="hytale_classes.json">Hytale</option>
                     </select>
+                </td>
+            </tr>
+        </table>
+        <table class="devtoolprojects">
+            <tr style="color: rgb(255, 0, 0);text-align:left;bold:false; box-shadow: #0000 0px 0px 0px;">
+                <td>Hytale Codec Creator
+                </td>
+                <td>
+                    Easily create Hytale codecs because manual codec creation is painful!
+                <br>
+                    How to use:
+                    <br>
+                    Left box is the custom codec format. Right box is the code. To get started with a new codec,
+                    put the codec type at the top followed by {}:
+                    <br>
+                    <code>ExampleType{}</code>
+                    <br>
+                    Then, in between the brackets, put a comma-seperated list of entries, each with the format
+                    <br>
+                    <code>"Key":variable_in_class(Type)</code>
+                    <br>
+                    Each of these entries can have up to one Documentation entry. An example with documentation would be:
+                    <br>
+                    <code>"Key":variable_in_class(Type)!"Documentation goes here!!!!!"</code>
+                    <br>
+                    Each of these can have multiple validators. An example with one validator would be
+                    <br>
+                    <code>"Interactions":interactions(Map<InteractionType, String>)@RootInteraction.VALIDATOR_CACHE.getMapValueValidator()</code>
+                    <br>
+                    Each of these entries can also have late validators for specific cases, such as putting a reference to asset type in that same asset type.
+                    <br>
+                    Late validators have the mention character of %.
+                    <br>
+                    Finally, each entry can have metadata entries, which include stuff such as starting a editor section (<code>#StartSection_"SectionName"</code>), what client caches to rebuild on change (<code>#UIRebuildCaches.ClientCache.CACHE_NAME</code>), and more!
+                    <br>
+                </td>
+                <td style="text-emphasis:none;color:inherit;">
+                    <a style="text-emphasis:none;color:#00FFFF;" href="https://1101-grills-oren.github.io/mods/assets/downloads/hytaleCodecConverter.exe" download>Download</a>
+                    <svg usemap="#downloadcodeccreator" width="10px" height="10px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <a style="text-emphasis:none;color:#00FFFF;" href="https://1101-grills-oren.github.io/mods/assets/downloads/hytaleCodecConverter.exe" download>
+                        <path transform="" d="m8 12 4 4 4-4" stroke="#00FFFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path transform="" d="M12 16V4M19 17v.6c0 1.33-1.07 2.4-2.4 2.4H7.4C6.07 20 5 18.93 5 17.6V17" stroke="#00FFFF" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round"/>
+                        </a>
+                    </svg>
+                    <br>
+                    Source will be posted if requested on forum
+                    Made using Python
+                    
                 </td>
             </tr>
         </table>
