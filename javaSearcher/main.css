@@ -30,7 +30,7 @@ a{
     display:none;
 }
 .classInfo,.classPackage{
-    display:initial;
+    display:block;
 }
 .classVariable{
     border-color:#8800FF;
@@ -83,3 +83,4 @@ a{
     border-style:solid;
     border-top-width:1px;
 }
+
