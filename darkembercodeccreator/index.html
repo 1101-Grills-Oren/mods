@@ -35,12 +35,12 @@ lastCode=""
 def on_codec_change(event):
     global lastCodec,lastCode
     
-    content = web.page["object0"].get()
+    content = web.page["object0"]["get"]()
     if(content!=lastCodec):
         lastCodec=content
         try:
 	        lastCode=codecToJava(content)
-	        web.page["object1"].set(lastCode)
+	        web.page["object1"]["set"](lastCode)
         except Exception as e:
 	        print("uh",e)
 def on_code_change(event):
