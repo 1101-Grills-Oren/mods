@@ -6,16 +6,39 @@
         <title>PyScript!</title>
         <link
             rel="stylesheet"
-            href="https://pyscript.net/latest/core.css"
+            href="https://pyscript.net/releases/2026.3.1/core.css"
         />
         <script
             type="module"
-            src="https://pyscript.net/latest/core.js"
+            src="https://pyscript.net/releases/2026.3.1/core.js"
         ></script>
     </head>
     <body>
-		<textarea id="object0" py-change="on_codec_change"></textarea>
-		<textarea id="object1" py-change="on_code_change"></textarea>
+		Dark Ember Codec Creator: Web Edition (May take a second or two to load)
+		<br>
+		<textarea id="object0" py-input="on_codec_change" style="width:49%;resize:vertical;height:1000px;box-sizing: border-box;" placeholder='Custom Format here:
+ExampleClass{
+	"ExampleKey":exampleVariable(ExampleType)!"Documentation Goes Here"
+}'></textarea>
+		<textarea id="object1" py-input="on_code_change" style="width:49%;resize:vertical;height:1000px;box-sizing: border-box;" placeholder='Java Form Of Codec Here:
+AssetBuilderCodec.builder(
+    ExampleClass.class,
+    ExampleClass::new,
+    Codec.STRING,
+    (exampleClass, s) -> exampleClass.id = s,
+    exampleClass -> exampleClass.id,
+    (exampleClass, data) -> exampleClass.extraData = data,
+    exampleClass -> exampleClass.extraData
+).<ExampleType>appendInherited(
+    new KeyedCodec<>(
+        "ExampleKey",
+        ExampleType.CODEC),
+    (exampleClass, e) -> exampleClass.exampleVariable = e,
+    exampleClass -> exampleClass.exampleVariable,
+    (exampleClass, parent) -> exampleClass.exampleVariable = parent.exampleVariable
+).documentation("Documentation Goes Here")
+.add()
+.build()'></textarea>
         <py-config>
         packages = []
         files = ["./HCodecAnalyzer.py"]
@@ -24,6 +47,7 @@
         <py-script>
             from HCodecAnalyzer import javaToCodec,codecToJava
 from pyscript import web
+from js import document
 global lastCodec
 lastCodec=""
 global lastCode
@@ -35,27 +59,25 @@ lastCode=""
 def on_codec_change(event):
     global lastCodec,lastCode
     
-    content = web.page["object0"]["get"]()
+    content = document.getElementById("object0").value.strip()
     if(content!=lastCodec):
         lastCodec=content
         try:
 	        lastCode=codecToJava(content)
-	        web.page["object1"]["set"](lastCode)
+	        document.getElementById("object1").value=lastCode
         except Exception as e:
 	        print("uh",e)
 def on_code_change(event):
     global lastCodec,lastCode
     # Reset the modified flag so it can trigger again
-    object2.edit_modified(False)
-    content = object2.get("1.0", tk.END).strip()
+    content = document.getElementById("object1").value.strip()
     if(content!=lastCode):
         #print(content)
         lastCode=content
         try:
-	        lastCodec=javaToCodec(content,object4value.get())
+	        lastCodec=javaToCodec(content,"")
 	        #print(lastCodec)
-	        object1.delete("1.0", tk.END)
-	        object1.insert(tk.END, lastCodec)
+	        document.getElementById("object0").value=lastCodec
         except Exception as e:
 	        print("um",e)
 
