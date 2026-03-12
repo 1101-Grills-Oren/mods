@@ -55,7 +55,7 @@ def on_codec_change(event):
     if(content!=lastCodec):
         lastCodec=content
 		try:
-			lastCode=codecToJava(content)
+            lastCode=codecToJava(content)
             object2.delete("1.0", tk.END)
             object2.insert(tk.END, lastCode)
         except Exception as e:
