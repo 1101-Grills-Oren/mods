@@ -54,12 +54,12 @@ def on_codec_change(event):
     content = object1.get("1.0", tk.END).strip()
     if(content!=lastCodec):
         lastCodec=content
-		try:
-            lastCode=codecToJava(content)
-            object2.delete("1.0", tk.END)
-            object2.insert(tk.END, lastCode)
+        try:
+	        lastCode=codecToJava(content)
+	        object2.delete("1.0", tk.END)
+	        object2.insert(tk.END, lastCode)
         except Exception as e:
-            print("uh",e)
+	        print("uh",e)
 def on_code_change(event):
     global lastCodec,lastCode
     # Reset the modified flag so it can trigger again
@@ -69,14 +69,14 @@ def on_code_change(event):
         #print(content)
         lastCode=content
         try:
-            lastCodec=javaToCodec(content,object4value.get())
-            #print(lastCodec)
-            object1.delete("1.0", tk.END)
-            object1.insert(tk.END, lastCodec)
+	        lastCodec=javaToCodec(content,object4value.get())
+	        #print(lastCodec)
+	        object1.delete("1.0", tk.END)
+	        object1.insert(tk.END, lastCodec)
         except Exception as e:
-            print("um",e)
-object1.bind("<<Modified>>", on_codec_change)
-object2.bind("<<Modified>>", on_code_change)
+	        print("um",e)
+object1.bind("<<"+"Modified"+">>", on_codec_change)
+object2.bind("<<"+"Modified"+">>", on_code_change)
 
 
 #frame.grid(row=1,column=1,sticky="nsew")
@@ -87,20 +87,6 @@ window.mainloop()
 
 
 
-
-
-
-
-
-
-"""
-CustomConnectedBlockTemplateAsset{
-	"DontUpdateAfterInitialPlacement":dontUpdateAfterInitialPlacement(Boolean)!"Default to false. When true, will not update the connected block after initial placement. Neighboring block updates won't affect this block when true.",
-	"ConnectsToOtherMaterials":connectsToOtherMaterials(Boolean)!"Defaults to true. If true, the material will connect to other materials of different block type sets, if false, the material will only connect to its own block types within the material",
-	"DefaultShape":defaultShapeName(String),
-	"Shapes":connectedBlockShapes(HashMap<ConnectedBlockShape>)
-}
-"""
         </py-script>
     </body>
 </html>
