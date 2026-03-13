@@ -642,7 +642,7 @@
     
     
     
-    def main(winstyle=0):
+    async def main(winstyle=0):
      # Initialize pygame
      if pg.get_sdl_version()[0] == 2:
       pg.mixer.pre_init(44100, 32, 2, 1024)
@@ -1290,14 +1290,14 @@
      if pg.mixer:
       pg.mixer.music.fadeout(1000)
      pg.time.wait(1)
-    
+    pg.quit()
    
     
     
     # call the "main" function if running this script
     import asyncio
-    main()
-    pg.quit()
+    asyncio.ensure_future(main)
+    
 
 
 
