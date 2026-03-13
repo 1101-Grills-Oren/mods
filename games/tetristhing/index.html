@@ -1289,16 +1289,15 @@
     
      if pg.mixer:
       pg.mixer.music.fadeout(1000)
-     pg.time.wait(1000)
+     pg.time.wait(1)
     
    
     
     
     # call the "main" function if running this script
-    if __name__ == "__main__":
-     import asyncio
-     main()
-     pg.quit()
+    import asyncio
+    main()
+    pg.quit()
 
 
 
