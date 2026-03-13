@@ -19,11 +19,10 @@
   
   <py-config>
   packages = ["pygame-ce"]
-  files = []
   </py-config>
   <!-- type mpy (MicroPython) or py (Pyodide) to run some Python -->
-  <canvas id="canvas" style="image-rendering: pixelated;background:#000000;"></canvas>
-  <script type="py-game" terminal>
+  <canvas id="canvas" style="image-rendering: pixelated;"></canvas>
+  <script type="py-game">
     #!/usr/bin/env python
     #from githubAlt import *
     test="test"
@@ -31,7 +30,7 @@
     #githubAlt
     from pyscript import web
     from js import document
-    
+    document.alert("Starting up")
     
     
     
