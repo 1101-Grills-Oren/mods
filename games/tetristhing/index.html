@@ -1283,9 +1283,9 @@
       pg.display.flip()
       decaytime=1
       if playing==1:
-       clock.tick(40+(score/100/5))
+       await asyncio.sleep(1/(40+(score/100/5)))
       else:
-       clock.tick(40)
+       await asyncio.sleep(1/40)
     
      if pg.mixer:
       pg.mixer.music.fadeout(1000)
@@ -1296,6 +1296,7 @@
     
     # call the "main" function if running this script
     if __name__ == "__main__":
+     import asyncio
      main()
      pg.quit()
 
