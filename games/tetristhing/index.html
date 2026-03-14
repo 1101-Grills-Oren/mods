@@ -110,15 +110,23 @@
       return 0
      #x=document.setFileContent("tetris/highscores.txt","mewo WEB",json.dumps(content))
     from js import fetch
+    from js import getContents
+    import json
+    from js import atob
     def getHighScores(thenfunc):
      try:
       # Perform GET request
       def temp(response):
        print("tempfunc")
        document.remotevar=response
-       response.json().then(thenfunc)
+       try:
+        print(atob(str(response.data.content)).replace("'",'"'))
+        thenfunc(json.loads(atob(str(response.data.content)).replace("'",'"')))
+       except Exception as e:
+        print("halp",e)
+       print(thenfunc)
       print("fetching")
-      fetch("https://raw.githubusercontent.com/1101-Grills-Oren/cloudGameData/refs/heads/main/tetris/highscores.txt").then(temp)
+      getContents().then(temp)
       # Display result in HTML
       #output = Element("output")
       #output.write(f"Title: {data['title']}\nCompleted: {data['completed']}")
@@ -1042,6 +1050,7 @@
          if(highScoresButton.isPressed()):
           playing=4
           def test(n):
+           print("test")
            print(username)
            document.remotevar=n
            from js import Object
