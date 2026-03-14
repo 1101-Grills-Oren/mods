@@ -656,7 +656,7 @@
         j.inGroup=-1
         j.remove(objs2)
         j.add(objs3)
-        j.type-=tileTypes.__len__()-3
+        j.type-=tileTypes.__len__()-1
         j.image=pg.transform.scale(j.images[j.type],(20,20))
         j.rect=j.image.get_rect()
         j.rect.left=j.pos[0]
