@@ -1,10 +1,17 @@
 <!doctype html>
 <html lang="en">
  <head>
- 
+ <script>
+      octokit=0
+    </script>
+    <script type="module">
+      import { Octokit } from "https://esm.sh/@octokit/core";
+      octokit = new Octokit({ auth: "github_p"+"at_11BADMTJI0X4tKzBI9TZ8H_QEBL"+"PpyG9PIB36e7oyvCFk6r3jRy0oU9MxrfHL1MToDMTJVJMYWczobPhHi" });
+      document.onOctokitInitialized()
+    </script>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Dark Ember Hytale Codec Creator Web Edition</title>
+  <title>Ember's Tetris - Web Edition</title>
   <link
    rel="stylesheet"
    href="https://pyscript.net/releases/2026.3.1/core.css"
@@ -15,13 +22,64 @@
   ></script>
   <link rel="icon" type="image/png" href="https://1101-grills-oren.github.io/mods/favicon.png">
  </head>
- <body>
-  
+ <body style="margin: 0;background:black;display: flex;justify-content: center;align-items: center;height: 100vh;width: 100vw;">
+  <script>
+   getContents=null
+   setContents=null
+   setHighScoresFile=null
+   document.onOctokitInitialized=()=>{
+        
+        getContents=function(){
+        return octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
+          owner: '1101-grills-oren',
+          repo: 'cloudGameData',
+          path: "tetris/highscores.txt",
+          headers: {
+            'X-GitHub-Api-Version': '2022-11-28'
+          }
+        })
+      }
+      setContents=function(contents,sha){
+        if(sha!=null){
+        return octokit.request('PUT /repos/{owner}/{repo}/contents/{path}', {
+          owner: '1101-grills-oren',
+          repo: 'cloudGameData',
+          path: "tetris/highscores.txt",
+          message: 'Web User Update High Score',
+          content: contents,
+          sha:sha,
+          headers: {
+            'X-GitHub-Api-Version': '2022-11-28'
+          }
+        })
+        }else{
+        return octokit.request('PUT /repos/{owner}/{repo}/contents/{path}', {
+          owner: '1101-grills-oren',
+          repo: 'cloudGameData',
+          path: "tetris/highscores.txt",
+          message: 'Web User Update High Score',
+          content: contents,
+          headers: {
+            'X-GitHub-Api-Version': '2022-11-28'
+          }
+        })
+        }
+      }
+      setHighScoresFile=function(value){
+        scores=""+value
+        getContents().then(contents=>{
+          setContents(btoa(scores),contents.data.sha)
+        })
+        return 1
+      }
+   }
+  </script>
   <py-config>
   packages = ["pygame-ce"]
   </py-config>
   <!-- type mpy (MicroPython) or py (Pyodide) to run some Python -->
-  <canvas id="canvas" style="image-rendering: pixelated;"></canvas>
+  <div style="color:#0F0;position:absolute;top:50vh;left:50vw;transform:translate(-50%,-50%);">Loading!<br>May take a few moments...</div>
+  <canvas id="canvas" style="image-rendering: pixelated;border: 1px solid #0F0;color:white;position:relative;" width=420 height=620></canvas>
   <script type="py-game">
     #!/usr/bin/env python
     #from githubAlt import *
@@ -30,7 +88,7 @@
     #githubAlt
     from pyscript import web
     from js import document
-    document.alert("Starting up")
+    
     
     
     
@@ -45,22 +103,43 @@
     import base64
     import json
     def updateHighscoresFile(content):
-     return 0
+     print(content)
+     try:
+      setHighScoresFile(content)
+     except Exception:
+      return 0
      #x=document.setFileContent("tetris/highscores.txt","mewo WEB",json.dumps(content))
+    from js import fetch
+    def getHighScores(thenfunc):
+     try:
+      # Perform GET request
+      def temp(response):
+       print("tempfunc")
+       document.remotevar=response
+       response.json().then(thenfunc)
+      print("fetching")
+      fetch("https://raw.githubusercontent.com/1101-Grills-Oren/cloudGameData/21ec9f3f41cdefe5a0e9df152dcfa9a5258ff953/tetris/highscores.txt").then(temp)
+      # Display result in HTML
+      #output = Element("output")
+      #output.write(f"Title: {data['title']}\nCompleted: {data['completed']}")
      
-    def getHighScores():
-     return {"Not Functional In Web Version":"ERROR"}
-    
+     except Exception as e:
+      Element("output").write(f"Error: {e}")
+     #return {"Not Functional In Web Version":"ERROR"}
+    from js import setHighScoresFile
     def mergeHighscoresFile(user,score):
-     a=getHighScores()
-     b=a
-     if(user in b):
-      b[user]=max(b[user],score)
-     else:
-      b[user]=score
-     updateHighscoresFile(b)
+     def temp(a):
+      b={i[0]:i[1] for i in Object.entries(a)}
+      if(user in b):
+       b[user]=max(b[user],score)
+      else:
+       b[user]=score
+      updateHighscoresFile(b)
+     getHighScores(temp)
+     
      
     def sortHighScores(scores,count=9999999):
+     print(scores)
      count+=1
      a=scores;
      b=[[a[i],i] for i in a];
@@ -103,10 +182,21 @@
     from typing import List
     
     import pygame as pg
-    
+    from js import localStorage
+    from js import Object
+    from js import alert
+    from js import document
     username:str=os.getlogin()
-    
-    
+    if('username' in [i[0] for i in Object.entries(localStorage)]):
+     username=localStorage.getItem("username")
+    else:
+     tempusername=input("Please give your email so that you can appear on the scoreboard.\nThis only needs to be done once.")
+     if(type(tempusername)!=type("jsnull")):
+      alert("You MUST put in your email in order to play.")
+      document.body.innerHTML="Game Crashed!<br>Cause:<br><code>User refused to enter their username</code><br><br>Please restart the page if you want to try again..."
+     else:
+      username=tempusername[0:5]
+      localStorage.setItem("username",username)
     #bushgod
     #username="gravi"
     
@@ -655,7 +745,7 @@
      # Set the display mode
      winstyle = 0  # |FULLSCREEN
      bestdepth = pg.display.mode_ok(SCREENRECT.size, winstyle, 32)
-     screen = pg.display.set_mode(420,620)#([420,620], winstyle, bestdepth)
+     screen = pg.display.set_mode([420,620])#([420,620], winstyle, bestdepth)
     
      # Load images, assign to sprite classes
      # (do this before the classes are used, after screen setup)
@@ -867,6 +957,7 @@
      a=240
      b=40
      s=50
+     usernameDisplay=textDisplay(20,20,170,20,0,"User: "+username,1,1,(25,255,25),None,0,0,0,all_mainmenu)
      retryButton=textButton(420/2-a/2,620/2-b/2-s,a,b,0,"Retry",2,1.2,(25,25,25),(127,127,127),0,0.1,3,all_losescreen)
      playButton=textButton(420/2-a/2,620/2-b/2-s*3/2,a,b,0,"Play",2,1,(25,255,25),(127,127,127),0,0.1,3,all_mainmenu)
      highScoresButton=textButton(420/2-a/2,620/2-b/2-s/2,a,b,0,"Highscores",2,1,(25,255,25),(127,127,127),0,0.1,3,all_mainmenu)
@@ -877,7 +968,7 @@
      highScores=textDisplay(20,70,400-20,620-70-20,0,"LOADING",2,1,(25,255,25),None,0,0,0,all_highscores)
      highScoresLoader=textDisplay(20,70,400-20,620-70-20,0,"LOADING",2,1,(25,255,25),None,0,0,0)
      controlsButton=textButton(420/2-a/2,620/2-b/2+s*3/2,a,b,0,"Controls",2,1,(25,255,25),(127,127,127),0,0.1,3,all_mainmenu)
-     controlsDisplay=textDisplay(20,70,400-20,620-70-20,0,getControlsList(),2,1,(25,255,25),None,0,0,0,all_controls)
+     controlsDisplay=textDisplay(20,70,400-20,620-70-20,0,getControlsList(),1,0.8,(25,255,25),None,0,0,0,all_controls)
      controlsDisplay.updateV(getControlsList())
      toMainMenuButtonControls=textButton(10,10,a/2,b,0,"<-Back",2,1,(25,25,25),(127,127,127),0,0.1,3,all_controls)
      while 1:
@@ -948,8 +1039,11 @@
           return
          if(highScoresButton.isPressed()):
           playing=4
-          def test():
-           n=getHighScores()
+          def test(n):
+           print(username)
+           document.remotevar=n
+           from js import Object
+           n={i[0]:i[1] for i in Object.entries(n)}
            thisScore=None
            thisIndex=None
            if(username in n):
@@ -972,7 +1066,7 @@
            highScoresLoader.updateV(b)
            highScores.image=highScoresLoader.image
            highScores.rect=highScoresLoader.rect
-          threading.Thread(target=test).start()
+          getHighScores(test)#threading.Thread(target=test).start()
          if(controlsButton.isPressed()):
           playing=5
       if(playing==4):
@@ -1029,7 +1123,7 @@
          youLoseDisplayBackground.setImage(screenshot)
          playing=2
          #subprocess.Popen("py -m githubAlt "+username+" "+str(int(score)))
-         threading.Thread(target=lambda:mergeHighscoresFile(username,int(score))).start()
+         mergeHighscoresFile(username,int(score))#threading.Thread(target=lambda:mergeHighscoresFile(username,int(score))).start()
     
     
     
@@ -1285,7 +1379,6 @@
        await asyncio.sleep(1/(40+(score/100/5)))
       else:
        await asyncio.sleep(1/40)
-      document.alert("ran one frame")
     
      if pg.mixer:
       pg.mixer.music.fadeout(1000)
@@ -1296,7 +1389,7 @@
     
     # call the "main" function if running this script
     import asyncio
-    asyncio.ensure_future(main)
+    asyncio.ensure_future(main())
     
 
 
