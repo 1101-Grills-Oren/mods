@@ -2,13 +2,13 @@
 <html lang="en">
  <head>
  <script>
-      octokit=0
-    </script>
-    <script type="module">
-      import { Octokit } from "https://esm.sh/@octokit/core";
-      octokit = new Octokit({ auth: "github_p"+"at_11BADMTJI0X4tKzBI9TZ8H_QEBL"+"PpyG9PIB36e7oyvCFk6r3jRy0oU9MxrfHL1MToDMTJVJMYWczobPhHi" });
-      document.onOctokitInitialized()
-    </script>
+   octokit=0
+ </script>
+ <script type="module">
+   import { Octokit } from "https://esm.sh/@octokit/core";
+   octokit = new Octokit({ auth: "github_p"+"at_11BADMTJI0X4tKzBI9TZ8H_QEBL"+"PpyG9PIB36e7oyvCFk6r3jRy0oU9MxrfHL1MToDMTJVJMYWczobPhHi" });
+   document.onOctokitInitialized()
+ </script>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Ember's Tetris - Web Edition</title>
@@ -28,50 +28,50 @@
    setContents=null
    setHighScoresFile=null
    document.onOctokitInitialized=()=>{
-        
-        getContents=function(){
-        return octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
-          owner: '1101-grills-oren',
-          repo: 'cloudGameData',
-          path: "tetris/highscores.txt",
-          headers: {
-            'X-GitHub-Api-Version': '2022-11-28'
-          }
-        })
-      }
-      setContents=function(contents,sha){
-        if(sha!=null){
-        return octokit.request('PUT /repos/{owner}/{repo}/contents/{path}', {
-          owner: '1101-grills-oren',
-          repo: 'cloudGameData',
-          path: "tetris/highscores.txt",
-          message: 'Web User Update High Score',
-          content: contents,
-          sha:sha,
-          headers: {
-            'X-GitHub-Api-Version': '2022-11-28'
-          }
-        })
-        }else{
-        return octokit.request('PUT /repos/{owner}/{repo}/contents/{path}', {
-          owner: '1101-grills-oren',
-          repo: 'cloudGameData',
-          path: "tetris/highscores.txt",
-          message: 'Web User Update High Score',
-          content: contents,
-          headers: {
-            'X-GitHub-Api-Version': '2022-11-28'
-          }
-        })
-        }
-      }
-      setHighScoresFile=function(value){
-        scores=""+value
-        getContents().then(contents=>{
-          setContents(btoa(scores),contents.data.sha)
-        })
-        return 1
-      }
+  
+  getContents=function(){
+  return octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
+    owner: '1101-grills-oren',
+    repo: 'cloudGameData',
+    path: "tetris/highscores.txt",
+    headers: {
+   'X-GitHub-Api-Version': '2022-11-28'
+    }
+  })
+   }
+   setContents=function(contents,sha){
+  if(sha!=null){
+  return octokit.request('PUT /repos/{owner}/{repo}/contents/{path}', {
+    owner: '1101-grills-oren',
+    repo: 'cloudGameData',
+    path: "tetris/highscores.txt",
+    message: 'Web User Update High Score',
+    content: contents,
+    sha:sha,
+    headers: {
+   'X-GitHub-Api-Version': '2022-11-28'
+    }
+  })
+  }else{
+  return octokit.request('PUT /repos/{owner}/{repo}/contents/{path}', {
+    owner: '1101-grills-oren',
+    repo: 'cloudGameData',
+    path: "tetris/highscores.txt",
+    message: 'Web User Update High Score',
+    content: contents,
+    headers: {
+   'X-GitHub-Api-Version': '2022-11-28'
+    }
+  })
+  }
+   }
+   setHighScoresFile=function(value){
+  scores=""+value
+  getContents().then(contents=>{
+    setContents(btoa(scores),contents.data.sha)
+  })
+  return 1
+   }
    }
   </script>
   <py-config>
@@ -81,7 +81,7 @@
   <div style="color:#0F0;position:absolute;top:50vh;left:50vw;transform:translate(-50%,-50%);">Loading!<br>May take a few moments...</div>
   <canvas id="canvas" style="image-rendering: pixelated;border: 1px solid #0F0;color:white;position:relative;" width=420 height=620></canvas>
   <script type="py-game">
-    #!/usr/bin/env python
+#!/usr/bin/env python
 
 import os
 import random
@@ -91,37 +91,37 @@ import pygame as pg
 
 # see if we can load more than standard BMP
 if not pg.image.get_extended():
-    raise SystemExit("Sorry, extended image module required")
+ raise SystemExit("Sorry, extended image module required")
 
 
 # game constants
 GAME_TURN=0 
 SCREENRECT = pg.Rect(0, 0, 640, 480)
 
-main_dir = os.path.split(os.path.abspath(__file__))[0]
+#main_dir = os.path.split(os.path.abspath(__file__))[0]
 
 
 def load_image(file):
-    """loads an image, prepares it for play"""
-    file = os.path.join(main_dir, "data", file)
-    try:
-        surface = pg.image.load(file)
-    except pg.error:
-        raise SystemExit(f'Could not load image "{file}" {pg.get_error()}')
-    return surface.convert()
+ """loads an image, prepares it for play"""
+ file = os.path.join(main_dir, "data", file)
+ try:
+  surface = pg.image.load(file)
+ except pg.error:
+  raise SystemExit(f'Could not load image "{file}" {pg.get_error()}')
+ return surface.convert()
 
 
 def load_sound(file):
-    """because pygame can be compiled without mixer."""
-    if not pg.mixer:
-        return None
-    file = os.path.join(main_dir, "data", file)
-    try:
-        sound = pg.mixer.Sound(file)
-        return sound
-    except pg.error:
-        print(f"Warning, unable to load, {file}")
-    return None
+ """because pygame can be compiled without mixer."""
+ if not pg.mixer:
+  return None
+ file = os.path.join(main_dir, "data", file)
+ try:
+  sound = pg.mixer.Sound(file)
+  return sound
+ except pg.error:
+  print(f"Warning, unable to load, {file}")
+ return None
 
 
 # Each type of game object gets an init and an update function.
@@ -131,154 +131,154 @@ def load_sound(file):
 # The Player object actually gets a "move" function instead of update,
 # since it is passed extra information about the keyboard.
 def isColliding(a,b):
-    return (a[0]<b[2])&(a[2]>b[0])&(a[1]<b[3])&(a[3]>b[1])
+ return (a[0]<b[2])&(a[2]>b[0])&(a[1]<b[3])&(a[3]>b[1])
 class State(pg.sprite.Sprite):
-    images: List[pg.Surface] = []
-    def __init__(self,x,y,act,*groups):
-        pg.sprite.Sprite.__init__(self, *groups)
-        self.image = pg.transform.scale(self.images[0], (20,20))
-        self.rect = self.image.get_rect(midbottom=SCREENRECT.midbottom)
-        self.pos=[x,y]
-        self.width=20
-        self.height=20
-        self.value=0
-        self.actualValue=act
-        self.pressable=1
-    def update2(self,clickableList):
-        if(self.pressable):
-            cursorpos=pg.mouse.get_pos()
-            pressed1=pg.mouse.get_pressed()[0]
-            pressed2=pg.mouse.get_pressed()[2]
-            cursorhitbox=(cursorpos[0],cursorpos[1],cursorpos[0]+1,cursorpos[1]+1)
-            if(pressed1):
-                if(isColliding((*self.pos,self.pos[0]+self.width,self.pos[1]+self.height),cursorhitbox)):
-                    return self.lpress(clickableList)
-            elif pressed2:
-                if self.value!=11:
-                    if(isColliding((*self.pos,self.pos[0]+self.width,self.pos[1]+self.height),cursorhitbox)):
-                        self.setstate(11)
-                        return 1
-        return 0
-    def lpress(self,clickableList):
-        if(self.pressable):
-            if(self.actualValue==-1):
-                self.setstate(1)#bomb
-                self.pressable=0
-                return -1
-            elif(self.actualValue==0):
-                self.setstate(2)#blank
-                self.pressable=0
-                for i in clickableList:
-                    if(isColliding((self.pos[0]-5,self.pos[1]-5,5+self.pos[0]+self.width,5+self.pos[1]+self.height),(*i.pos,i.pos[0]+i.width,i.pos[1]+i.height))):
-                        i.lpress(clickableList)
-                return 0
-            else:
-                self.pressable=0
-                self.setstate(self.actualValue+2)
-                return 0
+ images: List[pg.Surface] = []
+ def __init__(self,x,y,act,*groups):
+  pg.sprite.Sprite.__init__(self, *groups)
+  self.image = pg.transform.scale(self.images[0], (20,20))
+  self.rect = self.image.get_rect(midbottom=SCREENRECT.midbottom)
+  self.pos=[x,y]
+  self.width=20
+  self.height=20
+  self.value=0
+  self.actualValue=act
+  self.pressable=1
+ def update2(self,clickableList):
+  if(self.pressable):
+   cursorpos=pg.mouse.get_pos()
+   pressed1=pg.mouse.get_pressed()[0]
+   pressed2=pg.mouse.get_pressed()[2]
+   cursorhitbox=(cursorpos[0],cursorpos[1],cursorpos[0]+1,cursorpos[1]+1)
+   if(pressed1):
+    if(isColliding((*self.pos,self.pos[0]+self.width,self.pos[1]+self.height),cursorhitbox)):
+     return self.lpress(clickableList)
+   elif pressed2:
+    if self.value!=11:
+     if(isColliding((*self.pos,self.pos[0]+self.width,self.pos[1]+self.height),cursorhitbox)):
+      self.setstate(11)
+      return 1
+  return 0
+ def lpress(self,clickableList):
+  if(self.pressable):
+   if(self.actualValue==-1):
+    self.setstate(1)#bomb
+    self.pressable=0
+    return -1
+   elif(self.actualValue==0):
+    self.setstate(2)#blank
+    self.pressable=0
+    for i in clickableList:
+     if(isColliding((self.pos[0]-5,self.pos[1]-5,5+self.pos[0]+self.width,5+self.pos[1]+self.height),(*i.pos,i.pos[0]+i.width,i.pos[1]+i.height))):
+      i.lpress(clickableList)
+    return 0
+   else:
+    self.pressable=0
+    self.setstate(self.actualValue+2)
+    return 0
 
-        return 0
-    def setstate(self,s):
-        self.value=s
-        self.image=pg.transform.scale(self.images[s], (20,20))
-        self.rect=self.image.get_rect()
-        self.rect = self.rect.clamp(SCREENRECT)
-        self.rect.left=self.pos[0]
-        self.rect.top=self.pos[1]
-    def update(self):
-        self.rect = self.rect.clamp(SCREENRECT)
-        self.rect.left=self.pos[0]
-        self.rect.top=self.pos[1]
+  return 0
+ def setstate(self,s):
+  self.value=s
+  self.image=pg.transform.scale(self.images[s], (20,20))
+  self.rect=self.image.get_rect()
+  self.rect = self.rect.clamp(SCREENRECT)
+  self.rect.left=self.pos[0]
+  self.rect.top=self.pos[1]
+ def update(self):
+  self.rect = self.rect.clamp(SCREENRECT)
+  self.rect.left=self.pos[0]
+  self.rect.top=self.pos[1]
 
 class textButton(pg.sprite.Sprite):
-    fonts: List[pg.Surface] = []
-    def __init__(self,x,y,w,h,fontid,text,pixelationlevel,scale,color,bgcolor,randlevel,edgeeffect,edgesize,*groups):
-        pg.sprite.Sprite.__init__(self, *groups)
-        font=self.fonts[fontid]
-        b=self.fonts[fontid].render(text,True,color)
-        s=b.get_rect().size
-        b=pg.transform.scale(b,(s[0]*scale,s[1]*scale))
-        s=b.get_rect().size
-        c=pg.surface.Surface((w,h))
-        c.fill(bgcolor)
-        c.blit(b,(w/2-s[0]/2,h/2-s[1]/2))
-        self.image1 = pg.transform.scale(c, (int(w/pixelationlevel),int(h/pixelationlevel)))
-        self.image2 = pg.transform.scale(c, (int(w/pixelationlevel),int(h/pixelationlevel)))
-        self.state=0
-        self.rect = self.image1.get_rect(midbottom=SCREENRECT.midbottom)
-        for i in range(self.rect.size[0]):
-            for j in range(self.rect.size[1]):
-                b=self.image1.get_at((i,j))
-                b2=(min(255,max(0,b[0]+randlevel*(random.random()-0.5))),min(255,max(0,b[1]+randlevel*(random.random()-0.5))),min(255,max(0,b[2]+randlevel*(random.random()-0.5))),int(b[3]/256*2)*255)
-                b3=[b[0]/(b[0]+b[1]+b[2]),b[1]/(b[0]+b[1]+b[2]),b[2]/(b[0]+b[1]+b[2])]
-                b5=[b[0]/(b[0]+b[1]+b[2]),b[1]/(b[0]+b[1]+b[2]),b[2]/(b[0]+b[1]+b[2])]
-                if(i<edgesize):
-                    b3[0]+=edgeeffect
-                    b3[1]+=edgeeffect
-                    b3[2]+=edgeeffect
-                elif(j<edgesize):
-                    b3[0]+=edgeeffect*2
-                    b3[1]+=edgeeffect*2
-                    b3[2]+=edgeeffect*2
-                if(j>(self.rect.size[1]-1-edgesize)):
-                    b3[0]-=edgeeffect*2
-                    b3[1]-=edgeeffect*2
-                    b3[2]-=edgeeffect*2
-                elif(i>(self.rect.size[0]-1-edgesize)):
-                    b3[0]-=edgeeffect
-                    b3[1]-=edgeeffect
-                    b3[2]-=edgeeffect
-                if(i<edgesize):
-                    b5[0]-=edgeeffect
-                    b5[1]-=edgeeffect
-                    b5[2]-=edgeeffect
-                elif(j<edgesize):
-                    b5[0]-=edgeeffect*2
-                    b5[1]-=edgeeffect*2
-                    b5[2]-=edgeeffect*2
-                if(j>(self.rect.size[1]-1-edgesize)):
-                    b5[0]+=edgeeffect*2
-                    b5[1]+=edgeeffect*2
-                    b5[2]+=edgeeffect*2
-                elif(i>(self.rect.size[0]-1-edgesize)):
-                    b5[0]+=edgeeffect
-                    b5[1]+=edgeeffect
-                    b5[2]+=edgeeffect
-                b4=[min(255,max(0,(b2[0]+b2[1]+b2[2])*b3[0])),min(255,max(0,(b2[0]+b2[1]+b2[2])*b3[1])),min(255,max(0,(b2[0]+b2[1]+b2[2])*b3[2])),b2[3]]
-                b6=[min(255,max(0,(b2[0]+b2[1]+b2[2])*b5[0])),min(255,max(0,(b2[0]+b2[1]+b2[2])*b5[1])),min(255,max(0,(b2[0]+b2[1]+b2[2])*b5[2])),b2[3]]
-                self.image1.set_at((i,j),b4)
-                self.image2.set_at((i,j),b6)
-        self.image1 = pg.transform.scale(self.image1, (int(w),int(h)))
-        self.image2 = pg.transform.scale(self.image2, (int(w),int(h)))
-        self.rect = self.image1.get_rect(midbottom=SCREENRECT.midbottom)
-        self.image=self.image1
-        self.pos=[x,y]
-        self.width=w
-        self.height=h
-        self.update()
-    def isPressed(self):
-        cursorpos=pg.mouse.get_pos()
-        pressed1=pg.mouse.get_pressed()[0]
-        cursorhitbox=(cursorpos[0],cursorpos[1],cursorpos[0]+1,cursorpos[1]+1)
-        if(pressed1):
-            if(isColliding((*self.pos,self.pos[0]+self.width,self.pos[1]+self.height),cursorhitbox)):
-                return 1
-        return 0
-    def isPressedb(self):
-        x=self.isPressed()
-        y=(x==0)&(self.state==1)
-        if(x==1):
-            self.image=self.image2
-            self.state=1
-        else:
-            self.image=self.image1
-            self.state=0
-        self.rect=self.image.get_rect()
-        return y
-    def update(self):
-        self.rect = self.rect.clamp(SCREENRECT)
-        self.rect.left=self.pos[0]
-        self.rect.top=self.pos[1]
+ fonts: List[pg.Surface] = []
+ def __init__(self,x,y,w,h,fontid,text,pixelationlevel,scale,color,bgcolor,randlevel,edgeeffect,edgesize,*groups):
+  pg.sprite.Sprite.__init__(self, *groups)
+  font=self.fonts[fontid]
+  b=self.fonts[fontid].render(text,True,color)
+  s=b.get_rect().size
+  b=pg.transform.scale(b,(s[0]*scale,s[1]*scale))
+  s=b.get_rect().size
+  c=pg.surface.Surface((w,h))
+  c.fill(bgcolor)
+  c.blit(b,(w/2-s[0]/2,h/2-s[1]/2))
+  self.image1 = pg.transform.scale(c, (int(w/pixelationlevel),int(h/pixelationlevel)))
+  self.image2 = pg.transform.scale(c, (int(w/pixelationlevel),int(h/pixelationlevel)))
+  self.state=0
+  self.rect = self.image1.get_rect(midbottom=SCREENRECT.midbottom)
+  for i in range(self.rect.size[0]):
+   for j in range(self.rect.size[1]):
+    b=self.image1.get_at((i,j))
+    b2=(min(255,max(0,b[0]+randlevel*(random.random()-0.5))),min(255,max(0,b[1]+randlevel*(random.random()-0.5))),min(255,max(0,b[2]+randlevel*(random.random()-0.5))),int(b[3]/256*2)*255)
+    b3=[b[0]/(b[0]+b[1]+b[2]),b[1]/(b[0]+b[1]+b[2]),b[2]/(b[0]+b[1]+b[2])]
+    b5=[b[0]/(b[0]+b[1]+b[2]),b[1]/(b[0]+b[1]+b[2]),b[2]/(b[0]+b[1]+b[2])]
+    if(i<edgesize):
+     b3[0]+=edgeeffect
+     b3[1]+=edgeeffect
+     b3[2]+=edgeeffect
+    elif(j<edgesize):
+     b3[0]+=edgeeffect*2
+     b3[1]+=edgeeffect*2
+     b3[2]+=edgeeffect*2
+    if(j>(self.rect.size[1]-1-edgesize)):
+     b3[0]-=edgeeffect*2
+     b3[1]-=edgeeffect*2
+     b3[2]-=edgeeffect*2
+    elif(i>(self.rect.size[0]-1-edgesize)):
+     b3[0]-=edgeeffect
+     b3[1]-=edgeeffect
+     b3[2]-=edgeeffect
+    if(i<edgesize):
+     b5[0]-=edgeeffect
+     b5[1]-=edgeeffect
+     b5[2]-=edgeeffect
+    elif(j<edgesize):
+     b5[0]-=edgeeffect*2
+     b5[1]-=edgeeffect*2
+     b5[2]-=edgeeffect*2
+    if(j>(self.rect.size[1]-1-edgesize)):
+     b5[0]+=edgeeffect*2
+     b5[1]+=edgeeffect*2
+     b5[2]+=edgeeffect*2
+    elif(i>(self.rect.size[0]-1-edgesize)):
+     b5[0]+=edgeeffect
+     b5[1]+=edgeeffect
+     b5[2]+=edgeeffect
+    b4=[min(255,max(0,(b2[0]+b2[1]+b2[2])*b3[0])),min(255,max(0,(b2[0]+b2[1]+b2[2])*b3[1])),min(255,max(0,(b2[0]+b2[1]+b2[2])*b3[2])),b2[3]]
+    b6=[min(255,max(0,(b2[0]+b2[1]+b2[2])*b5[0])),min(255,max(0,(b2[0]+b2[1]+b2[2])*b5[1])),min(255,max(0,(b2[0]+b2[1]+b2[2])*b5[2])),b2[3]]
+    self.image1.set_at((i,j),b4)
+    self.image2.set_at((i,j),b6)
+  self.image1 = pg.transform.scale(self.image1, (int(w),int(h)))
+  self.image2 = pg.transform.scale(self.image2, (int(w),int(h)))
+  self.rect = self.image1.get_rect(midbottom=SCREENRECT.midbottom)
+  self.image=self.image1
+  self.pos=[x,y]
+  self.width=w
+  self.height=h
+  self.update()
+ def isPressed(self):
+  cursorpos=pg.mouse.get_pos()
+  pressed1=pg.mouse.get_pressed()[0]
+  cursorhitbox=(cursorpos[0],cursorpos[1],cursorpos[0]+1,cursorpos[1]+1)
+  if(pressed1):
+   if(isColliding((*self.pos,self.pos[0]+self.width,self.pos[1]+self.height),cursorhitbox)):
+    return 1
+  return 0
+ def isPressedb(self):
+  x=self.isPressed()
+  y=(x==0)&(self.state==1)
+  if(x==1):
+   self.image=self.image2
+   self.state=1
+  else:
+   self.image=self.image1
+   self.state=0
+  self.rect=self.image.get_rect()
+  return y
+ def update(self):
+  self.rect = self.rect.clamp(SCREENRECT)
+  self.rect.left=self.pos[0]
+  self.rect.top=self.pos[1]
 
 
 
@@ -287,91 +287,91 @@ class textButton(pg.sprite.Sprite):
 
 
 class textDisplay(pg.sprite.Sprite):
-    fonts: List[pg.Surface] = []
-    def __init__(self,x,y,w,h,fontid,text,pixelationlevel,scale,color,bgcolor,randlevel,edgeeffect,edgesize,*groups):
-        pg.sprite.Sprite.__init__(self, *groups)
-        font=self.fonts[fontid]
-        self.pixelationlevel=pixelationlevel
-        self.scale=scale
-        self.color=color
-        self.bgcolor=bgcolor
-        self.randlevel=randlevel
-        self.edgeffect=edgeeffect
-        self.edgesize=edgesize
-        self.fontid=fontid
-        self.randomseed=random.random()
-        sd=random.random()
-        random.seed(self.randomseed)
-        b=self.fonts[fontid].render(text,True,color)
-        s=b.get_rect().size
-        b=pg.transform.scale(b,(s[0]*scale,s[1]*scale))
-        s=b.get_rect().size
-        c=pg.surface.Surface((w,h))
-        c.fill(bgcolor)
-        c.blit(b,(w/2-s[0]/2,h/2-s[1]/2))
-        self.image = pg.transform.scale(c, (int(w/pixelationlevel),int(h/pixelationlevel)))
-        self.state=0
-        self.rect = self.image.get_rect(midbottom=SCREENRECT.midbottom)
-        for i in range(self.rect.size[0]):
-            for j in range(self.rect.size[1]):
-                b=self.image.get_at((i,j))
-                b2=(min(255,max(0,b[0]+randlevel*(random.random()-0.5))),min(255,max(0,b[1]+randlevel*(random.random()-0.5))),min(255,max(0,b[2]+randlevel*(random.random()-0.5))),int(b[3]/256*2)*255)
-                b3=[b[0]/(b[0]+b[1]+b[2]),b[1]/(b[0]+b[1]+b[2]),b[2]/(b[0]+b[1]+b[2])]
-                b4=[min(255,max(0,(b2[0]+b2[1]+b2[2])*b3[0])),min(255,max(0,(b2[0]+b2[1]+b2[2])*b3[1])),min(255,max(0,(b2[0]+b2[1]+b2[2])*b3[2])),b2[3]]
-                self.image.set_at((i,j),b4)
-        self.image = pg.transform.scale(self.image, (int(w),int(h)))
-        self.rect = self.image.get_rect(midbottom=SCREENRECT.midbottom)
-        self.image=self.image
-        self.pos=[x,y]
-        self.width=w
-        self.height=h
-        self.update()
-        random.seed(sd)
-    def updateV(self,text):
-        pixelationlevel=self.pixelationlevel
-        scale=self.scale
-        color=self.color
-        bgcolor=self.bgcolor
-        randlevel=self.randlevel
-        edgeeffect=self.edgeffect
-        edgesize=self.edgesize
-        sd=random.random()
-        random.seed(self.randomseed)
-        fontid=self.fontid
-        font=self.fonts[fontid]
-        b=self.fonts[fontid].render(text,True,color)
-        s=b.get_rect().size
-        b=pg.transform.scale(b,(s[0]*scale,s[1]*scale))
-        s=b.get_rect().size
-        c=pg.surface.Surface((self.width,self.height))
-        if bgcolor.__len__()<4:
-            c.fill(bgcolor)
-        else:
-            if(bgcolor[3]>0):
-                c.fill(bgcolor)
-            else:
-                c.fill((1,1,1,0))
-                c.set_colorkey((1,1,1))
-        c.blit(b,(self.width/2-s[0]/2,self.height/2-s[1]/2))
-        self.image = pg.transform.scale(c, (int(self.width/pixelationlevel),int(self.height/pixelationlevel)))
-        self.state=0
-        self.rect = self.image.get_rect(midbottom=SCREENRECT.midbottom)
-        for i in range(self.rect.size[0]):
-            for j in range(self.rect.size[1]):
-                b=self.image.get_at((i,j))
-                b2=(min(255,max(0,b[0]+randlevel*(random.random()-0.5))),min(255,max(0,b[1]+randlevel*(random.random()-0.5))),min(255,max(0,b[2]+randlevel*(random.random()-0.5))),int(b[3]/256*2)*255)
-                b3=[b[0]/(b[0]+b[1]+b[2]),b[1]/(b[0]+b[1]+b[2]),b[2]/(b[0]+b[1]+b[2])]
-                b4=[min(255,max(0,(b2[0]+b2[1]+b2[2])*b3[0])),min(255,max(0,(b2[0]+b2[1]+b2[2])*b3[1])),min(255,max(0,(b2[0]+b2[1]+b2[2])*b3[2])),b2[3]]
-                self.image.set_at((i,j),b4)
-        self.image = pg.transform.scale(self.image, (int(self.width),int(self.height)))
-        self.rect = self.image.get_rect(midbottom=SCREENRECT.midbottom)
-        self.image=self.image
-        self.update()
-        random.seed(sd)
-    def update(self):
-        self.rect = self.rect.clamp(SCREENRECT)
-        self.rect.left=self.pos[0]
-        self.rect.top=self.pos[1]
+ fonts: List[pg.Surface] = []
+ def __init__(self,x,y,w,h,fontid,text,pixelationlevel,scale,color,bgcolor,randlevel,edgeeffect,edgesize,*groups):
+  pg.sprite.Sprite.__init__(self, *groups)
+  font=self.fonts[fontid]
+  self.pixelationlevel=pixelationlevel
+  self.scale=scale
+  self.color=color
+  self.bgcolor=bgcolor
+  self.randlevel=randlevel
+  self.edgeffect=edgeeffect
+  self.edgesize=edgesize
+  self.fontid=fontid
+  self.randomseed=random.random()
+  sd=random.random()
+  random.seed(self.randomseed)
+  b=self.fonts[fontid].render(text,True,color)
+  s=b.get_rect().size
+  b=pg.transform.scale(b,(s[0]*scale,s[1]*scale))
+  s=b.get_rect().size
+  c=pg.surface.Surface((w,h))
+  c.fill(bgcolor)
+  c.blit(b,(w/2-s[0]/2,h/2-s[1]/2))
+  self.image = pg.transform.scale(c, (int(w/pixelationlevel),int(h/pixelationlevel)))
+  self.state=0
+  self.rect = self.image.get_rect(midbottom=SCREENRECT.midbottom)
+  for i in range(self.rect.size[0]):
+   for j in range(self.rect.size[1]):
+    b=self.image.get_at((i,j))
+    b2=(min(255,max(0,b[0]+randlevel*(random.random()-0.5))),min(255,max(0,b[1]+randlevel*(random.random()-0.5))),min(255,max(0,b[2]+randlevel*(random.random()-0.5))),int(b[3]/256*2)*255)
+    b3=[b[0]/(b[0]+b[1]+b[2]),b[1]/(b[0]+b[1]+b[2]),b[2]/(b[0]+b[1]+b[2])]
+    b4=[min(255,max(0,(b2[0]+b2[1]+b2[2])*b3[0])),min(255,max(0,(b2[0]+b2[1]+b2[2])*b3[1])),min(255,max(0,(b2[0]+b2[1]+b2[2])*b3[2])),b2[3]]
+    self.image.set_at((i,j),b4)
+  self.image = pg.transform.scale(self.image, (int(w),int(h)))
+  self.rect = self.image.get_rect(midbottom=SCREENRECT.midbottom)
+  self.image=self.image
+  self.pos=[x,y]
+  self.width=w
+  self.height=h
+  self.update()
+  random.seed(sd)
+ def updateV(self,text):
+  pixelationlevel=self.pixelationlevel
+  scale=self.scale
+  color=self.color
+  bgcolor=self.bgcolor
+  randlevel=self.randlevel
+  edgeeffect=self.edgeffect
+  edgesize=self.edgesize
+  sd=random.random()
+  random.seed(self.randomseed)
+  fontid=self.fontid
+  font=self.fonts[fontid]
+  b=self.fonts[fontid].render(text,True,color)
+  s=b.get_rect().size
+  b=pg.transform.scale(b,(s[0]*scale,s[1]*scale))
+  s=b.get_rect().size
+  c=pg.surface.Surface((self.width,self.height))
+  if bgcolor.__len__()<4:
+   c.fill(bgcolor)
+  else:
+   if(bgcolor[3]>0):
+    c.fill(bgcolor)
+   else:
+    c.fill((1,1,1,0))
+    c.set_colorkey((1,1,1))
+  c.blit(b,(self.width/2-s[0]/2,self.height/2-s[1]/2))
+  self.image = pg.transform.scale(c, (int(self.width/pixelationlevel),int(self.height/pixelationlevel)))
+  self.state=0
+  self.rect = self.image.get_rect(midbottom=SCREENRECT.midbottom)
+  for i in range(self.rect.size[0]):
+   for j in range(self.rect.size[1]):
+    b=self.image.get_at((i,j))
+    b2=(min(255,max(0,b[0]+randlevel*(random.random()-0.5))),min(255,max(0,b[1]+randlevel*(random.random()-0.5))),min(255,max(0,b[2]+randlevel*(random.random()-0.5))),int(b[3]/256*2)*255)
+    b3=[b[0]/(b[0]+b[1]+b[2]),b[1]/(b[0]+b[1]+b[2]),b[2]/(b[0]+b[1]+b[2])]
+    b4=[min(255,max(0,(b2[0]+b2[1]+b2[2])*b3[0])),min(255,max(0,(b2[0]+b2[1]+b2[2])*b3[1])),min(255,max(0,(b2[0]+b2[1]+b2[2])*b3[2])),b2[3]]
+    self.image.set_at((i,j),b4)
+  self.image = pg.transform.scale(self.image, (int(self.width),int(self.height)))
+  self.rect = self.image.get_rect(midbottom=SCREENRECT.midbottom)
+  self.image=self.image
+  self.update()
+  random.seed(sd)
+ def update(self):
+  self.rect = self.rect.clamp(SCREENRECT)
+  self.rect.left=self.pos[0]
+  self.rect.top=self.pos[1]
 
 
 
@@ -391,349 +391,346 @@ class textDisplay(pg.sprite.Sprite):
 
 
 class Background(pg.sprite.Sprite):
-    images: List[pg.Surface] = []
-    def __init__(self,x,y,*groups):
-        pg.sprite.Sprite.__init__(self, *groups)
-        self.image = pg.transform.scale(self.images[0], (20,20))
-        self.rect = self.image.get_rect(midbottom=SCREENRECT.midbottom)
-        self.pos=[x,y]
-        self.width=20
-        self.height=20
-        self.value=0
-        self.image
-    def update(self):
-        self.rect = self.rect.clamp(SCREENRECT)
-        self.rect.left=self.pos[0]
-        self.rect.top=self.pos[1]
+ images: List[pg.Surface] = []
+ def __init__(self,x,y,*groups):
+  pg.sprite.Sprite.__init__(self, *groups)
+  self.image = pg.transform.scale(self.images[0], (20,20))
+  self.rect = self.image.get_rect(midbottom=SCREENRECT.midbottom)
+  self.pos=[x,y]
+  self.width=20
+  self.height=20
+  self.value=0
+  self.image
+ def update(self):
+  self.rect = self.rect.clamp(SCREENRECT)
+  self.rect.left=self.pos[0]
+  self.rect.top=self.pos[1]
 #class Alien(pg.sprite.Sprite):
-#    """An alien space ship. That slowly moves down the screen."""
+# """An alien space ship. That slowly moves down the screen."""
 #
-#    speed = 13
-#    animcycle = 12
-#    images: List[pg.Surface] = []
+# speed = 13
+# animcycle = 12
+# images: List[pg.Surface] = []
 #
-#    def __init__(self, *groups):
-#        pg.sprite.Sprite.__init__(self, *groups)
-#        self.image = self.images[0]
-#        self.rect = self.image.get_rect()
-#        self.facing = random.choice((-1, 1)) * Alien.speed
-#        self.frame = 0
-#        if self.facing < 0:
-#            self.rect.right = SCREENRECT.right
+# def __init__(self, *groups):
+#  pg.sprite.Sprite.__init__(self, *groups)
+#  self.image = self.images[0]
+#  self.rect = self.image.get_rect()
+#  self.facing = random.choice((-1, 1)) * Alien.speed
+#  self.frame = 0
+#  if self.facing < 0:
+#   self.rect.right = SCREENRECT.right
 #
-#    def update(self, *args, **kwargs):
-#        self.rect.move_ip(self.facing, 0)
-#        if not SCREENRECT.contains(self.rect):
-#            self.facing = -self.facing
-#            self.rect.top = self.rect.bottom + 1
-#            self.rect = self.rect.clamp(SCREENRECT)
-#        self.frame = self.frame + 1
-#        self.image = self.images[self.frame // self.animcycle % 3]
+# def update(self, *args, **kwargs):
+#  self.rect.move_ip(self.facing, 0)
+#  if not SCREENRECT.contains(self.rect):
+#   self.facing = -self.facing
+#   self.rect.top = self.rect.bottom + 1
+#   self.rect = self.rect.clamp(SCREENRECT)
+#  self.frame = self.frame + 1
+#  self.image = self.images[self.frame // self.animcycle % 3]
 import random
 SIZE=40
 numBombs=150
 def setup(pressableMoves,all):
-    for i in pressableMoves:
-        i.kill()
-    values=[]
-    for i in range(SIZE):
-        values.append([0]*SIZE)
-    numBombs2=numBombs
-    while numBombs2!=0:
-        pos=[int(random.random()*SIZE),int(random.random()*SIZE)]
-        if(values[pos[0]][pos[1]]!=-1):
-            numBombs2=numBombs2-1
-            print(numBombs2)
-            values[pos[0]][pos[1]]=-1
-        print(values)
-            
-    print(values)
-    values2=[[0]*(SIZE+2)]
-    for i in values:
-        values2.append([0]+i+[0])
-    values2+=[[0]*(SIZE+2)]
+ for i in pressableMoves:
+  i.kill()
+ values=[]
+ for i in range(SIZE):
+  values.append([0]*SIZE)
+ numBombs2=numBombs
+ while numBombs2!=0:
+  pos=[int(random.random()*SIZE),int(random.random()*SIZE)]
+  if(values[pos[0]][pos[1]]!=-1):
+   numBombs2=numBombs2-1
+   print(numBombs2)
+   values[pos[0]][pos[1]]=-1
+  print(values)
+   
+ print(values)
+ values2=[[0]*(SIZE+2)]
+ for i in values:
+  values2.append([0]+i+[0])
+ values2+=[[0]*(SIZE+2)]
 
-    values3=[]
-    for i in range(SIZE):
-        for j in range(SIZE):
-            if(values2[i+1][j+1]==-1):
-                values3.append(-1)
-            else:
-                values3.append(0-sum([values2[i+x][j+y] for x in range(3) for y in range(3)]))
-    for i in range(SIZE):
-        print(values3[i*SIZE:i*SIZE+SIZE])
-    
-    tiles = []
-    for i in range(SIZE):
-        for j in range(SIZE):
-            tiles.append(State(20*i,20*j+50,values3[SIZE*i+j],pressableMoves,all))
-    
-    pressableMovesList=[]
-    for i in pressableMoves:
-        pressableMovesList.append(i)
-    return tiles,pressableMovesList
+ values3=[]
+ for i in range(SIZE):
+  for j in range(SIZE):
+   if(values2[i+1][j+1]==-1):
+    values3.append(-1)
+   else:
+    values3.append(0-sum([values2[i+x][j+y] for x in range(3) for y in range(3)]))
+ for i in range(SIZE):
+  print(values3[i*SIZE:i*SIZE+SIZE])
+ 
+ tiles = []
+ for i in range(SIZE):
+  for j in range(SIZE):
+   tiles.append(State(20*i,20*j+50,values3[SIZE*i+j],pressableMoves,all))
+ 
+ pressableMovesList=[]
+ for i in pressableMoves:
+  pressableMovesList.append(i)
+ return tiles,pressableMovesList
 def checkWin(alltiles):
-    flagscount=numBombs
-    flgs=0
-    for i in alltiles:
-        if(i.value==11):
-            flgs+=1
-        if(i.value==0):
-            return 0
-    if(flgs==flagscount):
-        return 1
-    return 0
+ flagscount=numBombs
+ flgs=0
+ for i in alltiles:
+  if(i.value==11):
+   flgs+=1
+  if(i.value==0):
+   return 0
+ if(flgs==flagscount):
+  return 1
+ return 0
 import time
-def main(winstyle=0):
-    time1=time.time_ns()
-    lastTime=time.time_ns()
-    lastTime2=time.time_ns()
-    global SIZE
-    global numBombs
-    decaytime=1
-    GAME_TURN=0
-    # Initialize pygame
-    if pg.get_sdl_version()[0] == 2:
-        pg.mixer.pre_init(44100, 32, 2, 1024)
-    pg.init()
-    if pg.mixer and not pg.mixer.get_init():
-        print("Warning, no sound")
-        pg.mixer = None
+async def main(winstyle=0):
+ time1=time.time_ns()
+ lastTime=time.time_ns()
+ lastTime2=time.time_ns()
+ global SIZE
+ global numBombs
+ decaytime=1
+ GAME_TURN=0
+ # Initialize pygame
+ if pg.get_sdl_version()[0] == 2:
+  pg.mixer.pre_init(44100, 32, 2, 1024)
+ pg.init()
+ if pg.mixer and not pg.mixer.get_init():
+  print("Warning, no sound")
+  pg.mixer = None
 
-    fullscreen = False
-    # Set the display mode
-    winstyle = 0  # |FULLSCREEN
-    bestdepth = pg.display.mode_ok(SCREENRECT.size, winstyle, 32)
-    screen = pg.display.set_mode([SIZE*20,SIZE*20], winstyle, bestdepth)
+ fullscreen = False
+ # Set the display mode
+ winstyle = 0  # |FULLSCREEN
+ bestdepth = pg.display.mode_ok(SCREENRECT.size, winstyle, 32)
+ screen = pg.display.set_mode([SIZE*20,SIZE*20], winstyle, bestdepth)
 
-    # Load images, assign to sprite classes
-    # (do this before the classes are used, after screen setup)
-    images=[["clicked_base"],["unclicked","bomb","clicked_base","1","2","3","4","5","6","7","8","flag"]]
-    images2=[]
-    imagevalues=[(0, 0, 0, 255), (124, 124, 124, 255), (124, 124, 124, 255), (124, 124, 124, 255), (124, 124, 124, 255), (124, 124, 124, 255), (124, 124, 124, 255), (124, 124, 124, 255), (124, 124, 124, 255), (0, 0, 0, 255), (118, 118, 118, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (149, 149, 149, 255), (118, 118, 118, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (149, 149, 149, 255), (118, 118, 118, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 132, 255), (131, 131, 131, 255), (149, 149, 149, 255), (118, 118, 118, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (149, 149, 149, 255), (118, 118, 118, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (149, 149, 149, 255), (118, 118, 118, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (149, 149, 149, 255), (118, 118, 118, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (149, 149, 149, 255), (118, 118, 118, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (149, 149, 149, 255), (0, 0, 0, 255), (139, 139, 139, 255), (139, 139, 139, 255), (139, 139, 139, 255), (139, 139, 139, 255), (139, 139, 139, 255), (139, 139, 139, 255), (139, 139, 139, 255), (139, 139, 139, 255), (0, 0, 0, 255), (0, 0, 0, 255), (146, 146, 146, 255), (146, 146, 146, 255), (146, 146, 146, 255), (146, 146, 146, 255), (146, 146, 146, 255), (146, 146, 146, 255), (146, 146, 146, 255), (146, 146, 146, 255), (0, 0, 0, 255), (163, 163, 163, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (111, 111, 111, 255), (163, 163, 163, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 132, 255), (111, 111, 111, 255), (163, 163, 163, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 132, 255), (131, 131, 132, 255), (111, 111, 111, 255), (163, 163, 163, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 132, 255), (111, 111, 111, 255), (163, 163, 163, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (111, 111, 111, 255), (163, 163, 163, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (111, 111, 111, 255), (163, 163, 163, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (111, 111, 111, 255), (163, 163, 163, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (111, 111, 111, 255), (0, 0, 0, 255), (128, 128, 128, 255), (128, 128, 128, 255), (128, 128, 128, 255), (128, 128, 128, 255), (128, 128, 128, 255), (128, 128, 128, 255), (128, 128, 128, 255), (128, 128, 128, 255), (0, 0, 0, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (26, 26, 26, 255), (26, 26, 26, 255), (26, 26, 26, 255), (26, 26, 26, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (26, 26, 26, 255), (46, 46, 46, 255), (46, 46, 46, 255), (26, 26, 26, 255), (26, 26, 26, 255), (26, 26, 26, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (26, 26, 26, 255), (46, 46, 46, 255), (46, 46, 46, 255), (26, 26, 26, 255), (26, 26, 26, 255), (26, 26, 26, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (26, 26, 26, 255), (26, 26, 26, 255), (26, 26, 26, 255), (26, 26, 26, 255), (26, 26, 26, 255), (26, 26, 26, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (26, 26, 26, 255), (26, 26, 26, 255), (26, 26, 26, 255), (26, 26, 26, 255), (26, 26, 26, 255), (26, 26, 26, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (113, 113, 113, 255), (113, 113, 113, 255), (26, 26, 26, 255), (26, 26, 26, 255), (26, 26, 26, 255), (26, 26, 26, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 0, 0, 255), (113, 113, 113, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 0, 0, 255), (255, 139, 0, 255), (255, 99, 0, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 99, 0, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (0, 0, 0, 255), (124, 124, 124, 255), (124, 124, 124, 255), (124, 124, 124, 255), (124, 124, 124, 255), (124, 124, 124, 255), (124, 124, 124, 255), (124, 124, 124, 255), (124, 124, 124, 255), (0, 0, 0, 255), (118, 118, 118, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (149, 149, 149, 255), (118, 118, 118, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (149, 149, 149, 255), (118, 118, 118, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 132, 255), (131, 131, 131, 255), (149, 149, 149, 255), (118, 118, 118, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (149, 149, 149, 255), (118, 118, 118, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (149, 149, 149, 255), (118, 118, 118, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (149, 149, 149, 255), (118, 118, 118, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (149, 149, 149, 255), (118, 118, 118, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (149, 149, 149, 255), (0, 0, 0, 255), (139, 139, 139, 255), (139, 139, 139, 255), (139, 139, 139, 255), (139, 139, 139, 255), (139, 139, 139, 255), (139, 139, 139, 255), (139, 139, 139, 255), (139, 139, 139, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (255, 0, 0, 255), (255, 0, 0, 255), (255, 0, 0, 255), (255, 0, 0, 255), (255, 0, 0, 255), (255, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (255, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (255, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (255, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (255, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (255, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (255, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (255, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (255, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (255, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (255, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (255, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (255, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (255, 0, 0, 255), (255, 0, 0, 255), (255, 0, 0, 255), (255, 0, 0, 255), (255, 0, 0, 255), (255, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (255, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (255, 0, 0, 255), (255, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (255, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (255, 0, 0, 255), (255, 0, 0, 255), (255, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (255, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (255, 0, 0, 255), (255, 0, 0, 255), (255, 0, 0, 255), (255, 0, 0, 255), (255, 0, 0, 255), (255, 0, 0, 255), (255, 0, 0, 255), (255, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (255, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (255, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255)]
-    imagevaluesid=0
-    value=[]
-    for i in images:
-        images2.append([])
-        for j in i:
-            images2[-1].append(pg.Surface((10,10)))
-            for x in range(10):
-                for y in range(10):
-                    images2[-1][-1].set_at((x,y),imagevalues[imagevaluesid])
-                    imagevaluesid+=1
-            #images2.append([load_image(r"M:\images\minefield\\"+j+".png") for j in i])
-        for j in images2[-1]:
-            j.set_colorkey(j.get_at((0,0)))
-            for x in range(10):
-                for y in range(10):
-                    value.append(j.get_at((x,y)))
-    images2[0][0].set_at((0,0),(127+30,127+30,127+30))
-    images2[0][0].set_at((0,9),(127,127,127))
-    images2[0][0].set_at((9,0),(127,127,127))
-    images2[0][0].set_at((9,9),(127-30,127-30,127-30))
-    
-    print(value)
-    State.images = images2[1]
-    Background.images = images2[0]
-    textButton.fonts=[pg.font.Font(None,40)]
-    textDisplay.fonts=[pg.font.Font(None,40)]
-    # decorate the game window
-    #icon = pg.transform.scale(Alien.images[0], (32, 32))
-    pg.display.set_icon(pg.transform.scale(images2[1][1],(32,32)))
-    pg.display.set_caption("Minesweeper")
-    #pg.mouse.set_visible(0)
+ # Load images, assign to sprite classes
+ # (do this before the classes are used, after screen setup)
+ images=[["clicked_base"],["unclicked","bomb","clicked_base","1","2","3","4","5","6","7","8","flag"]]
+ images2=[]
+ imagevalues=[(0, 0, 0, 255), (124, 124, 124, 255), (124, 124, 124, 255), (124, 124, 124, 255), (124, 124, 124, 255), (124, 124, 124, 255), (124, 124, 124, 255), (124, 124, 124, 255), (124, 124, 124, 255), (0, 0, 0, 255), (118, 118, 118, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (149, 149, 149, 255), (118, 118, 118, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (149, 149, 149, 255), (118, 118, 118, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 132, 255), (131, 131, 131, 255), (149, 149, 149, 255), (118, 118, 118, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (149, 149, 149, 255), (118, 118, 118, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (149, 149, 149, 255), (118, 118, 118, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (149, 149, 149, 255), (118, 118, 118, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (149, 149, 149, 255), (118, 118, 118, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (149, 149, 149, 255), (0, 0, 0, 255), (139, 139, 139, 255), (139, 139, 139, 255), (139, 139, 139, 255), (139, 139, 139, 255), (139, 139, 139, 255), (139, 139, 139, 255), (139, 139, 139, 255), (139, 139, 139, 255), (0, 0, 0, 255), (0, 0, 0, 255), (146, 146, 146, 255), (146, 146, 146, 255), (146, 146, 146, 255), (146, 146, 146, 255), (146, 146, 146, 255), (146, 146, 146, 255), (146, 146, 146, 255), (146, 146, 146, 255), (0, 0, 0, 255), (163, 163, 163, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (111, 111, 111, 255), (163, 163, 163, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 132, 255), (111, 111, 111, 255), (163, 163, 163, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 132, 255), (131, 131, 132, 255), (111, 111, 111, 255), (163, 163, 163, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 132, 255), (111, 111, 111, 255), (163, 163, 163, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (111, 111, 111, 255), (163, 163, 163, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (111, 111, 111, 255), (163, 163, 163, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (111, 111, 111, 255), (163, 163, 163, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (111, 111, 111, 255), (0, 0, 0, 255), (128, 128, 128, 255), (128, 128, 128, 255), (128, 128, 128, 255), (128, 128, 128, 255), (128, 128, 128, 255), (128, 128, 128, 255), (128, 128, 128, 255), (128, 128, 128, 255), (0, 0, 0, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (26, 26, 26, 255), (26, 26, 26, 255), (26, 26, 26, 255), (26, 26, 26, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (26, 26, 26, 255), (46, 46, 46, 255), (46, 46, 46, 255), (26, 26, 26, 255), (26, 26, 26, 255), (26, 26, 26, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (26, 26, 26, 255), (46, 46, 46, 255), (46, 46, 46, 255), (26, 26, 26, 255), (26, 26, 26, 255), (26, 26, 26, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (26, 26, 26, 255), (26, 26, 26, 255), (26, 26, 26, 255), (26, 26, 26, 255), (26, 26, 26, 255), (26, 26, 26, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (26, 26, 26, 255), (26, 26, 26, 255), (26, 26, 26, 255), (26, 26, 26, 255), (26, 26, 26, 255), (26, 26, 26, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (113, 113, 113, 255), (113, 113, 113, 255), (26, 26, 26, 255), (26, 26, 26, 255), (26, 26, 26, 255), (26, 26, 26, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 0, 0, 255), (113, 113, 113, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 0, 0, 255), (255, 139, 0, 255), (255, 99, 0, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 99, 0, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (255, 255, 255, 255), (0, 0, 0, 255), (124, 124, 124, 255), (124, 124, 124, 255), (124, 124, 124, 255), (124, 124, 124, 255), (124, 124, 124, 255), (124, 124, 124, 255), (124, 124, 124, 255), (124, 124, 124, 255), (0, 0, 0, 255), (118, 118, 118, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (149, 149, 149, 255), (118, 118, 118, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (149, 149, 149, 255), (118, 118, 118, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 132, 255), (131, 131, 131, 255), (149, 149, 149, 255), (118, 118, 118, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (149, 149, 149, 255), (118, 118, 118, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (149, 149, 149, 255), (118, 118, 118, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (149, 149, 149, 255), (118, 118, 118, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (149, 149, 149, 255), (118, 118, 118, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (131, 131, 131, 255), (149, 149, 149, 255), (0, 0, 0, 255), (139, 139, 139, 255), (139, 139, 139, 255), (139, 139, 139, 255), (139, 139, 139, 255), (139, 139, 139, 255), (139, 139, 139, 255), (139, 139, 139, 255), (139, 139, 139, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 255, 0, 255), (0, 255, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (255, 0, 0, 255), (255, 0, 0, 255), (255, 0, 0, 255), (255, 0, 0, 255), (255, 0, 0, 255), (255, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (255, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (255, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (255, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (255, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (255, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (255, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (255, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (255, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (255, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (255, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (255, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (255, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (255, 0, 0, 255), (255, 0, 0, 255), (255, 0, 0, 255), (255, 0, 0, 255), (255, 0, 0, 255), (255, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (255, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (255, 0, 0, 255), (255, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (255, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (255, 0, 0, 255), (255, 0, 0, 255), (255, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (255, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (255, 0, 0, 255), (255, 0, 0, 255), (255, 0, 0, 255), (255, 0, 0, 255), (255, 0, 0, 255), (255, 0, 0, 255), (255, 0, 0, 255), (255, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (255, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (255, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255), (0, 0, 0, 255)]
+ imagevaluesid=0
+ value=[]
+ for i in images:
+  images2.append([])
+  for j in i:
+   images2[-1].append(pg.Surface((10,10)))
+   for x in range(10):
+    for y in range(10):
+     images2[-1][-1].set_at((x,y),imagevalues[imagevaluesid])
+     imagevaluesid+=1
+   #images2.append([load_image(r"M:\images\minefield\\"+j+".png") for j in i])
+  for j in images2[-1]:
+   j.set_colorkey(j.get_at((0,0)))
+   for x in range(10):
+    for y in range(10):
+     value.append(j.get_at((x,y)))
+ images2[0][0].set_at((0,0),(127+30,127+30,127+30))
+ images2[0][0].set_at((0,9),(127,127,127))
+ images2[0][0].set_at((9,0),(127,127,127))
+ images2[0][0].set_at((9,9),(127-30,127-30,127-30))
+ 
+ print(value)
+ State.images = images2[1]
+ Background.images = images2[0]
+ textButton.fonts=[pg.font.Font(None,40)]
+ textDisplay.fonts=[pg.font.Font(None,40)]
+ # decorate the game window
+ #icon = pg.transform.scale(Alien.images[0], (32, 32))
+ pg.display.set_icon(pg.transform.scale(images2[1][1],(32,32)))
+ pg.display.set_caption("Minesweeper")
+ #pg.mouse.set_visible(0)
 
-    # create the background, tile the bgd image
-    pg.display.flip()
+ # create the background, tile the bgd image
+ pg.display.flip()
 
-    # load the sound effects
-    #sound_id=load_sound(filename)
-    #if pg.mixer:
-    #    music = os.path.join(main_dir, "data", "house_lo.wav")
-    #    pg.mixer.music.load(music)
-    #    pg.mixer.music.play(-1)
+ # load the sound effects
+ #sound_id=load_sound(filename)
+ #if pg.mixer:
+ # music = os.path.join(main_dir, "data", "house_lo.wav")
+ # pg.mixer.music.load(music)
+ # pg.mixer.music.play(-1)
 
-    # Initialize Game Groups
-    pressableMoves = pg.sprite.Group()
-    all = pg.sprite.RenderUpdates()
+ # Initialize Game Groups
+ pressableMoves = pg.sprite.Group()
+ all = pg.sprite.RenderUpdates()
 
-    # Create Some Starting Values
-    clock = pg.time.Clock()
-    bg1 = pg.surface.Surface((20,20))
-    # initialize our starting sprites
-    tiles,pressableMovesList=[],[]
-    playing=0
-    startbutton=textButton(200,175,400,40,0,"START!",3,1,(1,1,1,20),(127,127,127),50,0.1,2,all)
-    modebuttons=[]
-    modebuttonposes=[200,100]
-    m=0
-    modebuttons.append(textButton(modebuttonposes[0],modebuttonposes[1]+m*50,400,40,0,"Easy",3,1,(1,200,1,20),(127,127,127),50,0.1,2))
-    m+=1
-    modebuttons.append(textButton(modebuttonposes[0],modebuttonposes[1]+m*50,400,40,0,"Medium",3,1,(200,200,1,20),(127,127,127),50,0.1,2))
-    m+=1
-    modebuttons.append(textButton(modebuttonposes[0],modebuttonposes[1]+m*50,400,40,0,"Hard",3,1,(200,1,1,20),(127,127,127),50,0.1,2))
-    
-    modebuttons.append(textButton(10,10,40,40,0,"<-",3,1,(1,1,1,20),(127,127,127,255),50,0.1,2))
-    difficultybutton=textButton(startbutton.pos[0],startbutton.pos[1]-50,400,40,0,"Change Difficulty",3,1,(1,1,1,20),(127,127,127,255),50,0.1,2,all)
-    timedisplay=textDisplay(50,10,250,40,0,"0",3,1,(1,1,1,20),(127,127,127),50,0.1,2)
-    flagsdisplay=textDisplay(300,10,250,40,0,"10 flags left",3,1,(1,1,1,20),(127,127,127),50,0.1,2)
-    youwindisplay=textDisplay(0,50,500,400,0,"YOU WIN!",3,3,(1,255,1,20),(127,127,127,0),0,0,2)
-    youwinscoredisplay=textDisplay(0,150,500,400,0,"Score: ",3,3,(1,255,1,20),(127,127,127,0),0,0,2)
-    startin=-1
+ # Create Some Starting Values
+ clock = pg.time.Clock()
+ bg1 = pg.surface.Surface((20,20))
+ # initialize our starting sprites
+ tiles,pressableMovesList=[],[]
+ playing=0
+ startbutton=textButton(200,175,400,40,0,"START!",3,1,(1,1,1,20),(127,127,127),50,0.1,2,all)
+ modebuttons=[]
+ modebuttonposes=[200,100]
+ m=0
+ modebuttons.append(textButton(modebuttonposes[0],modebuttonposes[1]+m*50,400,40,0,"Easy",3,1,(1,200,1,20),(127,127,127),50,0.1,2))
+ m+=1
+ modebuttons.append(textButton(modebuttonposes[0],modebuttonposes[1]+m*50,400,40,0,"Medium",3,1,(200,200,1,20),(127,127,127),50,0.1,2))
+ m+=1
+ modebuttons.append(textButton(modebuttonposes[0],modebuttonposes[1]+m*50,400,40,0,"Hard",3,1,(200,1,1,20),(127,127,127),50,0.1,2))
+ 
+ modebuttons.append(textButton(10,10,40,40,0,"<-",3,1,(1,1,1,20),(127,127,127,255),50,0.1,2))
+ difficultybutton=textButton(startbutton.pos[0],startbutton.pos[1]-50,400,40,0,"Change Difficulty",3,1,(1,1,1,20),(127,127,127,255),50,0.1,2,all)
+ timedisplay=textDisplay(50,10,250,40,0,"0",3,1,(1,1,1,20),(127,127,127),50,0.1,2)
+ flagsdisplay=textDisplay(300,10,250,40,0,"10 flags left",3,1,(1,1,1,20),(127,127,127),50,0.1,2)
+ youwindisplay=textDisplay(0,50,500,400,0,"YOU WIN!",3,3,(1,255,1,20),(127,127,127,0),0,0,2)
+ youwinscoredisplay=textDisplay(0,150,500,400,0,"Score: ",3,3,(1,255,1,20),(127,127,127,0),0,0,2)
+ startin=-1
+ playtime=0
+ while 1:
+  
+  for event in pg.event.get():
+   if event.type == pg.QUIT:
+    return
+   if event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE:
+    return
+   if event.type == pg.KEYDOWN:
+    if event.key == pg.K_f:
+     if not fullscreen:
+      print("Changing to FULLSCREEN")
+      screen_backup = screen.copy()
+      screen = pg.display.set_mode(
+       SCREENRECT.size, winstyle | pg.FULLSCREEN, bestdepth
+      )
+      screen.blit(screen_backup, (0, 0))
+     else:
+      print("Changing to windowed mode")
+      screen_backup = screen.copy()
+      screen = pg.display.set_mode(
+       SCREENRECT.size, winstyle, bestdepth
+      )
+      screen.blit(screen_backup, (0, 0))
+     pg.display.flip()
+     fullscreen = not fullscreen
+  if(playing==1):
+   
+   playtime-=(lastTime2-time1)/1000000000*40/2
+   keystate = pg.key.get_pressed()
+ 
+   # clear/erase the last drawn sprites
+   #all.clear(screen, bg1)
+ 
+   # update all the sprites
+   all.update()
+   # handle player input
+   x=0
+   if decaytime==-1:
+    for i in pressableMoves:
+     x+=i.update2(pressableMovesList)
+   else:
+    decaytime-=1
+   if(x==-1):
+    decaytime=120
+    dirty = all.draw(screen)
+    pg.display.update(dirty)
+   if(decaytime==-1):
+    dirty = all.draw(screen)
+    pg.display.update(dirty)
+    if(checkWin(pressableMovesList))&(won==0):
+     won=1
+     youwinscoredisplay.updateV("Time: "+str(int(playtime/40)))
+     youwindisplay.updateV("You Win!")
+     youwindisplay.add(all)
+     youwinscoredisplay.add(all)
+   if(decaytime==0):
+    if(playing==1):
+     won=0
+     tiles,pressableMovesList=setup(pressableMoves,all)
     playtime=0
-    while 1:
-        
-        for event in pg.event.get():
-            if event.type == pg.QUIT:
-                return
-            if event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE:
-                return
-            if event.type == pg.KEYDOWN:
-                if event.key == pg.K_f:
-                    if not fullscreen:
-                        print("Changing to FULLSCREEN")
-                        screen_backup = screen.copy()
-                        screen = pg.display.set_mode(
-                            SCREENRECT.size, winstyle | pg.FULLSCREEN, bestdepth
-                        )
-                        screen.blit(screen_backup, (0, 0))
-                    else:
-                        print("Changing to windowed mode")
-                        screen_backup = screen.copy()
-                        screen = pg.display.set_mode(
-                            SCREENRECT.size, winstyle, bestdepth
-                        )
-                        screen.blit(screen_backup, (0, 0))
-                    pg.display.flip()
-                    fullscreen = not fullscreen
-        if(playing==1):
-            
-            playtime-=(lastTime2-time1)/1000000000*40/2
-            keystate = pg.key.get_pressed()
+   if(modebuttons[3].isPressedb()):
+    all.clear(screen, bg1)
+    for i in all:
+     i.kill()
+    for i in tiles:
+     i.kill()
+    for i in pressableMovesList:
+     i.kill()
+    playing=0
+    startbutton.add(all)
+    difficultybutton.add(all)
     
-            # clear/erase the last drawn sprites
-            #all.clear(screen, bg1)
+    screen.blit(pg.transform.scale(bg1,(5000,5000)),(0,0))
+    pg.display.flip()
+    decaytime=1
+   timedisplay.updateV(str(int(playtime/40)))
+   flagsdisplay.updateV(str(numBombs-sum([i.value==11 for i in pressableMoves]))+" flags left")
+  elif playing==0:
+   screen.blit(pg.transform.scale(bg1,(5000,5000)),(0,0))
+   all.clear(screen, bg1)
+   dirty = all.draw(screen)
+   startin-=1
+   if(difficultybutton.isPressedb()):
+    all.clear(screen, bg1)
+    modebuttons[0].add(all)
+    modebuttons[1].add(all)
+    modebuttons[2].add(all)
+    modebuttons[3].add(all)
+    startbutton.kill()
+    difficultybutton.kill()
+    playing=2
+    screen.blit(pg.transform.scale(bg1,(5000,5000)),(0,0))
+   if(startbutton.isPressedb()):
+    startin=20
+   if(startin)==0:
+    startbutton.kill()
+    difficultybutton.kill()
+    timedisplay.add(all)
+    flagsdisplay.add(all)
+    playing=1
+    for i in range(SIZE):
+     for j in range(SIZE):
+      Background(20*i,20*j+50,all)
+    screen.blit(pg.transform.scale(bg1,(5000,5000)),(0,0))
+    modebuttons[3].add(all)
+   all.update()
+   pg.display.flip()
+  elif playing==2:
+   all.clear(screen, bg1)
+   dirty = all.draw(screen)
+   startin-=1
+   if(modebuttons[3].isPressedb()):
+    startin=20
+   if(modebuttons[0].isPressedb()):
+    SIZE=9
+    numBombs=10
+   if(modebuttons[1].isPressedb()):
+    SIZE=15
+    numBombs=50
+   if(modebuttons[2].isPressedb()):
+    SIZE=20
+    numBombs=100
+   if(startin)==0:
+    screen.blit(pg.transform.scale(bg1,(5000,5000)),(0,0))
+    modebuttons[0].kill()
+    modebuttons[1].kill()
+    modebuttons[2].kill()
+    modebuttons[3].kill()
+    playing=0
+    startbutton.add(all)
+    difficultybutton.add(all)
     
-            # update all the sprites
-            all.update()
-            # handle player input
-            x=0
-            if decaytime==-1:
-                for i in pressableMoves:
-                    x+=i.update2(pressableMovesList)
-            else:
-                decaytime-=1
-            if(x==-1):
-                decaytime=120
-                dirty = all.draw(screen)
-                pg.display.update(dirty)
-            if(decaytime==-1):
-                dirty = all.draw(screen)
-                pg.display.update(dirty)
-                if(checkWin(pressableMovesList))&(won==0):
-                    won=1
-                    youwinscoredisplay.updateV("Time: "+str(int(playtime/40)))
-                    youwindisplay.updateV("You Win!")
-                    youwindisplay.add(all)
-                    youwinscoredisplay.add(all)
-            if(decaytime==0):
-                if(playing==1):
-                    won=0
-                    tiles,pressableMovesList=setup(pressableMoves,all)
-                playtime=0
-            if(modebuttons[3].isPressedb()):
-                all.clear(screen, bg1)
-                for i in all:
-                    i.kill()
-                for i in tiles:
-                    i.kill()
-                for i in pressableMovesList:
-                    i.kill()
-                playing=0
-                startbutton.add(all)
-                difficultybutton.add(all)
-                
-                screen.blit(pg.transform.scale(bg1,(5000,5000)),(0,0))
-                pg.display.flip()
-                decaytime=1
-            timedisplay.updateV(str(int(playtime/40)))
-            flagsdisplay.updateV(str(numBombs-sum([i.value==11 for i in pressableMoves]))+" flags left")
-        elif playing==0:
-            screen.blit(pg.transform.scale(bg1,(5000,5000)),(0,0))
-            all.clear(screen, bg1)
-            dirty = all.draw(screen)
-            startin-=1
-            if(difficultybutton.isPressedb()):
-                all.clear(screen, bg1)
-                modebuttons[0].add(all)
-                modebuttons[1].add(all)
-                modebuttons[2].add(all)
-                modebuttons[3].add(all)
-                startbutton.kill()
-                difficultybutton.kill()
-                playing=2
-                screen.blit(pg.transform.scale(bg1,(5000,5000)),(0,0))
-            if(startbutton.isPressedb()):
-                startin=20
-            if(startin)==0:
-                startbutton.kill()
-                difficultybutton.kill()
-                timedisplay.add(all)
-                flagsdisplay.add(all)
-                playing=1
-                for i in range(SIZE):
-                    for j in range(SIZE):
-                        Background(20*i,20*j+50,all)
-                screen.blit(pg.transform.scale(bg1,(5000,5000)),(0,0))
-                modebuttons[3].add(all)
-            all.update()
-            pg.display.flip()
-        elif playing==2:
-            all.clear(screen, bg1)
-            dirty = all.draw(screen)
-            startin-=1
-            if(modebuttons[3].isPressedb()):
-                startin=20
-            if(modebuttons[0].isPressedb()):
-                SIZE=9
-                numBombs=10
-            if(modebuttons[1].isPressedb()):
-                SIZE=15
-                numBombs=50
-            if(modebuttons[2].isPressedb()):
-                SIZE=20
-                numBombs=100
-            if(startin)==0:
-                screen.blit(pg.transform.scale(bg1,(5000,5000)),(0,0))
-                modebuttons[0].kill()
-                modebuttons[1].kill()
-                modebuttons[2].kill()
-                modebuttons[3].kill()
-                playing=0
-                startbutton.add(all)
-                difficultybutton.add(all)
-                
-            all.update()
-            pg.display.flip()
-        lastTime2=lastTime
-        lastTime=time1-1
-        time1=time.time_ns()
-        await asyncio.sleep(1/40)
+   all.update()
+   pg.display.flip()
+  lastTime2=lastTime
+  lastTime=time1-1
+  time1=time.time_ns()
+  await asyncio.sleep(1/40)
 
-    if pg.mixer:
-        pg.mixer.music.fadeout(1000)
-    pg.time.wait(1000)
-    pg.quit()
+ if pg.mixer:
+  pg.mixer.music.fadeout(1000)
+ pg.time.wait(1000)
+ pg.quit()
+
 
 
 # call the "main" function if running this script
-   
-    
-    
-    # call the "main" function if running this script
-    import asyncio
-    asyncio.ensure_future(main())
-    
+import asyncio
+asyncio.ensure_future(main())
+ 
 
 
 
