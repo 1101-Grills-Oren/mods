@@ -152,11 +152,14 @@ class State(pg.sprite.Sprite):
   self.actualValue=act
   self.pressable=1
   self.pressnextframe=0
+  self.pressnextframechance=0.7
  def update2(self,clickableList):
   if(self.pressnextframe==2):
-   if(random.random()>0.7):
+   if(random.random()>self.pressnextframechance):
     self.lpress(clickableList)
     self.pressnextframe=-1
+   else:
+    self.pressnextframechance-=0.1
   
   if(self.pressable):
    cursorpos=pg.mouse.get_pos()
