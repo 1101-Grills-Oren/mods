@@ -705,7 +705,7 @@
     
     
     
-    keybinds=[pg.K_UP,pg.K_DOWN,pg.K_RIGHT,pg.K_LEFT,pg.K_SPACE]
+    keybinds=[pg.K_UP,pg.K_DOWN,pg.K_RIGHT,pg.K_LEFT,pg.K_SPACE,pg.K_P,pg.K_M,pg.K_H]
     
     
     def getControlsList():
@@ -1007,12 +1007,14 @@
           screen.blit(screen_backup, (0, 0))
          pg.display.flip()
          fullscreen = not fullscreen
+      keystate = pg.key.get_pressed()
       if (playing==0):
+       
        if(1):
         playButton.add(all_mainmenu)
         all_mainmenu.update()
         if(1):
-         if(playButton.isPressed()):
+         if(playButton.isPressed()|keystate[pg.K_P]):
           all.update()
           all.draw(screen)
           playing=1
@@ -1047,7 +1049,7 @@
           scoreDisplay.add(all)
          if(quitButton2.isPressed()):
           return
-         if(highScoresButton.isPressed()):
+         if(highScoresButton.isPressed()|keystate[pg.K_H]):
           playing=4
           def test(n):
            print("test")
@@ -1081,11 +1083,11 @@
          if(controlsButton.isPressed()):
           playing=5
       if(playing==4):
-       if(toMainMenuButtonHighscores.isPressedb()):
+       if(toMainMenuButtonHighscores.isPressedb()|keystate[pg.K_M]):
         playing=0
       if(playing==2):
        if 1:
-        if(retryButton.isPressedb()):
+        if(retryButton.isPressedb()||keystate[pg.K_P]):
          all.update()
          all.draw(screen)
          playing=1
@@ -1120,7 +1122,7 @@
          scoreDisplay.add(all)
         if(quitButton.isPressedb()):
          return
-        if(toMainMenuButton.isPressedb()):
+        if(toMainMenuButton.isPressedb()|keystate[pg.K_M]):
          playing=0
          
       if(playing==1):
