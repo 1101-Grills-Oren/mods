@@ -705,7 +705,7 @@
     
     
     
-    keybinds=[pg.K_UP,pg.K_DOWN,pg.K_RIGHT,pg.K_LEFT,pg.K_SPACE,pg.K_P,pg.K_M,pg.K_H]
+    keybinds=[pg.K_UP,pg.K_DOWN,pg.K_RIGHT,pg.K_LEFT,pg.K_SPACE,pg.K_p,pg.K_m,pg.K_h]
     
     
     def getControlsList():
@@ -1014,7 +1014,7 @@
         playButton.add(all_mainmenu)
         all_mainmenu.update()
         if(1):
-         if(playButton.isPressed()|keystate[pg.K_P]):
+         if(playButton.isPressed()|keystate[pg.K_p]):
           all.update()
           all.draw(screen)
           playing=1
@@ -1083,11 +1083,11 @@
          if(controlsButton.isPressed()):
           playing=5
       if(playing==4):
-       if(toMainMenuButtonHighscores.isPressedb()|keystate[pg.K_M]):
+       if(toMainMenuButtonHighscores.isPressedb()|keystate[pg.K_m]):
         playing=0
       if(playing==2):
        if 1:
-        if(retryButton.isPressedb()|keystate[pg.K_P]):
+        if(retryButton.isPressedb()|keystate[pg.K_p]):
          all.update()
          all.draw(screen)
          playing=1
@@ -1122,7 +1122,7 @@
          scoreDisplay.add(all)
         if(quitButton.isPressedb()):
          return
-        if(toMainMenuButton.isPressedb()|keystate[pg.K_M]):
+        if(toMainMenuButton.isPressedb()|keystate[pg.K_m]):
          playing=0
          
       if(playing==1):
