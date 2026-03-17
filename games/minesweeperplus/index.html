@@ -80,6 +80,13 @@
   <!-- type mpy (MicroPython) or py (Pyodide) to run some Python -->
   <div style="color:#0F0;position:absolute;top:50vh;left:50vw;transform:translate(-50%,-50%);">Loading!<br>May take a few moments...</div>
   <canvas id="canvas" style="image-rendering: pixelated;border: 1px solid #0F0;color:white;position:relative;" width=420 height=620></canvas>
+     <script>
+// Disable right-click context menu
+document.addEventListener("contextmenu", function (event) {
+    event.preventDefault(); // Prevent default right-click menu
+    console.log("Right-click is disabled on this page."); // Optional feedback
+}, false);
+</script>
   <script type="py-game">
 #!/usr/bin/env python
 
@@ -144,7 +151,12 @@ class State(pg.sprite.Sprite):
   self.value=0
   self.actualValue=act
   self.pressable=1
+  self.pressnextframe=0
  def update2(self,clickableList):
+  if(self.pressnextframe==2):
+   self.lpress(clickableList)
+   self.pressnextframe=-1
+  
   if(self.pressable):
    cursorpos=pg.mouse.get_pos()
    pressed1=pg.mouse.get_pressed()[0]
@@ -158,19 +170,26 @@ class State(pg.sprite.Sprite):
      if(isColliding((*self.pos,self.pos[0]+self.width,self.pos[1]+self.height),cursorhitbox)):
       self.setstate(11)
       return 1
+  
   return 0
  def lpress(self,clickableList):
   if(self.pressable):
    if(self.actualValue==-1):
     self.setstate(1)#bomb
     self.pressable=0
+    for i in clickableList:
+     if(i.actualValue==-1):
+      i.setstate(1)
+      i.pressable=0
     return -1
    elif(self.actualValue==0):
     self.setstate(2)#blank
     self.pressable=0
     for i in clickableList:
      if(isColliding((self.pos[0]-5,self.pos[1]-5,5+self.pos[0]+self.width,5+self.pos[1]+self.height),(*i.pos,i.pos[0]+i.width,i.pos[1]+i.height))):
-      i.lpress(clickableList)
+      #i.lpress(clickableList)
+      if(i.pressnextframe==0):
+       i.pressnextframe=3
     return 0
    else:
     self.pressable=0
@@ -430,8 +449,11 @@ class Background(pg.sprite.Sprite):
 #  self.frame = self.frame + 1
 #  self.image = self.images[self.frame // self.animcycle % 3]
 import random
-SIZE=40
-numBombs=150
+SIZE=30
+numBombs=10
+
+def getScoreboardName():
+ return f"highscores_{SIZE}_{numBombs}.json"
 def setup(pressableMoves,all):
  for i in pressableMoves:
   i.kill()
@@ -504,7 +526,7 @@ async def main(winstyle=0):
  # Set the display mode
  winstyle = 0  # |FULLSCREEN
  bestdepth = pg.display.mode_ok(SCREENRECT.size, winstyle, 32)
- screen = pg.display.set_mode([SIZE*20,SIZE*20], winstyle, bestdepth)
+ screen = pg.display.set_mode([9*4*20,9*4*20], winstyle, bestdepth)
 
  # Load images, assign to sprite classes
  # (do this before the classes are used, after screen setup)
@@ -557,7 +579,7 @@ async def main(winstyle=0):
  pressableMoves = pg.sprite.Group()
  all = pg.sprite.RenderUpdates()
 
- # Create Some Starting Values
+ # Create Some  ing Values
  clock = pg.time.Clock()
  bg1 = pg.surface.Surface((20,20))
  # initialize our starting sprites
@@ -621,6 +643,9 @@ async def main(winstyle=0):
    if decaytime==-1:
     for i in pressableMoves:
      x+=i.update2(pressableMovesList)
+    for i in pressableMoves:
+     if(i.pressnextframe==3):
+      i.pressnextframe=2
    else:
     decaytime-=1
    if(x==-1):
@@ -726,11 +751,14 @@ async def main(winstyle=0):
  pg.quit()
 
 
+# call the "main" function if running this script
+
+
 
 # call the "main" function if running this script
 import asyncio
 asyncio.ensure_future(main())
- 
+
 
 
 
