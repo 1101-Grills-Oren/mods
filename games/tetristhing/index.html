@@ -198,12 +198,15 @@
     if('username' in [i[0] for i in Object.entries(localStorage)]):
      username=localStorage.getItem("username")
     else:
-     tempusername=input("Please give your email so that you can appear on the scoreboard.\nThis only needs to be done once.")
+     tempusername=input("Please give your email OR username so that you can appear on the scoreboard.\nThis only needs to be done once.")
      if(type(tempusername)!=type("jsnull")):
-      alert("You MUST put in your email in order to play.")
+      alert("You MUST put in your email or username in order to play.")
       document.body.innerHTML="Game Crashed!<br>Cause:<br><code>User refused to enter their username</code><br><br>Please restart the page if you want to try again..."
      else:
-      username=tempusername[0:5]
+      if("@" in tempusername):
+       username=tempusername[0:5]
+      else:
+       username=str(tempusername)
       localStorage.setItem("username",username)
     #bushgod
     #username="gravi"
