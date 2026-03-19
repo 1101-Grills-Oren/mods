@@ -134,6 +134,25 @@
      except Exception as e:
       Element("output").write(f"Error: {e}")
      #return {"Not Functional In Web Version":"ERROR"}
+    async def getHighScoresBlocking():
+     try:
+      # Perform GET request
+      def temp(response):
+       print("tempfunc")
+       document.remotevar=response
+       try:
+        print(atob(str(response.data.content)).replace("'",'"'))
+        return (json.loads(atob(str(response.data.content)).replace("'",'"')))
+       except Exception as e:
+        print("halp",e)
+      print("fetching")
+      return temp(await getContents())
+      # Display result in HTML
+      #output = Element("output")
+      #output.write(f"Title: {data['title']}\nCompleted: {data['completed']}")
+     except Exception as e:
+      Element("output").write(f"Error: {e}")
+     #return {"Not Functional In Web Version":"ERROR"}
     from js import setHighScoresFile
     def mergeHighscoresFile(user,score):
      def temp(a):
@@ -194,20 +213,42 @@
     from js import Object
     from js import alert
     from js import document
+    allusers=[i for i in await getHighScoresBlocking()]
     username:str=os.getlogin()
     if('username' in [i[0] for i in Object.entries(localStorage)]):
      username=localStorage.getItem("username")
     else:
-     tempusername=input("Please give your email OR username so that you can appear on the scoreboard.\nThis only needs to be done once.")
-     if(type(tempusername)!=type("jsnull")):
-      alert("You MUST put in your email or username in order to play.")
-      document.body.innerHTML="Game Crashed!<br>Cause:<br><code>User refused to enter their username</code><br><br>Please restart the page if you want to try again..."
-     else:
-      if("@" in tempusername):
-       username=tempusername[0:5]
+     newOrReturningPlayer=""
+     while(newOrReturningPlayer.lower() not in ["new","returning"]):
+      newOrReturningPlayer=input("Are you a NEW or RETURNING player?")
+      while(type(newOrReturningPlayer)!=type("")):
+       newOrReturningPlayer=input("Are you a NEW or RETURNING player?")
+     
+     
+     tempusername=[input("Email or username") if newOrReturningPlayer.lower()=="new" else ""][0]
+     while((((tempusername in allusers)-0.5)*((newOrReturningPlayer.lower()=="new")-0.5)>0)&(type(tempusername)==type("jsnull"))):
+      if(newOrReturningPlayer.lower()=="new"):
+       tempusername=input("Username '"+tempusername+"' already taken!\nPlease give your email OR username so that you can appear on the scoreboard.\nThis only needs to be done once.")
       else:
-       username=str(tempusername)
-      localStorage.setItem("username",username)
+       if(tempusername==""):
+        tempusername=input("Please give your email OR username so that you can appear on the scoreboard.\nThis only needs to be done once.")
+       else:
+        tempusername=input("'"+tempusername+"' is definitely not your username; it's not anybody's username!\nPlease give your email OR username so that you can appear on the scoreboard.\nThis only needs to be done once.")
+      if(type(tempusername)!=type("jsnull")):
+       alert("You MUST put in your email or username in order to play.")
+       document.body.style=""
+       document.body.innerHTML="Game Crashed!<br>Cause:<br><code>User refused to enter their username</code><br><br>Please restart the page if you want to try again..."
+       throw
+      else:
+       if("@" in tempusername):
+        tempusername=tempusername[0:5]
+       else:
+        tempusername=str(tempusername)
+     username=tempusername
+     localStorage.setItem("username",username)
+     if(newOrReturningPlayer.lower()=="new"):
+      mergeHighscoresFile(username,0)
+     
     #bushgod
     #username="gravi"
     
@@ -970,7 +1011,7 @@
      a=240
      b=40
      s=50
-     usernameDisplay=textDisplay(20,20,170,20,0,"User: "+username,1,1,(25,255,25),None,0,0,0,all_mainmenu)
+     usernameDisplay=textDisplay(20,20,580,20,0,"User: "+username,1,1,(25,255,25),None,0,0,0,all_mainmenu)
      retryButton=textButton(420/2-a/2,620/2-b/2-s,a,b,0,"Retry",2,1.2,(25,25,25),(127,127,127),0,0.1,3,all_losescreen)
      playButton=textButton(420/2-a/2,620/2-b/2-s*3/2,a,b,0,"Play",2,1,(25,255,25),(127,127,127),0,0.1,3,all_mainmenu)
      highScoresButton=textButton(420/2-a/2,620/2-b/2-s/2,a,b,0,"Highscores",2,1,(25,255,25),(127,127,127),0,0.1,3,all_mainmenu)
