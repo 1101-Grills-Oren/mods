@@ -27,7 +27,6 @@
    getContents=null
    setContents=null
    setHighScoresFile=null
-   setHighScoresFileMessage="Web User Update High Score"
    document.onOctokitInitialized=()=>{
         
         getContents=function(){
@@ -46,7 +45,7 @@
           owner: '1101-grills-oren',
           repo: 'cloudGameData',
           path: "tetris/highscores.txt",
-          message: setHighScoresFileMessage,
+          message: 'Web User Update High Score',
           content: contents,
           sha:sha,
           headers: {
@@ -58,7 +57,7 @@
           owner: '1101-grills-oren',
           repo: 'cloudGameData',
           path: "tetris/highscores.txt",
-          message: setHighScoresFileMessage,
+          message: 'Web User Update High Score',
           content: contents,
           headers: {
             'X-GitHub-Api-Version': '2022-11-28'
@@ -100,7 +99,7 @@
     
     
     
-    from js import setHighScoresFileMessage
+    
     import base64
     import json
     def updateHighscoresFile(content):
@@ -248,9 +247,8 @@
      username=tempusername
      localStorage.setItem("username",username)
      if(newOrReturningPlayer.lower()=="new"):
-      setHighScoresFileMessage="Add Web User \""+username+"\""
       mergeHighscoresFile(username,0)
-    setHighScoresFileMessage="Web User \""+username+"\" Update High Score"
+     
     #bushgod
     #username="gravi"
     
