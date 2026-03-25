@@ -13,6 +13,10 @@
             type="module"
             src="https://pyscript.net/releases/2026.3.1/core.js"
         ></script>
+        <script>
+            await pyodide.loadPackage("pygame-ce")
+            await pyodide.loadPackage("micropip")
+        </script>
     </head>
     <body>
         <!-- type mpy (MicroPython) or py (Pyodide) to run some Python -->
