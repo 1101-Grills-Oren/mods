@@ -77,6 +77,7 @@ def removeExtraSpaces(input):
 codecMap={
    'Codec.STRING':"String",
    'Codec.DOUBLE':'Double',
+   'Codec.FLOAT':'Float',
    'Codec.BOOLEAN':'Boolean',
    'Codec.INTEGER':'Integer',
    "ProtocolCodecs.DIRECTION":"Direction",
