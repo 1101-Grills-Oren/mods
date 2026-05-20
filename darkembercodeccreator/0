@@ -78,6 +78,7 @@ codecMap={
    'Codec.STRING':"String",
    'Codec.DOUBLE':'Double',
    'Codec.BOOLEAN':'Boolean',
+   'Codec.FLOAT':'Float',
    'Codec.INTEGER':'Integer',
    "ProtocolCodecs.DIRECTION":"Direction",
    "ProtocolCodecs.VECTOR2F":"Vector2f",
