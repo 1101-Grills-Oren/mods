@@ -245,6 +245,11 @@
         tempusername=tempusername[0:5]
        else:
         tempusername=str(tempusername)
+     if(type(tempusername)!=type("jsnull")):
+      alert("username null!!!!!! eror!!!")
+      document.body.style=""
+      document.body.innerHTML="Game Crashed!<br>Cause:<br><code>User username null</code><br><br>Please restart the page if you want to try again..."
+      throw
      username=tempusername
     if(newOrReturningPlayer.lower()=="new"):
      mergeHighscoresFile(username,0)
