@@ -215,6 +215,7 @@
     from js import document
     allusers=[i for i in await getHighScoresBlocking()]
     username:str=os.getlogin()
+    newOrReturningPlayer=""
     if('username' in [i[0] for i in Object.entries(localStorage)]):
      username=localStorage.getItem("username")
     else:
