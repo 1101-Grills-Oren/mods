@@ -226,7 +226,7 @@
        newOrReturningPlayer=input("Are you a NEW or RETURNING player?")
      
      
-     tempusername=[input("Email or username") if newOrReturningPlayer.lower()=="new" else ""][0]
+     tempusername=[input("Please give your email or username so that you can appear on the scoreboard.") if newOrReturningPlayer.lower()=="new" else ""][0]
      while((((tempusername in allusers)-0.5)*((newOrReturningPlayer.lower()=="new")-0.5)>0)&(type(tempusername)==type("jsnull"))):
       if(newOrReturningPlayer.lower()=="new"):
        tempusername=input("Username '"+tempusername+"' already taken!\nPlease give your email OR username so that you can appear on the scoreboard.\nThis only needs to be done once.")
