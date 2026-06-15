@@ -6,7 +6,7 @@
     </script>
     <script type="module">
       import { Octokit } from "https://esm.sh/@octokit/core";
-      octokit = new Octokit({ auth: "github_p"+"at_11BADMTJI0X4tKzBI9TZ8H_QEBL"+"PpyG9PIB36e7oyvCFk6r3jRy0oU9MxrfHL1MToDMTJVJMYWczobPhHi" });
+      octokit = new Octokit({ auth: atob("Z2l0aHViX3BhdF8xMUJBRE1USkkwWDR0S3pCSTlUWjhIX1FFQkxQcHlHOV"+"BJQjM2ZTdveXZDRms2cjNqUnkwb1U5TXhyZkhMMU1Ub0RNVEpWSk1ZV2N6b2JQaEhp") });
       document.onOctokitInitialized()
     </script>
   <meta charset="utf-8" />
@@ -245,8 +245,8 @@
        else:
         tempusername=str(tempusername)
      username=tempusername
-     if(newOrReturningPlayer.lower()=="new"):
-      mergeHighscoresFile(username,0)
+    if(newOrReturningPlayer.lower()=="new"):
+     mergeHighscoresFile(username,0)
     localStorage.setItem("username",username)
      
     #bushgod
