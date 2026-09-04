@@ -775,11 +775,24 @@
 
                 return input
             }
-            function addtolist(parent, content, link, platforms, versions, views, updated, userid, downloads,userlinkoverride='user') {
+            function addtolist(parent, content, link, platforms, versions, views, updated, userid, downloads,userlinkoverride='user',icon_link) {
                 allversions = [versions]
                 versions = [versions[versions.length - 1]]
 
                 n = document.createElement('tr')
+                dataelement = document.createElement('td')
+                if(icon_link!=null){
+                img = document.createElement('img')
+                console.log(icon_link)
+                img.src=icon_link+"?format=png"
+                img.width=img.height=100
+                console.log(img.src)
+                dataelement.append(img)
+                }else{
+                    
+                    dataelement.innerHTML='<svg viewbox="0 0 104 104" flex-shrink="0" stroke-miterlimit="1.5"><path fill="#34363c" d="M0 0h103.4v103.4H0z" data-v-16539dd0=""></path><path fill="none" stroke="#9a9a9a" stroke-width="5" d="M51.7 92.5V51.7L16.4 31.3l35.3 20.4L87 31.3 51.7 11 16.4 31.3v40.8l35.3 20.4L87 72V31.3L51.7 11" data-v-16539dd0=""></path></svg>'
+                }
+                n.append(dataelement)
                 dataelement = document.createElement('td')
                 modnameandowner = document.createElement('div')
                 modnameandowner.style.display = 'flex'
@@ -858,12 +871,12 @@
                 return retval
             }
             )(keys)
-            users = ["Gx7gGzJc", "7xEgkjp0", "eWAPOyOl","KtyVNOuI"]
+            users = ["Gx7gGzJc", "7xEgkjp0", "eWAPOyOl","KtyVNOuI","EBGboB3o"]
             organizations=['RLz2asTB']
             function loadonly(platforms, versions, types) {
                 modholder = document.querySelector("#modholder");
                 reset(modholder)
-                modholder.innerHTML = '<thead><tr style="color: rgb(0, 0, 255);text-align:left;bold:false;"><th><div style="display: flex; flex-direction: column;"><span style="color: rgb(0, 255, 0);">Title</span><span style="color: rgb(0, 255, 0); padding-left: 10px;">Owner</span></div></th><th>Loaders</th><th>Latest Version</th><th>Views</th><th>Downloads</th><th>Last Updated</th></tr></thead>'
+                modholder.innerHTML = '<thead><tr style="color: rgb(0, 0, 255);text-align:left;bold:false;"><th>Icon</th><th><div style="display: flex; flex-direction: column;"><span style="color: rgb(0, 255, 0);">Title</span><span style="color: rgb(0, 255, 0); padding-left: 10px;">Owner</span></div></th><th>Loaders</th><th>Latest Version</th><th>Views</th><th>Downloads</th><th>Last Updated</th></tr></thead>'
                 for (u = 0; u < users.length; u++) {
                     modsandids = getUserProjects(users[u])
                     modsandids.then(modsData => {
@@ -890,9 +903,9 @@
                                             if ((types.length == 0) || (doesOverlap(types, modsData[k]['']))) {
                                                 console.log('add' + k)
                                                 if (views[modsData[k].id] != undefined) {
-                                                    addtolist(modholder, modsData[k].title, "https://1101-grills-oren.github.io/mods/details/?mod=" + modsData[k].id, modsData[k].loaders, modsData[k].game_versions, views[modsData[k].id][0], modsData[k].updated, tuserid, modsData[k].downloads,'user')
+                                                    addtolist(modholder, modsData[k].title, "https://1101-grills-oren.github.io/mods/details/?mod=" + modsData[k].id, modsData[k].loaders, modsData[k].game_versions, views[modsData[k].id][0], modsData[k].updated, tuserid, modsData[k].downloads,'user',modsData[k].raw_icon_url)
                                                 } else {
-                                                    addtolist(modholder, modsData[k].title, "https://1101-grills-oren.github.io/mods/details/?mod=" + modsData[k].id, modsData[k].loaders, modsData[k].game_versions, "N/A", modsData[k].updated, tuserid, modsData[k].downloads,'user')
+                                                    addtolist(modholder, modsData[k].title, "https://1101-grills-oren.github.io/mods/details/?mod=" + modsData[k].id, modsData[k].loaders, modsData[k].game_versions, "N/A", modsData[k].updated, tuserid, modsData[k].downloads,'user',modsData[k].raw_icon_url)
                                                 }
                                             }
                                         }
@@ -920,7 +933,7 @@
                                     if ((platforms.length == 0) || (doesOverlap(platforms, modsData[k]['']))) {
                                         if ((types.length == 0) || (doesOverlap(types, modsData[k]['']))) {
                                             console.log('add' + k)
-                                            addtolist(modholder, modsData[k].title, "https://1101-grills-oren.github.io/mods/details/?mod=" + modsData[k].id, modsData[k].loaders, modsData[k].game_versions, null, modsData[k].updated, userid, modsData[k].downloads)
+                                            addtolist(modholder, modsData[k].title, "https://1101-grills-oren.github.io/mods/details/?mod=" + modsData[k].id, modsData[k].loaders, modsData[k].game_versions, null, modsData[k].updated, userid, modsData[k].downloads,"user",modsData[k].raw_icon_url)
                                         }
                                     }
                                 }
@@ -1002,9 +1015,9 @@
                                             if ((types.length == 0) || (doesOverlap(types, modsData[k]['']))) {
                                                 console.log('add' + k)
                                                 if (views[modsData[k].id] != undefined) {
-                                                    addtolist(modholder, modsData[k].name, "https://1101-grills-oren.github.io/mods/details/?mod=" + modsData[k].id, modsData[k].loaders, modsData[k].game_versions, views[modsData[k].id][0], modsData[k].updated, tuserid, modsData[k].downloads,'organization')
+                                                    addtolist(modholder, modsData[k].name, "https://1101-grills-oren.github.io/mods/details/?mod=" + modsData[k].id, modsData[k].loaders, modsData[k].game_versions, views[modsData[k].id][0], modsData[k].updated, tuserid, modsData[k].downloads,'organization',modsData[k].raw_icon_url)
                                                 } else {
-                                                    addtolist(modholder, modsData[k].name, "https://1101-grills-oren.github.io/mods/details/?mod=" + modsData[k].id, modsData[k].loaders, modsData[k].game_versions, "N/A", modsData[k].updated, tuserid, modsData[k].downloads,'organization')
+                                                    addtolist(modholder, modsData[k].name, "https://1101-grills-oren.github.io/mods/details/?mod=" + modsData[k].id, modsData[k].loaders, modsData[k].game_versions, "N/A", modsData[k].updated, tuserid, modsData[k].downloads,'organization',modsData[k].raw_icon_url)
                                                 }
                                             }
                                         }
@@ -1032,7 +1045,7 @@
                                     if ((platforms.length == 0) || (doesOverlap(platforms, modsData[k]['']))) {
                                         if ((types.length == 0) || (doesOverlap(types, modsData[k]['']))) {
                                             console.log('add' + k)
-                                            addtolist(modholder, modsData[k].name, "https://1101-grills-oren.github.io/mods/details/?mod=" + modsData[k].id, modsData[k].loaders, modsData[k].game_versions, null, modsData[k].updated, userid, modsData[k].downloads)
+                                            addtolist(modholder, modsData[k].name, "https://1101-grills-oren.github.io/mods/details/?mod=" + modsData[k].id, modsData[k].loaders, modsData[k].game_versions, null, modsData[k].updated, userid, modsData[k].downloads,"user",modsData[k].raw_icon_url)
                                         }
                                     }
                                 }
