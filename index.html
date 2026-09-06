@@ -229,6 +229,11 @@
                 text-decoration:none;
                 color:orange;
             }
+            .project_description{
+                color:#0F0;
+                text-decoration:none;
+                font-style: italic;
+            }
             /*.popuphead:hover + .popupbody {
         display:block;
         transform:scale(1,1);
@@ -775,7 +780,10 @@
 
                 return input
             }
-            function addtolist(parent, content, link, platforms, versions, views, updated, userid, downloads,userlinkoverride='user',icon_link) {
+            function addtolist(parent, content, link, platforms, versions, views, updated, userid, downloads,userlinkoverride='user',icon_link,quickdescript) {
+                if(quickdescript.length>100){
+                quickdescript=quickdescript.substring(0,97)+"..."
+                }
                 allversions = [versions]
                 versions = [versions[versions.length - 1]]
 
@@ -809,6 +817,12 @@
                 x.href = "https://modrinth.com/"+userlinkoverride+"/" + userid
                 modnameandowner.style.color = "#00FF00"
                 x.style.paddingLeft = "10px"
+                modnameandowner.append(x)
+                x = document.createElement('a')
+                x.textContent = quickdescript
+                x.href = link
+                x.style.color = "#00FF00"
+                x.className="project_description"
                 modnameandowner.append(x)
                 dataelement.append(modnameandowner)
                 n.append(dataelement)
@@ -903,9 +917,10 @@
                                             if ((types.length == 0) || (doesOverlap(types, modsData[k]['']))) {
                                                 console.log('add' + k)
                                                 if (views[modsData[k].id] != undefined) {
-                                                    addtolist(modholder, modsData[k].title, "https://1101-grills-oren.github.io/mods/details/?mod=" + modsData[k].id, modsData[k].loaders, modsData[k].game_versions, views[modsData[k].id][0], modsData[k].updated, tuserid, modsData[k].downloads,'user',modsData[k].raw_icon_url)
+                                                    
+                                                    addtolist(modholder, modsData[k].title, "https://1101-grills-oren.github.io/mods/details/?mod=" + modsData[k].id, modsData[k].loaders, modsData[k].game_versions, views[modsData[k].id][0], modsData[k].updated, tuserid, modsData[k].downloads,'user',modsData[k].raw_icon_url, modsData[k].description)
                                                 } else {
-                                                    addtolist(modholder, modsData[k].title, "https://1101-grills-oren.github.io/mods/details/?mod=" + modsData[k].id, modsData[k].loaders, modsData[k].game_versions, "N/A", modsData[k].updated, tuserid, modsData[k].downloads,'user',modsData[k].raw_icon_url)
+                                                    addtolist(modholder, modsData[k].title, "https://1101-grills-oren.github.io/mods/details/?mod=" + modsData[k].id, modsData[k].loaders, modsData[k].game_versions, "N/A", modsData[k].updated, tuserid, modsData[k].downloads,'user',modsData[k].raw_icon_url, modsData[k].description)
                                                 }
                                             }
                                         }
@@ -933,7 +948,7 @@
                                     if ((platforms.length == 0) || (doesOverlap(platforms, modsData[k]['']))) {
                                         if ((types.length == 0) || (doesOverlap(types, modsData[k]['']))) {
                                             console.log('add' + k)
-                                            addtolist(modholder, modsData[k].title, "https://1101-grills-oren.github.io/mods/details/?mod=" + modsData[k].id, modsData[k].loaders, modsData[k].game_versions, null, modsData[k].updated, userid, modsData[k].downloads,"user",modsData[k].raw_icon_url)
+                                            addtolist(modholder, modsData[k].title, "https://1101-grills-oren.github.io/mods/details/?mod=" + modsData[k].id, modsData[k].loaders, modsData[k].game_versions, null, modsData[k].updated, userid, modsData[k].downloads,"user",modsData[k].raw_icon_url, modsData[k].description)
                                         }
                                     }
                                 }
@@ -1015,9 +1030,9 @@
                                             if ((types.length == 0) || (doesOverlap(types, modsData[k]['']))) {
                                                 console.log('add' + k)
                                                 if (views[modsData[k].id] != undefined) {
-                                                    addtolist(modholder, modsData[k].name, "https://1101-grills-oren.github.io/mods/details/?mod=" + modsData[k].id, modsData[k].loaders, modsData[k].game_versions, views[modsData[k].id][0], modsData[k].updated, tuserid, modsData[k].downloads,'organization',modsData[k].raw_icon_url)
+                                                    addtolist(modholder, modsData[k].name, "https://1101-grills-oren.github.io/mods/details/?mod=" + modsData[k].id, modsData[k].loaders, modsData[k].game_versions, views[modsData[k].id][0], modsData[k].updated, tuserid, modsData[k].downloads,'organization',modsData[k].raw_icon_url, modsData[k].summary)
                                                 } else {
-                                                    addtolist(modholder, modsData[k].name, "https://1101-grills-oren.github.io/mods/details/?mod=" + modsData[k].id, modsData[k].loaders, modsData[k].game_versions, "N/A", modsData[k].updated, tuserid, modsData[k].downloads,'organization',modsData[k].raw_icon_url)
+                                                    addtolist(modholder, modsData[k].name, "https://1101-grills-oren.github.io/mods/details/?mod=" + modsData[k].id, modsData[k].loaders, modsData[k].game_versions, "N/A", modsData[k].updated, tuserid, modsData[k].downloads,'organization',modsData[k].raw_icon_url, modsData[k].summary)
                                                 }
                                             }
                                         }
@@ -1045,7 +1060,7 @@
                                     if ((platforms.length == 0) || (doesOverlap(platforms, modsData[k]['']))) {
                                         if ((types.length == 0) || (doesOverlap(types, modsData[k]['']))) {
                                             console.log('add' + k)
-                                            addtolist(modholder, modsData[k].name, "https://1101-grills-oren.github.io/mods/details/?mod=" + modsData[k].id, modsData[k].loaders, modsData[k].game_versions, null, modsData[k].updated, userid, modsData[k].downloads,"user",modsData[k].raw_icon_url)
+                                            addtolist(modholder, modsData[k].name, "https://1101-grills-oren.github.io/mods/details/?mod=" + modsData[k].id, modsData[k].loaders, modsData[k].game_versions, null, modsData[k].updated, userid, modsData[k].downloads,"user",modsData[k].raw_icon_url, modsData[k].description)
                                         }
                                     }
                                 }
