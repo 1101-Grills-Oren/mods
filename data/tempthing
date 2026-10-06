@@ -1,0 +1,375 @@
+
+function setup(){
+var renderwidth=400;
+var renderheight=400;
+createCanvas(renderwidth,renderheight);
+background(50,50,50);
+            
+
+var camerapos=[79,130];
+//var ctx = __env__.drawingContext;
+var tris=[];
+var reflectionLines=[];
+var texture1=createGraphics(renderwidth/2,renderheight/2,P2D);
+//texture1.beginClip();
+//println(Object.entries(texture));
+for(var x=0;x<renderwidth/2;x+=1){
+    for(var y=0;y<renderheight/2;y+=1){
+        texture1.stroke(x*255/renderwidth*2,y*255/renderheight*2,0);
+        texture1.strokeWeight(2);
+        texture1.point(x,y);
+        //texture1.point(x+100,y);
+    }
+}
+//image(texture1,0,0);
+tris.push([
+    [camerapos[0],camerapos[1]],
+    [0,0],
+    [0,renderheight],
+    [camerapos[0],camerapos[1]],
+    [0,0],
+    [0,renderheight],
+    1,
+    [1,0,0,1,0,0]
+    ]);/**/
+tris.push([
+    [camerapos[0],camerapos[1]],
+    [0,renderheight],
+    [renderwidth,renderheight],
+    [camerapos[0],camerapos[1]],
+    [0,renderheight],
+    [renderwidth,renderheight],
+    1,
+    [1,0,0,1,0,0]
+    ]);/**/
+tris.push([
+    [camerapos[0],camerapos[1]],
+    [renderwidth,renderheight],
+    [renderwidth,0],
+    [camerapos[0],camerapos[1]],
+    [renderwidth,renderheight],
+    [renderwidth,0],
+    1,
+    [1,0,0,1,0,0]
+    ]);/**/
+tris.push([
+    [camerapos[0],camerapos[1]],
+    [renderwidth,0],
+    [0,0],
+    [camerapos[0],camerapos[1]],
+    [renderwidth,0],
+    [0,0],
+    1,
+    [1,0,0,1,0,0]
+    ]);/**/
+
+reflectionLines.push([[20,0],[150,150],1]);
+reflectionLines.push([[150,150],[155,157],1]);
+reflectionLines.push([[155,157],[153,164],1]);
+//strokeWeight(5);
+//line(reflectionLines[0][0][0],reflectionLines[0][0][1],reflectionLines[0][1][0],reflectionLines[0][1][1]);
+//strokeWeight(1);
+function splitalltrisbasedonline(p1,p2){
+  var newtris=[];
+  for(var i=0;i<tris.length;i++){
+    var x=linesplittri_segment(p1,p2,[tris[i][3],tris[i][4],tris[i][5]]);
+    for(var j=0;j<x.length;j++){
+      newtris.push([applymatrixtopoint(x[j][0],tris[i][7]),applymatrixtopoint(x[j][1],tris[i][7]),applymatrixtopoint(x[j][2],tris[i][7]),x[j][0],x[j][1],x[j][2],tris[i][6],tris[i][7]]);
+    }
+  }
+  tris=newtris;
+}
+for(var i=0;i<reflectionLines.length;i++){
+splitalltrisbasedonline(reflectionLines[i][0],reflectionLines[i][1]);
+}
+print(calcmatrix([0,0],[1,0],[0,1],[0,0],[1,0],[0,1]));
+for(var i=0;i<tris.length;i++){
+    var current=tris[i];
+    noFill();
+    //strokeWeight(5);
+    stroke(255, 0, 0);
+    var m=calcmatrix(current[0],current[1],current[2],current[3],current[4],current[5]);
+    push();
+    //image(texture1,0,0);
+    applyMatrix(m);
+    //scale(0.5);
+    //translate(200,200);
+    clip(cliptrimask(current[0],current[1],current[2]));
+    tint(255,255,255,255*current[6]/4);
+    image(texture1,0,0,renderwidth,renderheight);
+    
+    triangle(current[0][0],current[0][1],
+    current[1][0],current[1][1],
+    current[2][0],current[2][1]);
+    pop();
+    stroke(0, 255, 255);
+    strokeWeight(0.5);
+    triangle(current[0][0],current[0][1],
+    current[1][0],current[1][1],
+    current[2][0],current[2][1]);
+    
+}
+            }
+function clipquadmask(p1,p2,p3,p4){
+  return ()=>{
+  quad(p1[0],p1[1],
+    p2[0],p2[1],
+    p3[0],p3[1],
+    p4[0],p4[1]);
+  };
+}
+function cliptrimask(p1,p2,p3){
+  return ()=>{
+  triangle(p1[0],p1[1],
+    p2[0],p2[1],
+    p3[0],p3[1]);
+  };
+}
+function matrix22(a,b,c,d){
+    return (a*d-b*c);
+}
+function calcmatrix(a1,a2,a3,b1,b2,b3){
+    var m1=[a3[0]-a1[0],a2[0]-a1[0],a1[0],
+    a3[1]-a1[1],a2[1]-a1[1],a1[1],0,0,1];
+    var m2=[[b3[0]-b1[0],b2[0]-b1[0],b1[0]],
+    [b3[1]-b1[1],b2[1]-b1[1],b1[1]],[0,0,1]];
+    var d=m1[0]*(m1[4]*m1[8]-m1[5]*m1[7])-m1[1]*(m1[3]*m1[8]-m1[5]*m1[6])+m1[2]*(m1[3]*m1[7]-m1[4]*m1[6]);
+    if(d===0){
+        return [0,0,0,0,0,0];
+    }
+    m1=[[m1[0],m1[1],m1[2]],
+    [m1[3],m1[4],m1[5]],
+    [m1[6],m1[7],m1[8]]];
+    m1=[[matrix22(m1[1][1],m1[1][2],m1[2][1],m1[2][2])/d,
+    -matrix22(m1[0][1],m1[0][2],m1[2][1],m1[2][2])/d,
+    matrix22(m1[0][1],m1[0][2],m1[1][1],m1[1][2])/d],
+    
+    [-matrix22(m1[1][0],m1[1][2],m1[2][0],m1[2][2])/d,
+    matrix22(m1[0][0],m1[0][2],m1[2][0],m1[2][2])/d,
+    -matrix22(m1[0][0],m1[0][2],m1[1][0],m1[1][2])/d],
+    
+    [matrix22(m1[1][0],m1[1][1],m1[2][0],m1[2][1])/d,
+    -matrix22(m1[0][0],m1[0][1],m1[2][0],m1[2][1])/d,
+    matrix22(m1[0][0],m1[0][1],m1[1][0],m1[1][1])/d]];
+    var m3=[[0,0,0],[0,0,0],[0,0,0]];
+    for(var a=0;a<3;a++){
+        for(var b=0;b<3;b++){
+            for(var k=0;k<3;k++){
+                m3[a][b]+=m1[a][k]*m2[k][b];
+            }
+        }
+    }
+    return [m3[0][0],m3[1][0],m3[0][1],m3[1][1],m3[0][2],m3[1][2]];//[m3[0][0],m3[0][1],m3[0][2],m3[1][0],m3[1][1],m3[1][2]];
+}
+function applymatrixtopoint(p,m){
+  return [p[0]*m[0]+p[1]*m[2]+m[4],p[0]*m[1]+p[1]*m[3]+m[5]];
+}
+function lineIntersect(a1,a2,b1,b2){
+  var a=a2[1]-a1[1];
+  var b=a2[0]-a1[0];
+  var c=a1[1]*(b)-a1[0]*(a);
+  var d=b2[1]-b1[1];
+  var e=b2[0]-b1[0];
+  var f=b1[1]*(e)-b1[0]*(d);
+  var D=(a*e-d*b);
+  if(a*e!=d*b){
+    return [(b*f-e*c)/D,(c*d-f*a)/D];
+  }
+  return null;
+}
+function signofpointandline(a1,a2,p){
+  var a=a2[1]-a1[1];
+  var b=a2[0]-a1[0];
+  var c=a1[1]*(b)-a1[0]*(a);
+  return a*p[0]-b*p[1]+c;
+  
+}
+function lineIntersectSegment(a1,a2,b1,b2){
+  var a=a2[1]-a1[1];
+  var b=a2[0]-a1[0];
+  var c=a1[1]*(b)-a1[0]*(a);
+  var d=b2[1]-b1[1];
+  var e=b2[0]-b1[0];
+  var f=b1[1]*(e)-b1[0]*(d);
+  var D=(a*e-d*b);
+  var w=a*b1[0]-b*b1[1]+c;
+  var x=a*b2[0]-b*b2[1]+c;
+  var y=d*a1[0]-e*a1[1]+f;
+  var z=d*a2[0]-e*a2[1]+f;
+  if(a*e!=d*b){
+    if((w>=0)&&(x<=0)||(w<=0)&&(x>=0)){
+      if((y>=0)&&(z<=0)||(y<=0)&&(z>=0)){
+        return [(b*f-e*c)/D,-(c*d-f*a)/D];
+      }
+    }
+  }
+  return null;
+}
+function lineIntersectSegmentAndLine(a1,a2,b1,b2){
+  var a=a2[1]-a1[1];
+  var b=a2[0]-a1[0];
+  var c=a1[1]*(b)-a1[0]*(a);
+  var d=b2[1]-b1[1];
+  var e=b2[0]-b1[0];
+  var f=b1[1]*(e)-b1[0]*(d);
+  var D=(a*e-d*b);
+  var w=a*b1[0]-b*b1[1]+c;
+  var x=a*b2[0]-b*b2[1]+c;
+  var y=d*a1[0]-e*a1[1]+f;
+  var z=d*a2[0]-e*a2[1]+f;
+  if(a*e!=d*b){
+    if((w>=0)&&(x<=0)||(w<=0)&&(x>=0)){
+      return [(b*f-e*c)/D,-(c*d-f*a)/D];
+    }
+  }
+  return null;
+}
+function lineIntersectSegmentAndLineNoEndpoints(a1,a2,b1,b2){
+  var c1=b1;
+  var c2=b2;
+  b1=a1;
+  b2=a2;
+  a1=c1;
+  a2=c2;
+  var a=a2[1]-a1[1];
+  var b=a2[0]-a1[0];
+  var c=a1[1]*(b)-a1[0]*(a);
+  var d=b2[1]-b1[1];
+  var e=b2[0]-b1[0];
+  var f=b1[1]*(e)-b1[0]*(d);
+  var D=(a*e-d*b);
+  var w=a*b1[0]-b*b1[1]+c;
+  var x=a*b2[0]-b*b2[1]+c;
+  var y=d*a1[0]-e*a1[1]+f;
+  var z=d*a2[0]-e*a2[1]+f;
+  if(a*e!=d*b){
+    if((w>0)&&(x<0)||(w<0)&&(x>0)){
+      return [(b*f-e*c)/D,-(c*d-f*a)/D];
+    }
+  }
+  return null;
+}
+function lineIntersectSegmentNoEndpoints(a1,a2,b1,b2){
+  var a=a2[1]-a1[1];
+  var b=a2[0]-a1[0];
+  var c=a1[1]*(b)-a1[0]*(a);
+  var d=b2[1]-b1[1];
+  var e=b2[0]-b1[0];
+  var f=b1[1]*(e)-b1[0]*(d);
+  var D=(a*e-d*b);
+  var w=a*b1[0]-b*b1[1]+c;
+  var x=a*b2[0]-b*b2[1]+c;
+  var y=d*a1[0]-e*a1[1]+f;
+  var z=d*a2[0]-e*a2[1]+f;
+  if(a*e!=d*b){
+    if((w>0)&&(x<0)||(w<0)&&(x>0)){
+      if((y>0)&&(z<0)||(y<0)&&(z>0)){
+        return [(b*f-e*c)/D,-(c*d-f*a)/D];
+      }
+    }
+  }
+  return null;
+}
+function linesplittri_segment(p1,p2,tri){
+  var intersectpointss=[
+    lineIntersectSegmentNoEndpoints(tri[0],tri[1],p1,p2),
+    lineIntersectSegmentNoEndpoints(tri[1],tri[2],p1,p2),
+    lineIntersectSegmentNoEndpoints(tri[2],tri[0],p1,p2)
+  ];
+  var intersectsigns=[
+    signofpointandline(p1,tri[0],tri[1]),
+    signofpointandline(p1,tri[1],tri[2]),
+    signofpointandline(p1,tri[2],tri[0])
+  ];
+  if((intersectpointss[0]==null)&&
+    (intersectpointss[1]==null)&&
+    (intersectpointss[2]==null)&&
+    !(((intersectsigns[0]>0)&&(intersectsigns[1]>0)&&(intersectsigns[2]>0))||((intersectsigns[0]<0)&&(intersectsigns[1]<0)&&(intersectsigns[2]<0))))
+    return [tri];
+    
+  var intersectpoints=[
+    lineIntersectSegmentAndLineNoEndpoints(tri[0],tri[1],p1,p2),
+    lineIntersectSegmentAndLineNoEndpoints(tri[1],tri[2],p1,p2),
+    lineIntersectSegmentAndLineNoEndpoints(tri[2],tri[0],p1,p2)
+  ];
+  
+  print(intersectpoints)
+  var numintersects=0;
+  if(intersectpoints[0]!=null){
+    numintersects++;
+  }
+  if(intersectpoints[1]!=null){
+    numintersects++;
+  }
+  if(intersectpoints[2]!=null){
+    numintersects++;
+  }
+  if(numintersects==0){
+    return [tri];
+  }
+  if(numintersects==1){
+    if(intersectpoints[0]!=null){
+      return [[tri[0],intersectpoints[0],tri[2]],[intersectpoints[0],tri[1],tri[2]]];
+    }
+    if(intersectpoints[1]!=null){
+      return [[tri[0],intersectpoints[1],tri[2]],[tri[0],tri[1],intersectpoints[1]]];
+    }
+    if(intersectpoints[2]!=null){
+      return [[intersectpoints[2],tri[1],tri[2]],[tri[0],tri[1],intersectpoints[2]]];
+    }
+  }
+  if(numintersects==2){
+    if(intersectpoints[0]==null){
+      return [[intersectpoints[1],intersectpoints[2],tri[2]],[intersectpoints[1],intersectpoints[2],tri[1]],[intersectpoints[2],tri[0],tri[1]]];
+    }
+    if(intersectpoints[1]==null){
+      return [[intersectpoints[2],intersectpoints[0],tri[0]],[intersectpoints[2],intersectpoints[0],tri[2]],[intersectpoints[0],tri[1],tri[2]]];
+    }
+    if(intersectpoints[2]==null){
+      return [[intersectpoints[0],intersectpoints[1],tri[1]],[intersectpoints[0],intersectpoints[1],tri[0]],[intersectpoints[1],tri[2],tri[0]]];
+    }
+  }
+}
+function linesplittri(p1,p2,tri){
+  var intersectpoints=[
+    lineIntersectSegmentAndLineNoEndpoints(tri[0],tri[1],p1,p2),
+    lineIntersectSegmentAndLineNoEndpoints(tri[1],tri[2],p1,p2),
+    lineIntersectSegmentAndLineNoEndpoints(tri[2],tri[0],p1,p2)
+  ];
+  print(intersectpoints)
+  var numintersects=0;
+  if(intersectpoints[0]!=null){
+    numintersects++;
+  }
+  if(intersectpoints[1]!=null){
+    numintersects++;
+  }
+  if(intersectpoints[2]!=null){
+    numintersects++;
+  }
+  if(numintersects==0){
+    return [tri];
+  }
+  if(numintersects==1){
+    if(intersectpoints[0]!=null){
+      return [[tri[0],intersectpoints[0],tri[2]],[intersectpoints[0],tri[1],tri[2]]];
+    }
+    if(intersectpoints[1]!=null){
+      return [[tri[0],intersectpoints[1],tri[2]],[tri[0],tri[1],intersectpoints[1]]];
+    }
+    if(intersectpoints[2]!=null){
+      return [[intersectpoints[2],tri[1],tri[2]],[tri[0],tri[1],intersectpoints[2]]];
+    }
+  }
+  if(numintersects==2){
+    if(intersectpoints[0]==null){
+      return [[intersectpoints[1],intersectpoints[2],tri[2]],[intersectpoints[1],intersectpoints[2],tri[1]],[intersectpoints[2],tri[0],tri[1]]];
+    }
+    if(intersectpoints[1]==null){
+      return [[intersectpoints[2],intersectpoints[0],tri[0]],[intersectpoints[2],intersectpoints[0],tri[2]],[intersectpoints[0],tri[1],tri[2]]];
+    }
+    if(intersectpoints[2]==null){
+      return [[intersectpoints[0],intersectpoints[1],tri[1]],[intersectpoints[0],intersectpoints[1],tri[0]],[intersectpoints[1],tri[2],tri[0]]];
+    }
+  }
+}
