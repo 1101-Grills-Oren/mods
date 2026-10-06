@@ -3,20 +3,19 @@ function setup(){
 var renderwidth=400;
 var renderheight=400;
 createCanvas(renderwidth,renderheight);
-background(50,50,50);
+background(0,0,0);
             
 
-var camerapos=[79,130];
-//var ctx = __env__.drawingContext;
+var camerapos=[200,200];
+
 var tris=[];
 var reflectionLines=[];
 var texture1=createGraphics(renderwidth/2,renderheight/2,P2D);
-//texture1.beginClip();
-//println(Object.entries(texture));
-for(var x=0;x<renderwidth/2;x+=1){
-    for(var y=0;y<renderheight/2;y+=1){
+
+for(var x=0;x<renderwidth/2;x+=1.5){
+    for(var y=0;y<renderheight/2;y+=1.5){
         texture1.stroke(x*255/renderwidth*2,y*255/renderheight*2,0);
-        texture1.strokeWeight(2);
+        texture1.strokeWeight(2.3);
         texture1.point(x,y);
         //texture1.point(x+100,y);
     }
@@ -63,12 +62,9 @@ tris.push([
     [1,0,0,1,0,0]
     ]);/**/
 
-reflectionLines.push([[20,0],[150,150],1]);
-reflectionLines.push([[150,150],[155,157],1]);
-reflectionLines.push([[155,157],[153,164],1]);
-//strokeWeight(5);
-//line(reflectionLines[0][0][0],reflectionLines[0][0][1],reflectionLines[0][1][0],reflectionLines[0][1][1]);
-//strokeWeight(1);
+reflectionLines.push([[350,200],[300,150],1]);
+reflectionLines=shuffle(reflectionLines);
+
 function splitalltrisbasedonline(p1,p2){
   var newtris=[];
   for(var i=0;i<tris.length;i++){
@@ -79,15 +75,35 @@ function splitalltrisbasedonline(p1,p2){
   }
   tris=newtris;
 }
-for(var i=0;i<reflectionLines.length;i++){
-splitalltrisbasedonline(reflectionLines[i][0],reflectionLines[i][1]);
+function splitalltrisbasedonlinereflect(p1,p2,pwr){
+  var newtris=[];
+  for(var i=0;i<tris.length;i++){
+    var x=linesplittri_segment_quad(p1,p2,camerapos,[tris[i][3],tris[i][4],tris[i][5]]);
+    print("splitting 1 resulted in "+x[0].length+" around and "+x[1].length+" behind");
+    for(var j=0;j<x[0].length;j++){
+      newtris.push([applymatrixtopoint(x[0][j][0],tris[i][7]),applymatrixtopoint(x[0][j][1],tris[i][7]),applymatrixtopoint(x[0][j][2],tris[i][7]),x[0][j][0],x[0][j][1],x[0][j][2],tris[i][6],tris[i][7]]);
+    }
+    if(x[1].length!=0){
+      newmatrix=calcmatrix(applymatrixtopoint(x[1][j][0],tris[i][7]),applymatrixtopoint(x[1][j][1],tris[i][7]),applymatrixtopoint(x[1][j][2],tris[i][7]),flippointoverline(p1,p2,x[1][j][0]),flippointoverline(p1,p2,x[1][j][1]),flippointoverline(p1,p2,x[1][j][2]));
+      for(var j=0;j<x[1].length;j++){
+        newtris.push([applymatrixtopoint(x[1][j][0],tris[i][7]),applymatrixtopoint(x[1][j][1],tris[i][7]),applymatrixtopoint(x[1][j][2],tris[i][7]),flippointoverline(p1,p2,x[1][j][0]),flippointoverline(p1,p2,x[1][j][1]),flippointoverline(p1,p2,x[1][j][2]),tris[i][6]/2,newmatrix]);
+      }
+    }
+  }
+  tris=newtris;
 }
-print(calcmatrix([0,0],[1,0],[0,1],[0,0],[1,0],[0,1]));
+for(var i=0;i<reflectionLines.length;i++){
+  print("before:"+tris.length);
+splitalltrisbasedonlinereflect(reflectionLines[i][0],reflectionLines[i][1],reflectionLines[i][2]);
+  print("after:"+tris.length);
+}
+
+print("broke into "+tris.length+" tris");
 for(var i=0;i<tris.length;i++){
     var current=tris[i];
     noFill();
     //strokeWeight(5);
-    stroke(255, 0, 0);
+    stroke(0, 0, 255);
     var m=calcmatrix(current[0],current[1],current[2],current[3],current[4],current[5]);
     push();
     //image(texture1,0,0);
@@ -95,23 +111,23 @@ for(var i=0;i<tris.length;i++){
     //scale(0.5);
     //translate(200,200);
     clip(cliptrimask(current[0],current[1],current[2]));
-    tint(255,255,255,255*current[6]/4);
+    tint(255,255,255,255*current[6]);
+    blendMode(ADD);
     image(texture1,0,0,renderwidth,renderheight);
-    
-    triangle(current[0][0],current[0][1],
-    current[1][0],current[1][1],
-    current[2][0],current[2][1]);
-    pop();
-    stroke(0, 255, 255);
+    blendMode(BLEND);
     strokeWeight(0.5);
-    triangle(current[0][0],current[0][1],
-    current[1][0],current[1][1],
-    current[2][0],current[2][1]);
+    //triangle(current[0][0],current[0][1],current[1][0],current[1][1],current[2][0],current[2][1]);
+    pop();
     
 }
             }
+function flippointoverline(l1,l2,p){
+  return p;
+
+}
 function clipquadmask(p1,p2,p3,p4){
   return ()=>{
+    noSmooth();
   quad(p1[0],p1[1],
     p2[0],p2[1],
     p3[0],p3[1],
@@ -120,6 +136,7 @@ function clipquadmask(p1,p2,p3,p4){
 }
 function cliptrimask(p1,p2,p3){
   return ()=>{
+    noSmooth();
   triangle(p1[0],p1[1],
     p2[0],p2[1],
     p3[0],p3[1]);
@@ -182,6 +199,13 @@ function signofpointandline(a1,a2,p){
   var b=a2[0]-a1[0];
   var c=a1[1]*(b)-a1[0]*(a);
   return a*p[0]-b*p[1]+c;
+  
+}
+function signoftriandline(a1,a2,p){
+  var a=a2[1]-a1[1];
+  var b=a2[0]-a1[0];
+  var c=a1[1]*(b)-a1[0]*(a);
+  return a*(p[0][0]+p[1][0]+p[2][0])-b*(p[0][1]+p[1][1]+p[2][1])+c*3;
   
 }
 function lineIntersectSegment(a1,a2,b1,b2){
@@ -293,7 +317,7 @@ function linesplittri_segment(p1,p2,tri){
     lineIntersectSegmentAndLineNoEndpoints(tri[2],tri[0],p1,p2)
   ];
   
-  print(intersectpoints)
+  //print(intersectpoints)
   var numintersects=0;
   if(intersectpoints[0]!=null){
     numintersects++;
@@ -330,13 +354,92 @@ function linesplittri_segment(p1,p2,tri){
     }
   }
 }
+function linesplittri_segment_quad(p1,p2,op,tri){
+  var s0=signofpointandline(p1,p2,op);
+  if(s0==0){
+    return [[tri],[]];
+  }
+  var tris_nonbehind=[];
+  var tris_temp=linesplittri_segment(p1,p2,tri);
+  var tris_2=[];
+  if(s0<0){
+    for(var i=0;i<tris_temp.length;i++){
+      if(signoftriandline(p1,p2,tris_temp[i])>0){
+        var temp=linesplittri(p1,op,tris_temp[i]);
+        for(var j=0;j<temp.length;j++){
+          tris_2.push(temp[j]);
+        }
+      }else{
+        tris_nonbehind.push(tris_temp[i]);
+      }
+    }
+  }else{
+    for(var i=0;i<tris_temp.length;i++){
+      if(signoftriandline(p1,p2,tris_temp[i])<0){
+        var temp=linesplittri(p1,op,tris_temp[i]);
+        for(var j=0;j<temp.length;j++){
+          tris_2.push(temp[j]);
+        }
+      }else{
+        tris_nonbehind.push(tris_temp[i]);
+      }
+    }
+  }
+  tris_temp=[];
+  var s1=signofpointandline(p1,op,p2);
+  if(s1<0){
+    for(var i=0;i<tris_2.length;i++){
+      if(signoftriandline(p1,op,tris_2[i])<0){
+        var temp=linesplittri(p2,op,tris_2[i]);
+        for(var j=0;j<temp.length;j++){
+          tris_temp.push(temp[j]);
+        }
+      }else{
+        tris_nonbehind.push(tris_2[i]);
+      }
+    }
+  }else{
+    for(var i=0;i<tris_2.length;i++){
+      if(signoftriandline(p1,op,tris_2[i])>0){
+        var temp=linesplittri(p2,op,tris_2[i]);
+        for(var j=0;j<temp.length;j++){
+          tris_temp.push(temp[j]);
+        }
+      }else{
+        tris_nonbehind.push(tris_2[i]);
+      }
+    }
+  }
+  var s2=signofpointandline(p2,op,p1);
+  tris_2=[];
+  if(s2<0){
+    for(var i=0;i<tris_temp.length;i++){
+      if(signoftriandline(p2,op,tris_temp[i])<0){
+        tris_2.push(tris_temp[i]);
+      }else{
+        tris_nonbehind.push(tris_temp[i]);
+      }
+      
+    }
+  }else{
+    for(var i=0;i<tris_temp.length;i++){
+      if(signoftriandline(p2,op,tris_temp[i])>0){
+        tris_2.push(tris_temp[i]);
+      }else{
+        tris_nonbehind.push(tris_temp[i]);
+      }
+      
+    }
+  }
+  return [tris_nonbehind,tris_2];
+}
 function linesplittri(p1,p2,tri){
   var intersectpoints=[
     lineIntersectSegmentAndLineNoEndpoints(tri[0],tri[1],p1,p2),
     lineIntersectSegmentAndLineNoEndpoints(tri[1],tri[2],p1,p2),
     lineIntersectSegmentAndLineNoEndpoints(tri[2],tri[0],p1,p2)
   ];
-  print(intersectpoints)
+  //print(intersectpoints)
   var numintersects=0;
   if(intersectpoints[0]!=null){
     numintersects++;
