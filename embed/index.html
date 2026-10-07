@@ -4,5 +4,14 @@
 <body>
 	<embed id="embedbox" src="https://www.youtube.com/embed/pzp2cYnLoUw" width=500 height=320>
   <input type="text" id="embedtarget">
-  <input type="button" click="document.getElementById(\"embedbox\").src=document.getElementById(\"embedtarget\").value">
+  <input type="button" id="changeembedbutton">
+	<script>
+  // Select the button element
+  const button = document.getElementById('changeembedbutton');
+
+  // Listen for the click event
+  button.addEventListener('click', function() {
+    document.getElementById("embedbox").src=document.getElementById("embedtarget").value;
+  });
+</script>
 </body>
