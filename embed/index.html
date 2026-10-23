@@ -11,7 +11,19 @@
 
   // Listen for the click event
   button.addEventListener('click', function() {
-    document.getElementById("embedbox").src=document.getElementById("embedtarget").value;
+	  
+	  x=document.getElementById("embedtarget").value;
+	  if(x.includes("https://www.youtube.com/watch?v=")){
+		  x=x.split("?")[1]
+		  x=x.split("&")
+		  x.forEach((entry)=>{
+			  if(entry.split("=")[0]=="v"){
+				  document.getElementById("embedbox").src="https://www.youtube.com/embed/"+entry.split("=")[1];
+			  }
+		  })
+	  }else{
+	    document.getElementById("embedbox").src=x;
+	  }
   });
 </script>
 </body>
